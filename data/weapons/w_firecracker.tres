@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/weapon_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "w_firecracker"
+display_name = "Firecracker Burst"
+description = "Lands on a random creature and bursts."
+script_path = "res://scripts/weapons/firecracker.gd"
+params = {"damage": 22.0, "cooldown": 2.2, "area": 90.0, "fuse": 0.3}
+level_mult = {"area": 0.15, "cooldown": -0.08}
+level_add = {}
+level_steps = {}
+icon = "res://assets/sprites/icons/w_firecracker.svg"
+max_level = 5
+sort_order = 3

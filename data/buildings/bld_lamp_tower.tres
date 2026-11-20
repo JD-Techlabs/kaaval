@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="BuildingData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/building_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "bld_lamp_tower"
+display_name = "Lamp Tower"
+description = "Its light lets a fallen guardian rise once per night, and softens every blow."
+max_level = 10
+sort_order = 6
+stat = "damage_reduction"
+mode = "add"
+per_level = 0.02
+bonus_text = "-%s damage taken"
+bonus_is_percent = true
+reroll_levels = Array[int]([])
+revive_unlock_level = 1
+village_pos = Vector2(0.5, 0.48)
+wall_color = Color(0.878, 0.753, 0.502, 1)
+roof_color = Color(0.753, 0.337, 0.165, 1)
+emblem = "lamp"

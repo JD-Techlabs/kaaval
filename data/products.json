@@ -1,0 +1,27 @@
+{
+  "products": [
+    {"id": "gems_80", "type": "consumable", "section": "gems", "title": "Pouch of Gems", "desc": "80 gems", "grants": {"gems": 80}, "mock_price": "₹89.00"},
+    {"id": "gems_500", "type": "consumable", "section": "gems", "title": "Sack of Gems", "desc": "500 gems (+10%)", "grants": {"gems": 500}, "mock_price": "₹449.00"},
+    {"id": "gems_1200", "type": "consumable", "section": "gems", "title": "Chest of Gems", "desc": "1,200 gems (+20%)", "grants": {"gems": 1200}, "mock_price": "₹899.00"},
+    {"id": "gems_2800", "type": "consumable", "section": "gems", "title": "Cart of Gems", "desc": "2,800 gems (+35%)", "grants": {"gems": 2800}, "mock_price": "₹1,799.00"},
+    {"id": "starter_pack", "type": "non_consumable", "section": "featured", "title": "Starter Pack", "desc": "300 gems, 2,000 coins, 20 timber and the exclusive Dawnbringer skin for Lampwarden. One-time purchase.", "grants": {"gems": 300, "coins": 2000, "timber": 20, "skin": "skin_muthu_dawnbringer"}, "mock_price": "₹149.00"},
+    {"id": "ad_free_pass", "type": "non_consumable", "section": "pass", "title": "Ad-Free Pass", "desc": "All rewarded-ad rewards are granted instantly, without watching.", "grants": {"entitlement": "ad_free_pass"}, "mock_price": "₹249.00"},
+    {"id": "hero_ammu", "type": "non_consumable", "section": "heroes", "title": "Kindlecrest, the Flame Keeper", "desc": "Unlock Kindlecrest immediately.", "grants": {"hero": "hero_ammu"}, "mock_price": "₹199.00"},
+    {"id": "hero_gale", "type": "non_consumable", "section": "heroes", "title": "Galestride, the Swift Gale", "desc": "Unlock Galestride immediately, without collecting pieces.", "grants": {"hero": "hero_gale"}, "mock_price": "₹249.00"},
+    {"id": "hero_banyan", "type": "non_consumable", "section": "heroes", "title": "Banyanshield, the Unmoved", "desc": "Unlock Banyanshield immediately, without collecting pieces.", "grants": {"hero": "hero_banyan"}, "mock_price": "₹399.00"},
+    {"id": "hero_volt", "type": "non_consumable", "section": "heroes", "title": "Voltmantle, the Storm Herald", "desc": "Elite hero. Available only by purchase.", "grants": {"hero": "hero_volt"}, "mock_price": "₹599.00"},
+    {"id": "hero_morn", "type": "non_consumable", "section": "heroes", "title": "Mornhelm, the First Light", "desc": "Elite hero. Available only by purchase.", "grants": {"hero": "hero_morn"}, "mock_price": "₹799.00"},
+    {"id": "builder_2", "type": "non_consumable", "section": "pass", "title": "Second Builder", "desc": "Upgrade two buildings at the same time.", "grants": {"entitlement": "builder_2"}, "mock_price": "₹299.00"}
+  ],
+  "skins": [
+    {"id": "skin_muthu_default", "hero": "hero_muthu", "name": "Night Watch", "gems": 0, "default": true, "tint": "#ffffff"},
+    {"id": "skin_muthu_dawnbringer", "hero": "hero_muthu", "name": "Dawnbringer", "gems": 0, "exclusive": "starter_pack", "tint": "#ffd98a"},
+    {"id": "skin_muthu_monsoon", "hero": "hero_muthu", "name": "Monsoon Guard", "gems": 300, "tint": "#8fd0ff"},
+    {"id": "skin_ammu_default", "hero": "hero_ammu", "name": "Flame Keeper", "gems": 0, "default": true, "tint": "#ffffff"},
+    {"id": "skin_ammu_marigold", "hero": "hero_ammu", "name": "Marigold", "gems": 500, "tint": "#ffb347"},
+    {"id": "skin_gale_default", "hero": "hero_gale", "name": "Swift Gale", "gems": 0, "default": true, "tint": "#ffffff"},
+    {"id": "skin_banyan_default", "hero": "hero_banyan", "name": "Unmoved", "gems": 0, "default": true, "tint": "#ffffff"},
+    {"id": "skin_volt_default", "hero": "hero_volt", "name": "Storm Herald", "gems": 0, "default": true, "tint": "#ffffff"},
+    {"id": "skin_morn_default", "hero": "hero_morn", "name": "First Light", "gems": 0, "default": true, "tint": "#ffffff"}
+  ]
+}

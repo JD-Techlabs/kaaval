@@ -1,0 +1,38 @@
+{
+  "free_chest": {
+    "name": "Free Chest",
+    "ad_extra_per_day": 3,
+    "drops": [
+      {"label": "150 coins", "weight": 40, "rewards": {"coins": 150}},
+      {"label": "300 coins", "weight": 25, "rewards": {"coins": 300}},
+      {"label": "3 timber", "weight": 20, "rewards": {"timber": 3}},
+      {"label": "200 coins + 2 timber", "weight": 10, "rewards": {"coins": 200, "timber": 2}},
+      {"label": "5 gems", "weight": 5, "rewards": {"gems": 5}}
+    ]
+  },
+  "guardian_chest": {
+    "name": "Guardian Chest",
+    "price_gems": 120,
+    "drops": [
+      {"label": "1,500 coins", "weight": 35, "rewards": {"coins": 1500}},
+      {"label": "12 timber", "weight": 25, "rewards": {"timber": 12}},
+      {"label": "1,000 coins + 8 timber", "weight": 20, "rewards": {"coins": 1000, "timber": 8}},
+      {"label": "3,000 coins", "weight": 12, "rewards": {"coins": 3000}},
+      {"label": "25 timber", "weight": 6, "rewards": {"timber": 25}},
+      {"label": "5,000 coins + 30 timber", "weight": 2, "rewards": {"coins": 5000, "timber": 30}}
+    ]
+  },
+  "hero_gift": {
+    "name": "Hero Gift",
+    "piece_fallback_coins": 400,
+    "drops": [
+      {"label": "100 coins", "weight": 34, "rewards": {"coins": 100}},
+      {"label": "250 coins", "weight": 22, "rewards": {"coins": 250}},
+      {"label": "2 timber", "weight": 14, "rewards": {"timber": 2}},
+      {"label": "1 life potion", "weight": 12, "rewards": {"potions": 1}},
+      {"label": "3 gems", "weight": 4, "rewards": {"gems": 3}},
+      {"label": "1 hero piece", "weight": 12, "rewards": {"hero_pieces": 1}},
+      {"label": "2 hero pieces", "weight": 2, "rewards": {"hero_pieces": 2}}
+    ]
+  }
+}

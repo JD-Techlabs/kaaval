@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="HeroData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/hero_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "hero_banyan"
+display_name = "Banyanshield"
+title = "the Unmoved"
+description = "+35% max HP, +2 armor, +0.5 HP/s, +10% damage."
+texture = "res://assets/sprites/hero_banyan.svg"
+starting_weapon = "w_thorn_whip"
+sort_order = 3
+mods = Array[Dictionary]([{"stat": "max_hp", "mode": "pct", "value": 0.35}, {"stat": "armor", "mode": "add", "value": 2.0}, {"stat": "hp_regen", "mode": "add", "value": 0.5}, {"stat": "damage_mult", "mode": "add", "value": 0.1}])
+tier = "Better"
+unlock_coins = 0
+pieces_needed = 20
+product_id = "hero_banyan"

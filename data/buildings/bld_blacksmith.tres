@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="BuildingData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/building_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "bld_blacksmith"
+display_name = "Blacksmith"
+description = "Sharper tools for the night watch."
+max_level = 10
+sort_order = 0
+stat = "damage_mult"
+mode = "add"
+per_level = 0.04
+bonus_text = "+%s damage"
+bonus_is_percent = true
+reroll_levels = Array[int]([])
+revive_unlock_level = 0
+village_pos = Vector2(0.22, 0.3)
+wall_color = Color(0.553, 0.431, 0.388, 1)
+roof_color = Color(0.365, 0.251, 0.216, 1)
+emblem = "anvil"

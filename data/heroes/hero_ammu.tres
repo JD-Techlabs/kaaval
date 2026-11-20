@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="HeroData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/hero_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "hero_ammu"
+display_name = "Kindlecrest"
+title = "the Flame Keeper"
+description = "-15% max HP, +15% area, +10% XP."
+texture = "res://assets/sprites/hero_ammu.svg"
+starting_weapon = "w_lamp_orbit"
+sort_order = 1
+mods = Array[Dictionary]([{"stat": "max_hp", "mode": "pct", "value": -0.15}, {"stat": "area_mult", "mode": "add", "value": 0.15}, {"stat": "xp_mult", "mode": "add", "value": 0.1}])
+tier = "Starter"
+unlock_coins = 5000
+pieces_needed = 0
+product_id = "hero_ammu"

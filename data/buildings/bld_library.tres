@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="BuildingData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/building_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "bld_library"
+display_name = "Library"
+description = "Old lore: more XP, and extra rerolls at levels 3, 6 and 9."
+max_level = 10
+sort_order = 5
+stat = "xp_mult"
+mode = "add"
+per_level = 0.04
+bonus_text = "+%s XP"
+bonus_is_percent = true
+reroll_levels = Array[int]([3, 6, 9])
+revive_unlock_level = 0
+village_pos = Vector2(0.5, 0.84)
+wall_color = Color(0.718, 0.651, 0.839, 1)
+roof_color = Color(0.353, 0.290, 0.541, 1)
+emblem = "book"

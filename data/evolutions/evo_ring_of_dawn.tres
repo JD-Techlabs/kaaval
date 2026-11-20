@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="EvolutionData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/evolution_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "evo_ring_of_dawn"
+display_name = "Ring of Dawn"
+description = "Eight flames in a wide ring that set creatures alight."
+weapon_id = "w_lamp_orbit"
+passive_id = "p_hourglass"
+params = {"flames": 8.0, "radius": 290.0, "burn_dps": 8.0, "burn_time": 3.0}

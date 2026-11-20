@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/weapon_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "w_chilli_smoke"
+display_name = "Chilli Smoke"
+description = "A stinging cloud that hurts creatures near you."
+script_path = "res://scripts/weapons/chilli_smoke.gd"
+params = {"damage": 4.0, "tick": 0.5, "radius": 125.0}
+level_add = {"damage": 1.0}
+level_mult = {"radius": 0.12}
+level_steps = {}
+icon = "res://assets/sprites/icons/w_chilli_smoke.svg"
+max_level = 5
+sort_order = 5

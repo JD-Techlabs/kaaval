@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="PassiveData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/passive_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "p_whetstone"
+display_name = "Whetstone"
+description = "+8% damage per level."
+icon = "res://assets/sprites/icons/p_whetstone.svg"
+max_level = 5
+sort_order = 4
+stat = "damage_mult"
+mode = "add"
+per_level = 0.08

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="EvolutionData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/evolution_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "evo_meteor_sling"
+display_name = "Meteor Sling"
+description = "Five stones that explode on impact."
+weapon_id = "w_sling"
+passive_id = "p_whetstone"
+params = {"projectiles": 5.0, "explode_radius": 60.0}

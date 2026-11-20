@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/weapon_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "w_thorn_whip"
+display_name = "Thorn Whip"
+description = "Lashes in an arc in front of you."
+script_path = "res://scripts/weapons/thorn_whip.gd"
+params = {"damage": 16.0, "cooldown": 1.1, "width": 180.0, "height": 120.0, "sides": 1.0}
+level_mult = {"damage": 0.2}
+level_steps = {"sides": [3]}
+level_add = {}
+icon = "res://assets/sprites/icons/w_thorn_whip.svg"
+max_level = 5
+sort_order = 4

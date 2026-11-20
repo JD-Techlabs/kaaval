@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/weapon_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "w_sling"
+display_name = "Sling Stone"
+description = "Fires a stone at the nearest creature."
+script_path = "res://scripts/weapons/sling_stone.gd"
+params = {"damage": 12.0, "cooldown": 0.9, "projectiles": 1.0, "speed": 900.0, "range": 820.0, "radius": 16.0, "life": 1.4, "pierce": 1.0}
+level_mult = {"damage": 0.2}
+level_steps = {"projectiles": [3, 5]}
+level_add = {}
+icon = "res://assets/sprites/icons/w_sling.svg"
+max_level = 5
+sort_order = 0

@@ -1,0 +1,11 @@
+{
+  "config_version": 1,
+  "enemy_hp_scale_per_min": 0.12,
+  "enemy_dmg_scale_per_min": 0.05,
+  "max_enemies": 300,
+  "coin_multiplier": 1.0,
+  "xp_multiplier": 1.0,
+  "build_timer_multiplier": 1.0,
+  "starter_pack_enabled": true,
+  "free_chest_hours": 6
+}

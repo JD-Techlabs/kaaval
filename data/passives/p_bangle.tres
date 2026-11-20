@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="PassiveData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/passive_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "p_bangle"
+display_name = "Iron Bangle"
+description = "+1 armor per level."
+icon = "res://assets/sprites/icons/p_bangle.svg"
+max_level = 5
+sort_order = 0
+stat = "armor"
+mode = "add"
+per_level = 1.0

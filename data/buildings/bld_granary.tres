@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="BuildingData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/building_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "bld_granary"
+display_name = "Granary"
+description = "Good stores mean more coin from every night."
+max_level = 10
+sort_order = 3
+stat = "coin_mult"
+mode = "add"
+per_level = 0.05
+bonus_text = "+%s coins from runs"
+bonus_is_percent = true
+reroll_levels = Array[int]([])
+revive_unlock_level = 0
+village_pos = Vector2(0.2, 0.66)
+wall_color = Color(0.851, 0.643, 0.255, 1)
+roof_color = Color(0.659, 0.388, 0.165, 1)
+emblem = "grain"

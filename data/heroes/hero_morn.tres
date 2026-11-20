@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="HeroData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/hero_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "hero_morn"
+display_name = "Mornhelm"
+title = "the First Light"
+description = "+40% max HP, +25% damage, +20% area, +1.5 HP/s, +2 armor, +15% XP."
+texture = "res://assets/sprites/hero_morn.svg"
+starting_weapon = "w_bamboo_spear"
+sort_order = 5
+mods = Array[Dictionary]([{"stat": "max_hp", "mode": "pct", "value": 0.4}, {"stat": "damage_mult", "mode": "add", "value": 0.25}, {"stat": "area_mult", "mode": "add", "value": 0.2}, {"stat": "hp_regen", "mode": "add", "value": 1.5}, {"stat": "armor", "mode": "add", "value": 2.0}, {"stat": "xp_mult", "mode": "add", "value": 0.15}])
+tier = "Elite"
+unlock_coins = 0
+pieces_needed = 0
+product_id = "hero_morn"

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="EvolutionData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/evolution_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "evo_ghost_pepper"
+display_name = "Ghost Pepper Miasma"
+description = "A huge cloud. Heals 1 HP for every 10 creatures it finishes."
+weapon_id = "w_chilli_smoke"
+passive_id = "p_neem"
+params = {"radius": 400.0, "heal_kills": 10.0, "heal_amount": 1.0}

@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="BuildingData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/building_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "bld_watchtower"
+display_name = "Watchtower"
+description = "A higher view pulls embers from further away."
+max_level = 10
+sort_order = 2
+stat = "pickup_radius"
+mode = "pct"
+per_level = 0.06
+bonus_text = "+%s pickup radius"
+bonus_is_percent = true
+reroll_levels = Array[int]([])
+revive_unlock_level = 0
+village_pos = Vector2(0.5, 0.14)
+wall_color = Color(0.604, 0.549, 0.478, 1)
+roof_color = Color(0.420, 0.357, 0.294, 1)
+emblem = "eye"

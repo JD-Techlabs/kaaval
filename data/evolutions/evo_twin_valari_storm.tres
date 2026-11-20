@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="EvolutionData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/evolution_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "evo_twin_valari_storm"
+display_name = "Twin Valari Storm"
+description = "Four valaris spiral outward without end."
+weapon_id = "w_valari"
+passive_id = "p_sandals"
+params = {"projectiles": 4.0, "spiral": 1.0, "cooldown": 0.9, "spiral_life": 2.6, "spiral_turn": 3.4, "spiral_out": 210.0}

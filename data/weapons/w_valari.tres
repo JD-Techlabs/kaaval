@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/weapon_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "w_valari"
+display_name = "Valari"
+description = "A curved throwing stick that returns, hitting twice."
+script_path = "res://scripts/weapons/valari.gd"
+params = {"damage": 14.0, "cooldown": 1.6, "projectiles": 1.0, "speed": 720.0, "range": 430.0, "radius": 24.0}
+level_mult = {"damage": 0.15}
+level_steps = {"projectiles": [3, 5]}
+level_add = {}
+icon = "res://assets/sprites/icons/w_valari.svg"
+max_level = 5
+sort_order = 6

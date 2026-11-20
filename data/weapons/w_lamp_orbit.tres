@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/weapon_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "w_lamp_orbit"
+display_name = "Lamp Orbit"
+description = "Flames circle you and burn what they touch."
+script_path = "res://scripts/weapons/lamp_orbit.gd"
+params = {"damage": 8.0, "hit_interval": 0.4, "flames": 2.0, "radius": 150.0, "flame_radius": 30.0, "rot_speed": 2.6}
+level_add = {"flames": 1.0}
+level_mult = {"radius": 0.1}
+level_steps = {}
+icon = "res://assets/sprites/icons/w_lamp_orbit.svg"
+max_level = 5
+sort_order = 1

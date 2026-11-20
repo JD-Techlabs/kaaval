@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/enemy_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "e_crow"
+display_name = "Night Crow"
+hp = 12.0
+speed = 260.0
+contact_damage = 6.0
+xp = 2.0
+radius = 20.0
+behaviour = "line"
+split_id = ""
+split_count = 0
+params = {}
+texture = "res://assets/sprites/e_crow.svg"

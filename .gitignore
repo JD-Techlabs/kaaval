@@ -1,0 +1,31 @@
+# Godot
+.godot/
+*.translation
+export_presets.local.cfg
+
+# Local toolchain downloads (engine, plugin zips)
+.tools/
+
+# Android build + outputs
+android/
+build/
+*.apk
+*.aab
+*.idsig
+
+# Secrets — never commit
+*.keystore
+*.jks
+release_config/
+keystore.properties
+*.pem
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.qodo/
+
+# AdMob plugin re-downloads these on demand
+addons/admob/ios/
+addons/admob/downloads/

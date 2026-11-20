@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="BossData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/boss_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "b_banyan_wraith"
+display_name = "Banyan Wraith"
+hp = 3000.0
+speed = 75.0
+contact_damage = 22.0
+xp = 80.0
+radius = 72.0
+script_path = "res://scripts/entities/boss_banyan_wraith.gd"
+timber = 6
+warning_text = "The Banyan Wraith awakens!"
+params = {"root_interval": 2.4, "root_radius": 115.0, "root_delay": 1.0, "root_damage": 24.0, "summon_interval": 7.0, "summon_id": "e_wisp", "summon_count": 8.0}
+texture = "res://assets/sprites/b_banyan_wraith.svg"
+behaviour = "boss"

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="BossData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/boss_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "b_crawler_queen"
+display_name = "Thorn Queen"
+hp = 800.0
+speed = 95.0
+contact_damage = 18.0
+xp = 40.0
+radius = 62.0
+script_path = "res://scripts/entities/boss_thorn_queen.gd"
+timber = 3
+warning_text = "The Thorn Queen stirs!"
+params = {"charge_interval": 4.0, "telegraph": 0.7, "charge_speed": 640.0, "charge_time": 0.8, "summon_hp_pct": 0.5, "summon_id": "e_crawler", "summon_count": 6.0}
+texture = "res://assets/sprites/b_crawler_queen.svg"
+behaviour = "boss"

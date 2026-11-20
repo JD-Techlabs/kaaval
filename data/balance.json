@@ -1,0 +1,123 @@
+{
+  "hero_base": {
+    "max_hp": 100,
+    "move_speed": 220,
+    "armor": 0,
+    "pickup_radius": 80,
+    "damage_mult": 1.0,
+    "cooldown_mult": 1.0,
+    "area_mult": 1.0,
+    "hp_regen": 0,
+    "xp_mult": 1.0,
+    "coin_mult": 1.0,
+    "damage_reduction": 0,
+    "weapon_slots": 4,
+    "passive_slots": 4
+  },
+  "xp_curve": { "base": 6, "linear": 4, "power_coeff": 0.6, "power": 1.6 },
+  "combat": {
+    "iframes": 0.5,
+    "contact_interval": 0.5,
+    "hit_flash": 0.08,
+    "min_damage": 1,
+    "player_radius": 24,
+    "chase_stop": 0.8,
+    "knockback_decay": 7,
+    "min_cooldown_mult": 0.3,
+    "max_damage_reduction": 0.6,
+    "burn_tick": 0.5
+  },
+  "run": {
+    "map_id": "forest_edge",
+    "camera_zoom": 1.6,
+    "dawn_start": 780,
+    "early_damage_mult": 0.5,
+    "early_ramp_seconds": 300,
+    "free_rerolls": 1,
+    "card_count": 3,
+    "owned_weight": 1.5,
+    "fallback_coins": 50,
+    "fallback_heal_pct": 0.3,
+    "revive_hp_pct": 0.5,
+    "revive_clear_radius": 520,
+    "revive_countdown": 5,
+    "boss_warning_seconds": 2,
+    "wall_inset": 70,
+    "shake_hit": 7,
+    "shake_boss": 16
+  },
+  "spawn": {
+    "ring_margin": 120,
+    "despawn_screens": 1.5,
+    "cell_size": 64,
+    "separation_push": 600,
+    "separation_overlap": 0.9,
+    "separation_every": 2,
+    "crowd_speed": 0.25
+  },
+  "embers": {
+    "merge_threshold": 400,
+    "merge_group": 10,
+    "magnet_speed": 760,
+    "collect_distance": 30,
+    "combo_window": 0.6,
+    "combo_pitch_step": 0.04,
+    "combo_pitch_max": 2.0
+  },
+  "boss_chest": {
+    "min_upgrades": 1,
+    "max_upgrades": 3,
+    "coins": 120,
+    "pickup_radius": 70
+  },
+  "potion": {
+    "drop_chance": 0.03,
+    "low_hp_threshold": 0.4,
+    "low_hp_mult": 3,
+    "heal_pct": 0.2,
+    "level_falloff": 0.04,
+    "min_level_mult": 0.2,
+    "pickup_radius": 60,
+    "max_on_ground": 3,
+    "min_gap_seconds": 15,
+    "boss_drops": 1,
+    "boss_drop_offset": 110,
+    "carry_heal_pct": 0.3,
+    "max_uses_per_run": 2,
+    "price_coins": 250,
+    "pack_size": 3,
+    "pack_gems": 20
+  },
+  "gifts": {
+    "run_levels": [10, 20, 30]
+  },
+  "darkness": {
+    "night_strength": 0.8,
+    "light_radius": 620,
+    "light_softness": 420,
+    "eclipse_strength": 0.97
+  },
+  "economy": {
+    "kills_per_coin": 8,
+    "coins_per_minute": 12,
+    "dawn_coin_mult": 1.5,
+    "dawn_coin_bonus": 200,
+    "dawn_timber": 10,
+    "ad_double_mult": 2,
+    "build_cost_base": 120,
+    "build_cost_growth": 1.55,
+    "timber_from_level": 4,
+    "timber_base": 2,
+    "timber_growth": 1.4,
+    "timer_from_level": 4,
+    "timer_base_minutes": 5,
+    "timer_growth": 1.8,
+    "timer_cap_minutes": 480,
+    "skip_minutes_per_gem": 6,
+    "revive_gems": 30,
+    "base_builder_slots": 1,
+    "mission_reward_gems": 10,
+    "starter_pack_countdown_hours": 72,
+    "max_processed_tokens": 100
+  }
+}

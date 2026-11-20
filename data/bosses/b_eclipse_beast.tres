@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="BossData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/boss_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "b_eclipse_beast"
+display_name = "Eclipse Beast"
+hp = 8000.0
+speed = 105.0
+contact_damage = 28.0
+xp = 150.0
+radius = 86.0
+script_path = "res://scripts/entities/boss_eclipse_beast.gd"
+timber = 0
+warning_text = "The Eclipse Beast swallows the light!"
+params = {"light_radius": 400.0, "pattern_interval": 3.4, "telegraph": 0.7, "charge_speed": 720.0, "charge_time": 0.7, "ring_bullets": 14.0, "bullet_speed": 330.0, "bullet_damage": 16.0, "bullet_radius": 16.0, "bullet_life": 5.0, "root_count": 3.0, "root_radius": 120.0, "root_delay": 1.0, "root_damage": 28.0, "root_spread": 240.0, "enrage_hp_pct": 0.3, "enrage_speed_mult": 1.4, "enrage_interval_mult": 0.6}
+texture = "res://assets/sprites/b_eclipse_beast.svg"
+behaviour = "boss"

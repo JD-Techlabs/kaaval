@@ -1,0 +1,37 @@
+{
+  "daily_count": 3,
+  "daily_pool": [
+    { "id": "m_kill_wisps", "text": "Defeat 500 Shadow Wisps", "stat": "kills_e_wisp", "mode": "sum", "target": 500, "coins": 150 },
+    { "id": "m_kill_crawlers", "text": "Defeat 80 Thorn Crawlers", "stat": "kills_e_crawler", "mode": "sum", "target": 80, "coins": 150 },
+    { "id": "m_kill_any", "text": "Defeat 1,000 creatures", "stat": "kills", "mode": "sum", "target": 1000, "coins": 200 },
+    { "id": "m_survive_10", "text": "Survive 10 minutes in one night", "stat": "minutes", "mode": "max", "target": 10, "coins": 200 },
+    { "id": "m_survive_5", "text": "Survive 5 minutes in one night", "stat": "minutes", "mode": "max", "target": 5, "coins": 100 },
+    { "id": "m_evolve", "text": "Evolve a weapon", "stat": "evolutions", "mode": "sum", "target": 1, "coins": 250 },
+    { "id": "m_boss", "text": "Defeat a boss", "stat": "bosses", "mode": "sum", "target": 1, "coins": 150 },
+    { "id": "m_level_15", "text": "Reach level 15 in one night", "stat": "level", "mode": "max", "target": 15, "coins": 150 },
+    { "id": "m_runs_3", "text": "Play 3 nights", "stat": "runs", "mode": "sum", "target": 3, "coins": 120 },
+    { "id": "m_thieves", "text": "Catch 5 Lantern Thieves", "stat": "kills_e_thief", "mode": "sum", "target": 5, "coins": 180 }
+  ],
+  "login_calendar": [
+    { "day": 1, "rewards": { "coins": 100 } },
+    { "day": 2, "rewards": { "coins": 200 } },
+    { "day": 3, "rewards": { "timber": 3 } },
+    { "day": 4, "rewards": { "coins": 400 } },
+    { "day": 5, "rewards": { "gems": 10 } },
+    { "day": 6, "rewards": { "timber": 6 } },
+    { "day": 7, "rewards": { "gems": 50 } }
+  ],
+  "achievements": [
+    { "id": "a_first_dawn", "text": "See your first dawn", "stat": "dawns", "target": 1, "gems": 30 },
+    { "id": "a_dawn_10", "text": "See 10 dawns", "stat": "dawns", "target": 10, "gems": 60 },
+    { "id": "a_kills_10k", "text": "Defeat 10,000 creatures", "stat": "kills", "target": 10000, "gems": 40 },
+    { "id": "a_kills_100k", "text": "Defeat 100,000 creatures", "stat": "kills", "target": 100000, "gems": 100 },
+    { "id": "a_queen", "text": "Defeat the Thorn Queen", "stat": "kills_b_crawler_queen", "target": 1, "gems": 15 },
+    { "id": "a_wraith", "text": "Defeat the Banyan Wraith", "stat": "kills_b_banyan_wraith", "target": 1, "gems": 25 },
+    { "id": "a_beast", "text": "Defeat the Eclipse Beast before dawn", "stat": "kills_b_eclipse_beast", "target": 1, "gems": 50 },
+    { "id": "a_evolve_all", "text": "Evolve 20 weapons", "stat": "evolutions", "target": 20, "gems": 40 },
+    { "id": "a_buildings_5", "text": "Raise every building to level 5", "stat": "min_building_level", "target": 5, "gems": 60 },
+    { "id": "a_buildings_10", "text": "Raise every building to level 10", "stat": "min_building_level", "target": 10, "gems": 150 },
+    { "id": "a_ammu", "text": "Unlock Kindlecrest, the Flame Keeper", "stat": "heroes_unlocked", "target": 2, "gems": 20 }
+  ]
+}

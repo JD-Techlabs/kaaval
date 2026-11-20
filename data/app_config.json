@@ -1,0 +1,11 @@
+{
+  "remote_config_url": "",
+  "remote_config_timeout": 3.0,
+  "privacy_policy_url": "https://example.github.io/kaaval/privacy.html",
+  "support_email": "jdtechlabs.support@gmail.com",
+  "ads": {
+    "comment": "Google's official TEST ids. Real ids live in res://release_config/ads_release.json (git-ignored) and are only read by release builds.",
+    "android_app_id": "ca-app-pub-3940256099942544~3347511713",
+    "rewarded_unit_id": "ca-app-pub-3940256099942544/5224354917"
+  }
+}

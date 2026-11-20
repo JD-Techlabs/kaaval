@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/enemy_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "e_moth"
+display_name = "Gloom Moth"
+hp = 5.0
+speed = 165.0
+contact_damage = 4.0
+xp = 1.0
+radius = 16.0
+behaviour = "chase"
+split_id = ""
+split_count = 0
+params = {}
+texture = "res://assets/sprites/e_moth.svg"

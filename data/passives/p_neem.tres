@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="PassiveData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/passive_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "p_neem"
+display_name = "Neem Leaf"
+description = "+0.3 HP per second per level."
+icon = "res://assets/sprites/icons/p_neem.svg"
+max_level = 5
+sort_order = 2
+stat = "hp_regen"
+mode = "add"
+per_level = 0.3

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/enemy_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "e_thief"
+display_name = "Lantern Thief"
+hp = 25.0
+speed = 180.0
+contact_damage = 0.0
+xp = 5.0
+radius = 22.0
+behaviour = "thief"
+params = {"steal_radius": 80.0, "seek_range": 900.0, "flee_after": 7.0, "retarget": 0.5, "bonus_coins": 15.0}
+split_id = ""
+split_count = 0
+texture = "res://assets/sprites/e_thief.svg"

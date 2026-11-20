@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="PassiveData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/passive_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "p_magnet"
+display_name = "Magnet Stone"
+description = "+20% pickup radius per level."
+icon = "res://assets/sprites/icons/p_magnet.svg"
+max_level = 5
+sort_order = 3
+stat = "pickup_radius"
+mode = "pct"
+per_level = 0.2

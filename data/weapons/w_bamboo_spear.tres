@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/weapon_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "w_bamboo_spear"
+display_name = "Bamboo Spear"
+description = "Thrown the way you are moving. Pierces."
+script_path = "res://scripts/weapons/bamboo_spear.gd"
+params = {"damage": 18.0, "cooldown": 1.4, "pierce": 3.0, "speed": 1000.0, "radius": 20.0, "life": 1.2}
+level_add = {"pierce": 1.0}
+level_mult = {"damage": 0.15}
+level_steps = {}
+icon = "res://assets/sprites/icons/w_bamboo_spear.svg"
+max_level = 5
+sort_order = 2

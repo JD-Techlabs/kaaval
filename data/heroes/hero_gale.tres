@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="HeroData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/hero_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "hero_gale"
+display_name = "Galestride"
+title = "the Swift Gale"
+description = "+15% speed, +10% damage, 10% faster attacks."
+texture = "res://assets/sprites/hero_gale.svg"
+starting_weapon = "w_valari"
+sort_order = 2
+mods = Array[Dictionary]([{"stat": "move_speed", "mode": "pct", "value": 0.15}, {"stat": "damage_mult", "mode": "add", "value": 0.1}, {"stat": "cooldown_mult", "mode": "add", "value": -0.1}])
+tier = "Good"
+unlock_coins = 0
+pieces_needed = 10
+product_id = "hero_gale"
