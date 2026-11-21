@@ -10,6 +10,10 @@ extends Resource
 @export var script_path: String = ""
 @export var max_level: int = 5
 @export var sort_order: int = 0
+## Projectile/flame sprite path overriding the weapon's own ("" = its default).
+@export var sprite: String = ""
+## Damage multiplier from the hero's weapon line (age tier); 1.0 = base weapon.
+@export var power: float = 1.0
 ## Level-1 values, e.g. {"damage": 12.0, "cooldown": 0.9}
 @export var params: Dictionary = {}
 ## Flat gain per level above 1, e.g. {"pierce": 1.0}

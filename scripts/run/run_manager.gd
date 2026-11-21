@@ -33,6 +33,7 @@ var embers: EmberField
 var hazards: Hazards
 var potions: Potions
 var fx: Fx
+var strikes: StrikeCaller
 var numbers: DamageNumbers
 var darkness: Darkness
 var camera: Camera2D
@@ -69,6 +70,7 @@ func _ready() -> void:
 	for building: BuildingData in GameData.buildings():
 		state.rerolls_left += building.rerolls_at(GameState.building_level(building.id))
 	apply_card({"kind": "weapon", "id": hero.starting_weapon, "level": 1})
+	strikes.setup(self, WeaponLine.strikes(hero.id, age.id))
 	_hints_on = not bool(GameState.p["hints_done"])
 	AudioManager.play_music("music_night")
 	Analytics.log_event("run_start", {"hero": hero.id, "night": wave.id})
@@ -104,6 +106,8 @@ func _build_world() -> void:
 	projectiles = ProjectilePool.new()
 	projectiles.run = self
 	add_child(projectiles)
+	strikes = StrikeCaller.new()
+	add_child(strikes)
 	fx = Fx.new()
 	add_child(fx)
 	numbers = DamageNumbers.new()
@@ -135,8 +139,12 @@ func _warm_up() -> void:
 		load(weapon.icon)
 	for passive: PassiveData in GameData.passives():
 		load(passive.icon)
-	for sprite: String in ["stone", "meteor", "flame", "spear", "valari", "chest"]:
+	for sprite: String in ["stone", "meteor", "flame", "spear", "valari", "chest", "tank", "jet", "shell", "missile"]:
 		BaseWeapon.tex(sprite)
+	var line_weapon: WeaponData = WeaponLine.weapon_for(hero.starting_weapon, hero.id, age.id)
+	load(line_weapon.icon)
+	if not line_weapon.sprite.is_empty():
+		load(line_weapon.sprite)
 	load(Potions.TEXTURE)
 
 
@@ -172,6 +180,7 @@ func advance(delta: float) -> void:
 	player.step(delta, input_dir if input_dir != Vector2.ZERO else keys, _bounds)
 	for weapon: BaseWeapon in weapon_nodes.values():
 		weapon.step(delta)
+	strikes.step(delta)
 	enemies.base_rank = Roster.base_rank(state.level)
 	for request: Dictionary in _spawner.step(delta, state.time, rng):
 		_events.execute(request)
@@ -287,7 +296,7 @@ func apply_card(card: Dictionary) -> void:
 func _sync_weapon(id: String) -> void:
 	var weapon: BaseWeapon = weapon_nodes.get(id) as BaseWeapon
 	if weapon == null:
-		var data: WeaponData = GameData.weapon(id)
+		var data: WeaponData = WeaponLine.weapon_for(id, hero.id, age.id)
 		weapon = (load(data.script_path) as GDScript).new()
 		player.add_child(weapon)
 		weapon.setup(self, data)

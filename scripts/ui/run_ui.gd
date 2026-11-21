@@ -63,7 +63,7 @@ func open_pause() -> void:
 	var build: HFlowContainer = HFlowContainer.new()
 	for id: String in run.state.weapons.keys():
 		var tag: String = "EVO" if run.state.evolved.has(id) else str(int(run.state.weapons[id]))
-		build.add_child(Hud.build_icon(GameData.weapon(id).icon, tag, 130.0))
+		build.add_child(Hud.build_icon(WeaponLine.weapon_for(id).icon, tag, 130.0))
 	for id: String in run.state.passives.keys():
 		build.add_child(Hud.build_icon(GameData.passive(id).icon, str(int(run.state.passives[id])), 130.0))
 	_pause_modal.add_child(build)

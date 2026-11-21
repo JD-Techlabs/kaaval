@@ -11,7 +11,7 @@ func fire() -> bool:
 	var targets: Array[Enemy] = run.enemies.nearest(origin, stat("range"), amount)
 	if targets.is_empty():
 		return false
-	var texture: Texture2D = tex("meteor" if evolution != null else "stone")
+	var texture: Texture2D = tex("meteor") if evolution != null else sprite("stone")
 	for i: int in amount:
 		var target: Enemy = targets[i % targets.size()]
 		var direction: Vector2 = (target.position - origin).normalized()

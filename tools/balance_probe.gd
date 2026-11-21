@@ -1,7 +1,7 @@
 extends Node
 ## Balance probe: plays nights headlessly with a plain bot and prints how long
 ## it survives, plus simulation cost and how much the crowd overlaps.
-##   godot --headless --path . res://tools/balance_probe.tscn -- --seeds=6 --village=0 --hero=hero_muthu [--night=paddy_fields]
+##   godot --headless --path . res://tools/balance_probe.tscn -- --seeds=6 --village=0 --hero=hero_muthu [--night=paddy_fields] [--age=age_steel]
 ## Uses a throwaway profile; the real save is never read or written.
 
 const STEP: float = 0.05
@@ -12,6 +12,7 @@ func _ready() -> void:
 	var village: int = 0
 	var hero: String = "hero_muthu"
 	var night: String = ""
+	var age: String = "age_founders"
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--seeds="):
 			seeds = int(arg.trim_prefix("--seeds="))
@@ -21,11 +22,14 @@ func _ready() -> void:
 			hero = arg.trim_prefix("--hero=")
 		elif arg.begins_with("--night="):
 			night = arg.trim_prefix("--night=")
+		elif arg.begins_with("--age="):
+			age = arg.trim_prefix("--age=")
 	SaveManager.path = PROBE_SAVE
 	GameState.reset_profile()
 	var profile: Dictionary = GameState.p
 	profile["hints_done"] = true
 	profile["selected_hero"] = hero
+	profile["age"] = age
 	if not night.is_empty():
 		# Unlock every night up to the one asked for.
 		for wave: WaveData in GameData.waves():
@@ -43,7 +47,7 @@ func _ready() -> void:
 	var total: float = 0.0
 	for value: float in times:
 		total += value
-	print("RESULT night=%s hero=%s village=%d seeds=%d  min=%s median=%s max=%s mean=%s" % [NightLogic.selected().id, hero, village, seeds,
+	print("RESULT age=%s night=%s hero=%s village=%d seeds=%d  min=%s median=%s max=%s mean=%s" % [age, NightLogic.selected().id, hero, village, seeds,
 		_clock(times[0]), _clock(times[times.size() / 2]), _clock(times[times.size() - 1]), _clock(total / float(seeds))])
 	get_tree().quit()
 

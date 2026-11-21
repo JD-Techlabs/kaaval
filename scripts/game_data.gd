@@ -154,6 +154,15 @@ static func ages() -> Array[AgeData]:
 	return out
 
 
+## The weapon line of a hero (looked up by hero id), or null.
+static func weapon_line(hero_id: String) -> WeaponLineData:
+	for data: Resource in _dir("weapon_lines").values():
+		var found: WeaponLineData = data as WeaponLineData
+		if found != null and found.hero == hero_id:
+			return found
+	return null
+
+
 static func land(id: String) -> LandData:
 	return _dir("lands").get(id) as LandData
 

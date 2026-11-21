@@ -10,6 +10,7 @@ extends Node
 ##   --how-to-play        open How to play on the first screen
 ##   --age-panel          open the age panel on the first screen
 ##   --scroll=<px>        scroll the village map down this far
+##   --age=<id>           with --demo-profile: put the village in that age
 
 const STEP: float = 0.05
 const DEMO_SAVE: String = "user://demo_save.json"
@@ -44,6 +45,8 @@ func _ready() -> void:
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--night="):
 			_unlock_to(arg.trim_prefix("--night="))
+		elif arg.begins_with("--age="):
+			GameState.p["age"] = arg.trim_prefix("--age=")
 	if not _shot_path.is_empty():
 		# Render at the full 1080x1920 design size even in a small desktop window.
 		get_tree().root.content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT

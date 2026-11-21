@@ -235,7 +235,7 @@ func _rebuild_icons() -> void:
 		child.queue_free()
 	for id: String in run.state.weapons.keys():
 		var tag: String = "EVO" if run.state.evolved.has(id) else str(int(run.state.weapons[id]))
-		_icons.add_child(build_icon(GameData.weapon(id).icon, tag))
+		_icons.add_child(build_icon(WeaponLine.weapon_for(id).icon, tag))
 	for id: String in run.state.passives.keys():
 		_icons.add_child(build_icon(GameData.passive(id).icon, str(int(run.state.passives[id]))))
 

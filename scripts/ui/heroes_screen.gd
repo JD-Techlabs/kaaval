@@ -85,7 +85,7 @@ func _hero_card(hero: HeroData) -> void:
 	text.add_child(UiKit.label(hero.description, UiKit.FONT_SMALL, UiKit.TEXT, true))
 	var stats: PlayerStats = PlayerStats.compute(hero, GameState.building_levels(), {})
 	text.add_child(UiKit.label("HP %d · Speed %d · Starts with %s" % [roundi(stats.max_hp), roundi(stats.move_speed),
-		GameData.weapon(hero.starting_weapon).display_name], UiKit.FONT_SMALL, UiKit.MUTED, true))
+		WeaponLine.weapon_for(hero.starting_weapon, hero.id).display_name], UiKit.FONT_SMALL, UiKit.MUTED, true))
 
 	if owned:
 		var pick: Button = UiKit.button("Selected" if selected else "Select", func() -> void:

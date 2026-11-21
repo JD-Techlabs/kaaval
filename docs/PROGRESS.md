@@ -8,7 +8,7 @@ Phases 0–7 are implemented in code. The owner asked for the whole game in one 
 
 | Phase | State | Verified how |
 |---|---|---|
-| 0 Project setup | Done | Headless import, 180 GUT tests pass |
+| 0 Project setup | Done | Headless import, 191 GUT tests pass |
 | 1 Core loop | Done | Simulated 15-minute run in tests; played on desktop and Android emulator |
 | 2 Content | Done | Tests: every weapon damages, every evolution obtainable, 3 bosses spawn, wave timeline |
 | 3 Meta-progression | Done | Tests: save round-trip/migration/corruption, wall-clock timers across restart, economy |
@@ -234,7 +234,23 @@ Decisions (stage 2):
 - A producer whose resource is not open yet starts counting when the age opens it (via `sync_clocks` on the home screen and on advancing), so it can be full right away.
 - The "all buildings level 5" achievement and the village lamps now count all 16 buildings, so both are slower to reach.
 
+Stage 3 (done): weapon ladder
+- *Weapon lines* (`data/weapon_lines/line_*.tres`, `scripts/resources/weapon_line_data.gd`, `scripts/run/weapon_line.gd`): each hero's starting weapon has seven tiers, one per age. A tier gives the weapon a new name, description, icon and projectile/flame sprite, a damage multiplier (×1.0, 1.2, 1.45, 1.7, 2.0, 2.3, 2.7, new `WeaponData.power`) and flat stat gains (more projectiles, pierce, flames, reach, faster cooldown). Lampwarden follows the owner's ladder: Sling Stone → Longbow → Musket → Rifle → Heavy Gun → Heavy Gun + Tank → Heavy Gun + Air Support (jet and missiles). The other five heroes have their own lines (Voltmantle: crossbow, hand cannon, volley and rotary guns, rocket battery, jet; Kindlecrest: torches, flares, lanterns, gaslight, arc lamps, plasma halo; Banyanshield: flail, bayonet, sabre, steam hammer, tank; Galestride: boomerang, steel discs, buzz blades, jet; Mornhelm: pike, bayonet lance, harpoon gun, rail spike, tank).
+- Only the hero's own starting weapon is tiered; other weapons picked up in a run stay as they are. The tiered weapon is used in the run, the HUD, level-up and chest cards, and the Heroes screen.
+- *Strikes* (`scripts/run/strike_caller.gd`), from the Age of Steel: **tank** drives across the view below the hero firing explosive shells at the nearest creatures; **jet** flies across the view along a creature's row, hitting everything on its path once; **missiles** fire a volley of explosive missiles at the nearest creatures. First strike 3 s into the night, then every `cooldown` × the hero's cooldown; damage × the hero's damage. Numbers are in each line's data.
+- New original art in `tools/gen_art.py`: arrow, bullet, shell, missile, spark, plasma, disc and pike projectiles, tank and jet sprites, 16 tier icons.
+- `balance_probe` and the screenshot tool take `--age=<id>`. How to play mentions the weapon upgrades.
+
+Bot medians, Forest Edge, Lampwarden, 4 seeds, every building at the age's cap: Founders' 3:32, Keeps 3:35, Blackpowder 3:30, Learning 5:31, Steam 10:05, Steel 10:12, Circuits 14:38. The ladder outpaces the harder creatures from the Age of Learning on; the late ages may be too easy for a person who dodges. Levers: tier `power`, strike damage, and the ages' `enemy_hp_mult`.
+
+Decisions (stage 3):
+- The tier damage is a separate `power` multiplier rather than a change to `params.damage`, so evolutions (which override params) keep the age bonus.
+- The age weapon is read from the selected hero and the current age (`WeaponLine.weapon_for`), not stored per run; the age cannot change during a night.
+- Strikes are not weapon slots or level-up cards; they come with the tier.
+
 ## Known issues
+
+- Strike vehicles are drawn in the world, so the night's darkness dims the tank and jet when they are away from the hero's light.
 
 - Later ages are harder (creature HP up to ×1.8) but nothing makes the hero stronger per age until stage 3 (weapon ladder). Until then, the building cap rising is the only counterweight.
 - With bots surviving 3–4 minutes, a run in Founders' Age pays about 30 food; Age of Keeps needs 250 food and 30 timber. Expect several nights per age early on.
