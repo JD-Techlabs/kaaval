@@ -1,7 +1,7 @@
 class_name StrikeCaller
 extends Node2D
 ## Called-in strikes from the hero's weapon line in later ages:
-## - tank: drives across the view below the hero, firing explosive shells;
+## - tank: drives across the view below the hero (its row follows the hero), firing explosive shells;
 ## - jet: flies across the view through a creature, hitting all along its path;
 ## - missiles: a volley of explosive missiles from the hero at the nearest creatures.
 ## Numbers come from the strike data; cooldowns scale with the hero's cooldown.
@@ -95,14 +95,18 @@ func _place(vehicle: Dictionary) -> void:
 	sprite_node.scale = Vector2.ONE * run.zoom
 
 
+## The tank's path is kept relative to the hero ("offset"), so it crosses the
+## screen even while the hero runs.
 func _start_tank(strike: Dictionary) -> bool:
 	var view: Rect2 = run.view_rect()
 	var left_to_right: bool = run.rng.randf() < 0.5
-	var y: float = run.player.position.y + view.size.y * TANK_ROW
-	var start_x: float = view.position.x - 80.0 if left_to_right else view.end.x + 80.0
-	var end_x: float = view.end.x + 80.0 if left_to_right else view.position.x - 80.0
+	var half: float = view.size.x * 0.5 + 80.0
+	var start_x: float = -half if left_to_right else half
+	var end_x: float = half if left_to_right else -half
 	var vel: Vector2 = Vector2(TANK_SPEED if left_to_right else -TANK_SPEED, 0.0)
-	var vehicle: Dictionary = _vehicle(strike, "tank", Vector2(start_x, y), vel, end_x)
+	var offset: Vector2 = Vector2(start_x, view.size.y * TANK_ROW)
+	var vehicle: Dictionary = _vehicle(strike, "tank", run.player.position + offset, vel, end_x)
+	vehicle["offset"] = offset
 	var crossing: float = absf(end_x - start_x) / TANK_SPEED
 	vehicle["fire_every"] = crossing / maxf(float(strike.get("count", 4)), 1.0)
 	vehicle["fire_left"] = float(vehicle["fire_every"]) * 0.5
@@ -145,6 +149,12 @@ func _shell(from: Vector2, to: Vector2, strike: Dictionary, texture_name: String
 func _move(vehicle: Dictionary, delta: float) -> bool:
 	var vel: Vector2 = vehicle["vel"]
 	var pos: Vector2 = (vehicle["pos"] as Vector2) + vel * delta
+	var progress_x: float = pos.x
+	if vehicle.has("offset"):
+		var offset: Vector2 = (vehicle["offset"] as Vector2) + vel * delta
+		vehicle["offset"] = offset
+		pos = run.player.position + offset
+		progress_x = offset.x
 	vehicle["pos"] = pos
 	_place(vehicle)
 	var strike: Dictionary = vehicle["data"]
@@ -165,4 +175,4 @@ func _move(vehicle: Dictionary, delta: float) -> bool:
 					hit[key] = true
 					run.enemies.damage(enemy, amount)
 	var end_x: float = vehicle["end_x"]
-	return pos.x < end_x if vel.x > 0.0 else pos.x > end_x
+	return progress_x < end_x if vel.x > 0.0 else progress_x > end_x

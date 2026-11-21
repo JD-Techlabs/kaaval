@@ -199,6 +199,8 @@ func _flash(node: Label, text: String, seconds: float) -> void:
 func _process(delta: float) -> void:
 	var state: RunState = run.state
 	var seconds: int = int(state.time)
+	# The intro card belongs to the first seconds of the night (also when a capture skips ahead).
+	_intro.visible = state.time < GameData.num("objective", "intro_seconds") + 0.6
 	@warning_ignore("integer_division")
 	_timer.text = "%d:%02d" % [seconds / 60, seconds % 60]
 	_xp.max_value = XpSystem.xp_to_next(state.level)

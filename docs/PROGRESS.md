@@ -8,7 +8,7 @@ Phases 0–7 are implemented in code. The owner asked for the whole game in one 
 
 | Phase | State | Verified how |
 |---|---|---|
-| 0 Project setup | Done | Headless import, 197 GUT tests pass |
+| 0 Project setup | Done | Headless import, 198 GUT tests pass |
 | 1 Core loop | Done | Simulated 15-minute run in tests; played on desktop and Android emulator |
 | 2 Content | Done | Tests: every weapon damages, every evolution obtainable, 3 bosses spawn, wave timeline |
 | 3 Meta-progression | Done | Tests: save round-trip/migration/corruption, wall-clock timers across restart, economy |
@@ -262,10 +262,13 @@ Decisions (stage 4):
 
 The four-stage ages feature is complete.
 
-## Known issues
+Follow-ups after stage 4:
+- The tank's row now moves with the hero, so it always crosses the screen.
+- Store listing describes the ages, land and production, and the weapon ladder (2,935 of 4,000 characters). `tools/store_graphics.ps1` adds `screenshot_6_ages.png` (the age panel); all store graphics were regenerated.
+- The night intro card hides once the night is past its first seconds (night time, not real time), so captures that skip ahead no longer show it.
+- `docs/ARCHITECTURE.md` covers the new data, logic and run parts.
 
-- The store listing (`docs/`) does not mention ages, land, production or the weapon ladder yet.
-- The tank's row is fixed in the world when it drives in, so if the hero runs far away it may pass off screen.
+## Known issues
 
 - Later ages are harder (creature HP up to ×1.8) but nothing makes the hero stronger per age until stage 3 (weapon ladder). Until then, the building cap rising is the only counterweight.
 - With bots surviving 3–4 minutes, a run in Founders' Age pays about 30 food; Age of Keeps needs 250 food and 30 timber. Expect several nights per age early on.

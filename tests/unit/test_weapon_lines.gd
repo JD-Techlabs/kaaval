@@ -159,3 +159,14 @@ func test_jet_pass_hits_creatures_along_its_path() -> void:
 		run.strikes.step(STEP)
 	assert_lt(target.hp, hp, "the jet hit the creature on its row")
 	assert_eq(run.strikes.vehicle_count(), 0, "and flew off the screen")
+
+
+func test_tank_keeps_its_row_below_a_running_hero() -> void:
+	var run: RunManager = _new_run("hero_muthu", "age_steel")
+	var tank: Dictionary = WeaponLine.strikes("hero_muthu", "age_steel")[0]
+	assert_true(run.strikes.call_strike(tank))
+	run.player.position += Vector2(0.0, 1500.0)
+	run.strikes.step(STEP)
+	assert_eq(run.strikes.vehicle_count(), 1, "still crossing")
+	var gap: float = absf(run.strikes._vehicles[0]["pos"].y - run.player.position.y)
+	assert_almost_eq(gap, run.view_rect().size.y * StrikeCaller.TANK_ROW, 1.0, "row moved with the hero")
