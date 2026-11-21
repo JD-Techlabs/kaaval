@@ -8,6 +8,7 @@ extends Node
 ##   --demo-profile       use a throwaway mid-game profile (the real save is untouched)
 ##   --night=<id>         with --demo-profile: unlock and pick that night
 ##   --how-to-play        open How to play on the first screen
+##   --age-panel          open the age panel on the first screen
 
 const STEP: float = 0.05
 const DEMO_SAVE: String = "user://demo_save.json"
@@ -18,6 +19,7 @@ var _delay: float = 2.0
 var _skip: float = 0.0
 var _counter: int = 0
 var _how_to_play: bool = false
+var _age_panel: bool = false
 
 
 func _ready() -> void:
@@ -33,6 +35,8 @@ func _ready() -> void:
 			_demo_profile()
 		elif arg == "--how-to-play":
 			_how_to_play = true
+		elif arg == "--age-panel":
+			_age_panel = true
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--night="):
 			_unlock_to(arg.trim_prefix("--night="))
@@ -53,7 +57,9 @@ func _demo_profile() -> void:
 	GameState.p["hints_done"] = true
 	GameState.p["runs_played"] = 5
 	GameState.p["starter_pack_shown_at"] = GameState.now()
-	GameState.grant({"coins": 4200, "timber": 36, "gems": 180, "potions": 2, "gifts": 3})
+	GameState.grant({"coins": 4200, "timber": 36, "gems": 180, "potions": 2, "gifts": 3,
+		"food": 1450, "stone": 520, "knowledge": 140})
+	GameState.p["age"] = "age_learning"
 
 
 ## Marks every night before `id` as won and picks `id`.
@@ -79,6 +85,8 @@ func _on_screen_changed(_screen: String) -> void:
 	await get_tree().create_timer(0.4).timeout
 	if _how_to_play:
 		HowToPlay.open(get_tree().current_scene)
+	if _age_panel:
+		AgePanel.open(get_tree().current_scene, Callable())
 	if _skip > 0.0:
 		_fast_forward()
 	await get_tree().create_timer(_delay).timeout

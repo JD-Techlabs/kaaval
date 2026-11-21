@@ -5,6 +5,8 @@ extends RefCounted
 
 var hero_id: String = ""
 var night_id: String = ""
+## Village age the night is played in (fixed for the whole run).
+var age_id: String = ""
 var time: float = 0.0
 var level: int = 1
 var xp: float = 0.0
@@ -35,7 +37,7 @@ func add_kill(enemy_id: String) -> void:
 
 func summary() -> Dictionary:
 	return {
-		"hero": hero_id, "night": night_id, "victory": victory, "time": time, "kills": kills,
+		"hero": hero_id, "night": night_id, "age": age_id, "victory": victory, "time": time, "kills": kills,
 		"kills_by_type": kills_by_type.duplicate(), "level": level,
 		"bonus_coins": bonus_coins, "boss_timber": boss_timber,
 		"bosses": bosses_killed.duplicate(), "evolutions": evolutions_made,

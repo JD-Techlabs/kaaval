@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="AgeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/age_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "age_keeps"
+display_name = "Age of Keeps"
+sort_order = 2
+tagline = "Stone walls rise around the village."
+resources = Array[String](["food", "timber", "stone"])
+building_cap = 4
+required_buildings = {"bld_blacksmith": 3, "bld_healer": 3, "bld_granary": 2}
+advance_cost = {"food": 250, "timber": 30}
+enemy_hp_mult = 1.1
+enemy_dmg_mult = 1.03
+resource_mult = 1.25

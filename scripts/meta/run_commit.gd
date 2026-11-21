@@ -13,8 +13,17 @@ static func timber_for(summary: Dictionary) -> int:
 	return Economy.run_timber(int(summary["boss_timber"]), bool(summary["victory"]))
 
 
+## Food, stone, knowledge, oil and rare metals for the age the run was played in.
+static func resources_for(summary: Dictionary) -> Dictionary:
+	var night: WaveData = NightLogic.night(str(summary.get("night", "")))
+	var night_mult: float = night.coin_mult if night != null else 1.0
+	return AgeLogic.run_resources(str(summary.get("age", "")), float(summary["time"]), bool(summary["victory"]),
+		(summary.get("bosses", []) as Array).size(), night_mult)
+
+
 static func commit(summary: Dictionary, coins: int) -> void:
 	GameState.grant({"coins": coins, "timber": timber_for(summary), "gifts": int(summary.get("gifts", 0))})
+	GameState.grant(resources_for(summary))
 	GameState.spend("potions", mini(int(summary.get("potions_used", 0)), GameState.amount("potions")))
 	DailyLogic.record_run(summary)
 	NightLogic.record_run(summary)

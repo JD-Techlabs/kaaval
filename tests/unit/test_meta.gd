@@ -4,8 +4,10 @@ extends "res://tests/base_test.gd"
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
 
+## Plenty of currency, in the last age so no building is capped by age.
 func _rich() -> void:
 	GameState.grant({"coins": 1_000_000, "timber": 10_000, "gems": 10_000})
+	GameState.p["age"] = "age_circuits"
 
 
 # --- village --------------------------------------------------------------
@@ -60,6 +62,7 @@ func test_only_one_builder_unless_second_is_owned() -> void:
 func test_upgrade_needs_coins_and_timber() -> void:
 	assert_eq(VillageLogic.blocker("bld_blacksmith"), "Not enough coins")
 	GameState.grant({"coins": 100_000})
+	GameState.p["age"] = "age_circuits"
 	(GameState.p["buildings"] as Dictionary)["bld_blacksmith"] = 3
 	assert_eq(VillageLogic.blocker("bld_blacksmith"), "Not enough timber")
 	assert_false(VillageLogic.start("bld_blacksmith"))

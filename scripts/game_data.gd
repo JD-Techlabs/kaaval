@@ -143,6 +143,17 @@ static func buildings() -> Array[BuildingData]:
 	return out
 
 
+static func age(id: String) -> AgeData:
+	return _dir("ages").get(id) as AgeData
+
+
+## Every age, in order.
+static func ages() -> Array[AgeData]:
+	var out: Array[AgeData] = []
+	out.assign(_sorted("ages"))
+	return out
+
+
 static func product(id: String) -> Dictionary:
 	var list: Array = json("products").get("products", [])
 	for entry: Dictionary in list:

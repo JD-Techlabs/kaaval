@@ -24,6 +24,8 @@ func _notification(what: int) -> void:
 static func default_profile() -> Dictionary:
 	return {
 		"coins": 0, "timber": 0, "gems": 0,
+		"food": 0, "stone": 0, "knowledge": 0, "oil": 0, "rare_metals": 0,
+		"age": "age_founders",
 		"potions": 0, "gifts": 0,
 		"hero_pieces": {},
 		"buildings": {},
@@ -106,9 +108,12 @@ func spend(kind: String, value: int) -> bool:
 	return true
 
 
-## rewards: {"coins": n, "timber": n, "gems": n, "potions": n, "gifts": n}
+const GRANTABLE: Array[String] = ["coins", "timber", "gems", "potions", "gifts", "food", "stone", "knowledge", "oil", "rare_metals"]
+
+
+## rewards: {kind: n} for any kind in GRANTABLE; other keys are ignored.
 func grant(rewards: Dictionary) -> void:
-	for kind: String in ["coins", "timber", "gems", "potions", "gifts"]:
+	for kind: String in GRANTABLE:
 		if rewards.has(kind):
 			p[kind] = amount(kind) + int(rewards[kind])
 	changed.emit()

@@ -19,6 +19,7 @@ enum Mode { PLAYING, CHOOSING, CHEST, PAUSED, REVIVE, ENDED }
 var state: RunState = RunState.new()
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var wave: WaveData
+var age: AgeData
 var hero: HeroData
 var mode: Mode = Mode.PLAYING
 ## Set by the joystick each frame.
@@ -57,9 +58,11 @@ func _ready() -> void:
 	rng.randomize()
 	hero = GameData.hero(str(GameState.p["selected_hero"]))
 	wave = NightLogic.selected()
+	age = AgeLogic.current()
 	_build_world()
 	state.hero_id = hero.id
 	state.night_id = wave.id
+	state.age_id = age.id
 	state.weapon_slots = player.stats.weapon_slots
 	state.passive_slots = player.stats.passive_slots
 	state.rerolls_left = int(GameData.num("run", "free_rerolls"))
@@ -208,11 +211,11 @@ func _update_view(delta: float) -> void:
 # --- helpers used by weapons / enemies ------------------------------------
 
 func hp_scale() -> float:
-	return (1.0 + RemoteConfig.num("enemy_hp_scale_per_min") * state.time / 60.0) * wave.enemy_hp_mult
+	return (1.0 + RemoteConfig.num("enemy_hp_scale_per_min") * state.time / 60.0) * wave.enemy_hp_mult * age.enemy_hp_mult
 
 
 func dmg_scale() -> float:
-	return (1.0 + RemoteConfig.num("enemy_dmg_scale_per_min") * state.time / 60.0) * early_damage_mult(state.time) 		* wave.enemy_dmg_mult
+	return (1.0 + RemoteConfig.num("enemy_dmg_scale_per_min") * state.time / 60.0) * early_damage_mult(state.time) 		* wave.enemy_dmg_mult * age.enemy_dmg_mult
 
 
 ## Coin multiplier for this night: village and hero bonuses times the night's own bonus.

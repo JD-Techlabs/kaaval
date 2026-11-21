@@ -8,7 +8,7 @@ Phases 0–7 are implemented in code. The owner asked for the whole game in one 
 
 | Phase | State | Verified how |
 |---|---|---|
-| 0 Project setup | Done | Headless import, 153 GUT tests pass |
+| 0 Project setup | Done | Headless import, 164 GUT tests pass |
 | 1 Core loop | Done | Simulated 15-minute run in tests; played on desktop and Android emulator |
 | 2 Content | Done | Tests: every weapon damages, every evolution obtainable, 3 bosses spawn, wave timeline |
 | 3 Meta-progression | Done | Tests: save round-trip/migration/corruption, wall-clock timers across restart, economy |
@@ -200,7 +200,28 @@ Owner feedback after playing on a phone: (1) add instructions at the start with 
 
 Bot medians (`balance_probe`, Lampwarden, 3–5 seeds): village L4: Forest Edge 3:18, Paddy Fields 1:49, Old Fort 1:38. Village L10: 4:12, 3:20, 3:09. **No bot reaches dawn, even with a full village.** The bot walks to embers and never dodges, so it says little about a person, but if players also cannot reach 15:00, Night 2 will stay locked for them. Decide after playing; easy levers are `run.early_damage_mult`, the remote-config scaling, or unlocking on the first boss instead of dawn.
 
+**Owner's fourth round (2026-11-21): village ages — stage 1 of 4 (resources, ages, advancing)**
+
+The owner asked for a progression through seven ages with new resources, age buildings, buying land, weapons that improve each age, and hero updates. Outside the spec; agreed plan in four stages, one at a time: (1) resources and ages, (2) buildings, production and land, (3) a weapon ladder per hero, (4) hero looks and bonuses, art, balance. Owner's choices: the main weapon steps up each age (tank, jet and missile become called-in strikes), the same 3 nights scaled by age, one "Rare Metals" currency, and heroes get a look per age, a resource bonus and their own weapon line. Age names must be similar to the owner's list but not the exact words (the exact list matches another game's ages).
+
+Stage 1 (done):
+- *Ages* (`data/ages/*.tres`, `scripts/resources/age_data.gd`, `scripts/meta/age_logic.gd`): Founders' Age → Age of Keeps → Blackpowder Age → Age of Learning → Age of Steam → Age of Steel → Age of Circuits. Each has the resources it pays, a building level cap (3, 4, 5, 6, 7, 8, 10), the building levels and resources needed to enter it, creature HP/damage multipliers and a resource multiplier.
+- *Resources.* Food, stone, knowledge, oil and rare metals are new profile currencies (timber already existed). Food and timber from the start, stone from Keeps, knowledge from Learning, oil from Steam, rare metals from Steel. A run pays `minutes × per_minute + bosses × per_boss (+ dawn)` for each open kind, times the age's and the night's multipliers (`resources` in `data/balance.json`). Rare metals come only from bosses and dawn. Timber keeps its old boss + dawn formula. Rewards are shown on the results screen and granted at commit; the run records the age it was played in.
+- *Advancing.* The home screen has an age bar (with "Ready to advance!" when possible) that opens the age panel: resources held, what the next age opens, each building and resource requirement with progress, and Advance. Advancing spends the cost and raises the building cap. Building upgrades above the cap show "Next age needed".
+- *Harder ages.* Creature HP ×1.0–1.8 and damage ×1.0–1.2 across the ages, on top of each night's own multipliers.
+- How to play has a sixth page about ages. Five new resource icons in `tools/gen_art.py`. The screenshot tool takes `--age-panel`; the demo profile is in the Age of Learning.
+
+Decisions (stage 1):
+- Old saves start in Founders' Age with no new resources. Buildings already above the cap keep their level; they just cannot be upgraded until the age allows it, and usually already meet the next age's requirements.
+- Building upgrades still cost coins and timber; food, stone and the rest are spent only on advancing for now. Stage 2 adds them to building and land costs.
+- Coins do not scale with age (building coin costs do not either), only resources do.
+- The night's existing `coin_mult` (×1.0 / ×1.3 / ×1.7) also multiplies resources.
+- All numbers are first guesses; tune them after playing.
+
 ## Known issues
+
+- Later ages are harder (creature HP up to ×1.8) but nothing makes the hero stronger per age until stage 3 (weapon ladder). Until then, the building cap rising is the only counterweight.
+- With bots surviving 3–4 minutes, a run in Founders' Age pays about 30 food; Age of Keeps needs 250 food and 30 timber. Expect several nights per age early on.
 
 - `scripts/run/run_manager.gd` is about 455 lines, over the 300-line preference.
 - Package name is `com.jdtechlabs.kaaval`, developer JD Techlabs, support email set (2026-11-16). `data/app_config.json` still has a placeholder privacy policy URL: the policy must be hosted first.

@@ -38,6 +38,8 @@ static func blocker(id: String) -> String:
 	var target: int = GameState.building_level(id) + 1
 	if target > data.max_level:
 		return "Max level"
+	if target > AgeLogic.building_cap():
+		return "Next age needed"
 	if not job_for(id).is_empty():
 		return "Upgrading"
 	if Economy.build_seconds(target, 1.0) > 0.0 and jobs().size() >= builder_slots():

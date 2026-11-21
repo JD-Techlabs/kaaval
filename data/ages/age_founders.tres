@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="AgeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/age_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "age_founders"
+display_name = "Founders' Age"
+sort_order = 1
+tagline = "A few huts, a fire, and a watch to keep."
+resources = Array[String](["food", "timber"])
+building_cap = 3
+required_buildings = {}
+advance_cost = {}
+enemy_hp_mult = 1.0
+enemy_dmg_mult = 1.0
+resource_mult = 1.0

@@ -29,6 +29,9 @@ static func open(parent: Node, summary: Dictionary) -> void:
 	_line(content, "Level reached", str(int(summary["level"])))
 	var coin_value: Label = _line(content, "Coins", UiKit.number(coins[0]))
 	_line(content, "Timber", str(timber))
+	var resources: Dictionary = RunCommit.resources_for(summary)
+	for kind: String in resources.keys():
+		_line(content, UiKit.resource_name(kind).capitalize(), UiKit.number(int(resources[kind])))
 	var gifts: int = int(summary.get("gifts", 0))
 	if gifts > 0:
 		_line(content, "Hero gifts", "+%d" % gifts)

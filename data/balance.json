@@ -119,6 +119,14 @@
     "starter_pack_countdown_hours": 72,
     "max_processed_tokens": 100
   },
+  "resources": {
+    "food": { "per_minute": 8, "per_boss": 10, "dawn": 60 },
+    "timber": { "per_minute": 0, "per_boss": 0, "dawn": 0 },
+    "stone": { "per_minute": 5, "per_boss": 8, "dawn": 40 },
+    "knowledge": { "per_minute": 3, "per_boss": 5, "dawn": 25 },
+    "oil": { "per_minute": 2, "per_boss": 4, "dawn": 20 },
+    "rare_metals": { "per_minute": 0, "per_boss": 1, "dawn": 3 }
+  },
   "objective": {
     "hold_on_seconds": 45,
     "intro_seconds": 4.5

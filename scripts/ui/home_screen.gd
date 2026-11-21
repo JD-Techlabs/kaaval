@@ -8,6 +8,7 @@ const NAV: Array[Array] = [["Village", "home"], ["Heroes", "heroes"], ["Shop", "
 var _village: VillageView
 var _currency_holder: Control
 var _hero_row: HBoxContainer
+var _age_button: Button
 var _nights: NightPicker
 var _start: Button
 var _panel: VBoxContainer
@@ -33,6 +34,9 @@ func _ready() -> void:
 	var tip: Label = UiKit.label("Tap a building to build or upgrade it. A green arrow means you can afford it.", UiKit.FONT_SMALL, UiKit.MUTED, true)
 	tip.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	column.add_child(tip)
+	_age_button = UiKit.button("", func() -> void: AgePanel.open(self, Callable()), "secondary")
+	_age_button.add_theme_font_size_override("font_size", UiKit.FONT_SMALL)
+	column.add_child(_age_button)
 	_village = VillageView.new()
 	_village.building_selected.connect(_open_panel)
 	column.add_child(_village)
@@ -116,6 +120,7 @@ func _refresh() -> void:
 	text.add_child(UiKit.label("Village level %d · build to grow stronger" % VillageLogic.total_level(), UiKit.FONT_SMALL, UiKit.MUTED, true))
 	_hero_row.add_child(text)
 	_hero_row.add_child(UiKit.button("Change", func() -> void: SceneRouter.goto("heroes"), "secondary"))
+	_age_button.text = AgePanel.summary_text()
 	(_nav_buttons["missions"] as Button).text = "Missions •" if DailyLogic.anything_claimable() else "Missions"
 	(_nav_buttons["heroes"] as Button).text = "Heroes •" if GiftLogic.count() > 0 else "Heroes"
 	(_nav_buttons["shop"] as Button).text = "Shop •" if ChestLogic.free_remaining() <= 0.0 else "Shop"

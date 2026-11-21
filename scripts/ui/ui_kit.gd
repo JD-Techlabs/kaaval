@@ -244,10 +244,20 @@ static func confirm(parent: Node, title: String, text: String, yes_text: String,
 
 static func rewards_text(rewards: Dictionary) -> String:
 	var parts: PackedStringArray = PackedStringArray()
-	for kind: String in ["coins", "timber", "gems", "potions"]:
+	for kind: String in ["coins", "timber", "gems", "potions", "food", "stone", "knowledge", "oil", "rare_metals"]:
 		if rewards.has(kind):
-			parts.append("%s %s" % [number(int(rewards[kind])), kind])
+			parts.append("%s %s" % [number(int(rewards[kind])), resource_name(kind)])
 	return ", ".join(parts)
+
+
+## "rare_metals" -> "rare metals"
+static func resource_name(kind: String) -> String:
+	return kind.replace("_", " ")
+
+
+## Icon path for a currency or resource kind.
+static func resource_icon(kind: String) -> String:
+	return ICON_DIR + {"coins": "coin", "gems": "gem"}.get(kind, kind) + ".svg"
 
 
 ## 12345 -> "12,345"

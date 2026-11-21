@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="AgeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/age_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "age_steam"
+display_name = "Age of Steam"
+sort_order = 5
+tagline = "Engines hum and oil lamps burn brighter."
+resources = Array[String](["food", "timber", "stone", "knowledge", "oil"])
+building_cap = 7
+required_buildings = {"bld_blacksmith": 6, "bld_healer": 6, "bld_library": 6, "bld_training": 5, "bld_lamp_tower": 4}
+advance_cost = {"food": 2000, "timber": 150, "stone": 1200, "knowledge": 500}
+enemy_hp_mult = 1.45
+enemy_dmg_mult = 1.12
+resource_mult = 2.2

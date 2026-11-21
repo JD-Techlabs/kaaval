@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="AgeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/age_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "age_steel"
+display_name = "Age of Steel"
+sort_order = 6
+tagline = "Steel towers and heavy guns hold the line."
+resources = Array[String](["food", "timber", "stone", "knowledge", "oil", "rare_metals"])
+building_cap = 8
+required_buildings = {"bld_blacksmith": 7, "bld_healer": 7, "bld_watchtower": 6, "bld_granary": 6, "bld_library": 7}
+advance_cost = {"food": 3200, "timber": 220, "stone": 2000, "knowledge": 1000, "oil": 400}
+enemy_hp_mult = 1.6
+enemy_dmg_mult = 1.16
+resource_mult = 2.7
