@@ -270,13 +270,19 @@ Follow-ups after stage 4:
 
 **Rename (2026-11-21).** Another app on Play is already called Kaaval, so the owner renamed the game to **Kavaryn: Guardians of Dawn**. The package changed from `com.jdtechlabs.kaaval` to `com.jdtechlabs.kavaryn` (nothing had been uploaded yet, so this was still possible). Updated: project name, both export presets (app name "Kavaryn", output files `kavaryn-*`), splash, home and settings titles, feature graphic, store listing, privacy policy, credits, docs and build-script examples. The save-file checksum salt keeps its old value on purpose: it is never shown and changing it would invalidate saves. Phones with the old debug build keep it as a separate app (different package); uninstall it to free the space. On desktop the save folder follows the project name, so desktop testing starts with a fresh profile.
 
+**Owner's UI round (2026-11-21): usability, icons, font, layout**
+
+Owner feedback: the top-left back button is hard to reach, the home screen looks cluttered, and the buildings are too big and fill the screen.
+- *Navigation.* A bottom navigation bar with icons (Village, Heroes, Shop, Missions, Settings; `scripts/ui/nav_bar.gd`) is on the home screen and every menu screen; the current screen is highlighted and dots mark something waiting. The top-left back button is gone; "Village" or the phone's back gesture returns home. Nav icons are original (`tools/gen_art.py`, `icons/nav_*`).
+- *Home screen.* Currencies, age bar with Collect, the village map (now most of the screen), one "tonight" card (hero portrait in the age look, age weapon and resource bonus, Change, and the night picker inside the same card), START NIGHT, nav bar. The title line is gone (the splash and store carry the name) and the how-to tip shows only while the village total level is under 3.
+- *Village map.* Buildings are drawn at their authored size (×1.0, was ×1.5); name plates and badges at ×1.2 so they stay readable; land bands 380 px (was 460).
+- *Font.* Fredoka (SIL OFL 1.1, from Google Fonts; `assets/fonts/`, credited in `CREDITS.md`) replaces Godot's default font everywhere, including the village map; big headings use a heavier weight. Also set as the project's custom font.
+
 ## Known issues
 
-- Later ages are harder (creature HP up to ×1.8) but nothing makes the hero stronger per age until stage 3 (weapon ladder). Until then, the building cap rising is the only counterweight.
 - With bots surviving 3–4 minutes, a run in Founders' Age pays about 30 food; Age of Keeps needs 250 food and 30 timber. Expect several nights per age early on.
-
 - `scripts/run/run_manager.gd` is about 455 lines, over the 300-line preference.
-- Package name is `com.jdtechlabs.kavaryn` (renamed 2026-11-21), developer JD Techlabs, support email set. `data/app_config.json` still has a placeholder privacy policy URL: the policy must be hosted first.
+- Package name is `com.jdtechlabs.kavaryn` (renamed 2026-11-21), developer JD Techlabs, support email set. Privacy policy hosted at https://jd-techlabs.github.io/kaaval/store/privacy_policy.html (GitHub Pages) and set in `data/app_config.json`.
 - The first frame after launch on Android compiles shaders (a one-time "Failed to load cached shader, recompiling" warning in logcat).
 - Thrown-weapon and hit sounds are throttled to one per 45 ms; no separate volume buses.
 - Target API level is Godot's default. Play may require a newer one at upload time.

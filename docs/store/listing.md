@@ -71,7 +71,7 @@ Welcome, guardian. The first night begins.
 
 ## Content rating answers (IARC) — guidance
 
-- Violence: mild fantasy violence against fantasy creatures, no blood or gore.
+- Violence: fantasy violence against fantasy creatures, no blood or gore, no harm to people. From the later ages the hero uses guns, and called-in tanks, jets and missiles attack the creatures, so answer **yes** to weapons and to violence against non-human characters. Expect a rating around PEGI 7–12 / Teen; accept what the questionnaire gives.
 - No sexual content, profanity, drugs, gambling with real money, or user-to-user communication.
 - Contains in-app purchases: yes. Contains randomised purchasable items: yes (Guardian Chest, bought with gems that can be bought with money), with odds disclosed. Hero Gifts are random too but are only earned by playing.
 - Contains ads: yes.

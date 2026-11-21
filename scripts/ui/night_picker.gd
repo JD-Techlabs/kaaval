@@ -8,6 +8,8 @@ signal changed
 
 ## Index into NightLogic.nights() of the night on show.
 var index: int = 0
+## True inside another card (home "tonight" card): no frame of its own.
+var embedded: bool = false
 var _title: Label
 var _goal: Label
 var _detail: Label
@@ -16,11 +18,15 @@ var _next: Button
 
 
 func _ready() -> void:
-	add_theme_stylebox_override("panel", UiKit.box(UiKit.PANEL, 22, UiKit.AMBER.darkened(0.4), 16))
+	if embedded:
+		add_theme_stylebox_override("panel", StyleBoxEmpty.new())
+	else:
+		add_theme_stylebox_override("panel", UiKit.box(UiKit.PANEL, 22, UiKit.AMBER.darkened(0.4), 16))
 	var row: HBoxContainer = UiKit.hbox(12)
 	add_child(row)
-	_prev = UiKit.button("<", _step.bind(-1), "secondary")
+	_prev = UiKit.button("‹", _step.bind(-1), "secondary")
 	_prev.custom_minimum_size = Vector2(UiKit.TOUCH, UiKit.TOUCH)
+	_prev.add_theme_font_size_override("font_size", UiKit.FONT_BIG)
 	row.add_child(_prev)
 	var text: VBoxContainer = UiKit.vbox(4)
 	text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -28,8 +34,9 @@ func _ready() -> void:
 	_title = _centred(text, UiKit.FONT, UiKit.GOLD)
 	_goal = _centred(text, UiKit.FONT_SMALL, UiKit.TEXT)
 	_detail = _centred(text, 26, UiKit.MUTED)
-	_next = UiKit.button(">", _step.bind(1), "secondary")
+	_next = UiKit.button("›", _step.bind(1), "secondary")
 	_next.custom_minimum_size = Vector2(UiKit.TOUCH, UiKit.TOUCH)
+	_next.add_theme_font_size_override("font_size", UiKit.FONT_BIG)
 	row.add_child(_next)
 	index = maxi(NightLogic.number(NightLogic.selected().id) - 1, 0)
 	refresh()

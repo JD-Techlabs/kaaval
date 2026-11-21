@@ -8,10 +8,14 @@ extends Control
 signal building_selected(id: String)
 signal land_selected(id: String)
 
-const PLOT: Vector2 = Vector2(330.0, 330.0)
-## Buildings are authored small and drawn enlarged so they read well on a phone.
-const DRAW_SCALE: float = 1.5
-const BAND_HEIGHT: float = 460.0
+const PLOT: Vector2 = Vector2(250.0, 250.0)
+## Buildings are drawn at their authored size so the village has room to
+## breathe; name plates and badges are drawn a little larger to stay readable.
+const BUILDING_SCALE: float = 1.0
+const LABEL_SCALE: float = 1.2
+## Building base sits this far below its village position.
+const FOOT_OFFSET: float = 50.0
+const BAND_HEIGHT: float = 380.0
 const PATH: Color = Color("4a4130")
 const PATH_EDGE: Color = Color("2a2a22")
 const FENCE: Color = Color("6b4a2b")
@@ -20,8 +24,8 @@ const BUSH: Texture2D = preload("res://assets/sprites/bush.svg")
 const GROUND_SEED: int = 4711
 const TUFTS_PER_SCREEN: int = 70
 const TREES_PER_SCREEN: int = 40
-const TREE_CLEARANCE: float = 250.0
-const BADGE_MAX_HEIGHT: float = 150.0
+const TREE_CLEARANCE: float = 190.0
+const BADGE_MAX_HEIGHT: float = 120.0
 const LABEL_MARGIN: float = 6.0
 const PLOT_FILL: Color = Color("223d38")
 const LAMP_COUNT: int = 14
@@ -38,7 +42,7 @@ var _icons: Dictionary = {}
 
 
 func _ready() -> void:
-	_font = ThemeDB.fallback_font
+	_font = UiKit.font()
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	mouse_filter = Control.MOUSE_FILTER_PASS
 	resized.connect(queue_redraw)
@@ -149,11 +153,11 @@ func _draw_paths() -> void:
 		for data: BuildingData in GameData.buildings():
 			if not _shown(data):
 				continue
-			var foot: Vector2 = _centre(data) + Vector2(0.0, 60.0)
+			var foot: Vector2 = _centre(data) + Vector2(0.0, FOOT_OFFSET)
 			var from: Vector2 = hub if data.land == "land_core" else Vector2(size.x * 0.5, foot.y)
 			draw_line(from, foot, width_color[1], width_color[0])
-	VillageArt.ellipse(self, hub + Vector2(0.0, 60.0), Vector2(150.0, 84.0), PATH_EDGE)
-	VillageArt.ellipse(self, hub + Vector2(0.0, 60.0), Vector2(138.0, 74.0), PATH)
+	VillageArt.ellipse(self, hub + Vector2(0.0, FOOT_OFFSET), Vector2(120.0, 66.0), PATH_EDGE)
+	VillageArt.ellipse(self, hub + Vector2(0.0, FOOT_OFFSET), Vector2(108.0, 58.0), PATH)
 
 
 func _draw_lamps() -> void:
@@ -207,7 +211,7 @@ func _text_box(pos: Vector2, text: String, font_size: int, color: Color, centred
 func _draw_building(data: BuildingData) -> void:
 	var level: int = GameState.building_level(data.id)
 	var stage: int = tier(level)
-	draw_set_transform(_centre(data) + Vector2(0.0, 70.0), 0.0, Vector2(DRAW_SCALE, DRAW_SCALE))
+	draw_set_transform(_centre(data) + Vector2(0.0, FOOT_OFFSET), 0.0, Vector2(BUILDING_SCALE, BUILDING_SCALE))
 	var top: float = 86.0
 	if stage == 0:
 		var plot: Rect2 = Rect2(Vector2(-80.0, -70.0), Vector2(160.0, 80.0))
@@ -216,7 +220,8 @@ func _draw_building(data: BuildingData) -> void:
 		draw_string(_font, Vector2(-14.0, -14.0), "+", HORIZONTAL_ALIGNMENT_LEFT, -1.0, 54, UiKit.AMBER)
 	else:
 		top = VillageArt.draw(self, data, stage)
-	_tops[data.id] = top
+	# Kept in label units, so badges sit just above the roof.
+	_tops[data.id] = top * BUILDING_SCALE / LABEL_SCALE
 	draw_set_transform(Vector2.ZERO)
 
 
@@ -225,13 +230,13 @@ func _draw_label(data: BuildingData) -> void:
 	var level: int = GameState.building_level(data.id)
 	var job: Dictionary = VillageLogic.job_for(data.id)
 	var top: float = float(_tops.get(data.id, 86.0))
-	draw_set_transform(_centre(data) + Vector2(0.0, 70.0), 0.0, Vector2(DRAW_SCALE, DRAW_SCALE))
+	draw_set_transform(_centre(data) + Vector2(0.0, FOOT_OFFSET), 0.0, Vector2(LABEL_SCALE, LABEL_SCALE))
 	var title: String = data.display_name if level == 0 else "%s  Lv %d" % [data.display_name, level]
 	var text_size: Vector2 = _font.get_string_size(title, HORIZONTAL_ALIGNMENT_LEFT, -1.0, 28)
 	# Keep the name plate inside the view for buildings near the left or right edge.
-	var half: float = (text_size.x * 0.5 + 10.0) * DRAW_SCALE
+	var half: float = (text_size.x * 0.5 + 10.0) * LABEL_SCALE
 	var centre_x: float = _centre(data).x
-	var shift: float = (clampf(centre_x, half + LABEL_MARGIN, size.x - half - LABEL_MARGIN) - centre_x) / DRAW_SCALE
+	var shift: float = (clampf(centre_x, half + LABEL_MARGIN, size.x - half - LABEL_MARGIN) - centre_x) / LABEL_SCALE
 	draw_rect(Rect2(Vector2(shift - text_size.x * 0.5 - 10.0, 10.0), Vector2(text_size.x + 20.0, 34.0)), Color(0.04, 0.05, 0.1, 0.6))
 	draw_string(_font, Vector2(shift - text_size.x * 0.5, 36.0), title, HORIZONTAL_ALIGNMENT_LEFT, -1.0, 28, UiKit.TEXT)
 	if not job.is_empty():
@@ -239,12 +244,12 @@ func _draw_label(data: BuildingData) -> void:
 		var timer_size: Vector2 = _font.get_string_size(timer, HORIZONTAL_ALIGNMENT_LEFT, -1.0, 28)
 		draw_string(_font, Vector2(-timer_size.x * 0.5, 72.0), timer, HORIZONTAL_ALIGNMENT_LEFT, -1.0, 28, UiKit.AMBER)
 	if VillageLogic.blocker(data.id).is_empty():
-		var badge: Vector2 = Vector2(78.0, -minf(top, BADGE_MAX_HEIGHT))
+		var badge: Vector2 = Vector2(58.0, -minf(top, BADGE_MAX_HEIGHT))
 		draw_circle(badge, 22.0, UiKit.GOOD)
 		draw_colored_polygon(PackedVector2Array([badge + Vector2(-11.0, 7.0), badge + Vector2(0.0, -12.0), badge + Vector2(11.0, 7.0)]), UiKit.DARK_TEXT)
 	var stored: int = ProductionLogic.ready(data)
 	if stored > 0:
-		var bubble: Vector2 = Vector2(-70.0, -minf(top, BADGE_MAX_HEIGHT))
+		var bubble: Vector2 = Vector2(-56.0, -minf(top, BADGE_MAX_HEIGHT))
 		draw_circle(bubble, 30.0, Color(0.04, 0.05, 0.1, 0.75))
 		draw_texture_rect(_icon(data.produces), Rect2(bubble - Vector2(22.0, 22.0), Vector2(44.0, 44.0)), false)
 		draw_string(_font, bubble + Vector2(-30.0, 52.0), "+" + UiKit.number(stored), HORIZONTAL_ALIGNMENT_CENTER, 60.0, 24, UiKit.GOLD)

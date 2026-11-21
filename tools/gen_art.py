@@ -323,6 +323,21 @@ icon("t_disc", T, '<circle cx="48" cy="48" r="26" fill="#9aa5b8" stroke="#e8ecf2
 icon("t_pike", T, '<path d="M16 80 L70 26" stroke="#6b4a2b" stroke-width="7" stroke-linecap="round"/><path d="M64 20 L84 12 L76 32 Z" fill="#cfd3dc" stroke="#3a3f4c" stroke-width="2"/>')
 
 
+# --- bottom navigation icons (no background; tinted by the button) --------
+def nav(name, glyph):
+    svg("icons/nav_" + name, 96, 96, glyph)
+
+
+L = "#f6eeda"
+nav("village", f'<path d="M14 46 L48 18 L82 46" fill="none" stroke="{L}" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 42 V80 H72 V42" fill="none" stroke="{L}" stroke-width="8" stroke-linejoin="round"/><rect x="41" y="56" width="14" height="24" rx="3" fill="{L}"/>')
+nav("heroes", f'<circle cx="48" cy="30" r="14" fill="none" stroke="{L}" stroke-width="8"/><path d="M18 84 Q18 54 48 54 Q78 54 78 84" fill="none" stroke="{L}" stroke-width="8" stroke-linecap="round"/><path d="M36 28 H60" stroke="{L}" stroke-width="6" stroke-linecap="round"/>')
+nav("shop", f'<path d="M20 34 H76 L70 82 H26 Z" fill="none" stroke="{L}" stroke-width="8" stroke-linejoin="round"/><path d="M36 40 V28 Q36 14 48 14 Q60 14 60 28 V40" fill="none" stroke="{L}" stroke-width="7" stroke-linecap="round"/>')
+nav("missions", f'<rect x="20" y="14" width="56" height="70" rx="8" fill="none" stroke="{L}" stroke-width="8"/><path d="M32 38 L40 46 L54 30" fill="none" stroke="{L}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><path d="M32 64 H64" stroke="{L}" stroke-width="7" stroke-linecap="round"/>')
+nav("settings", f'<circle cx="48" cy="48" r="13" fill="none" stroke="{L}" stroke-width="8"/>' + "".join(
+    f'<rect x="43" y="10" width="10" height="16" rx="3" fill="{L}" transform="rotate({a} 48 48)"/>' for a in range(0, 360, 45))
+    + f'<circle cx="48" cy="48" r="27" fill="none" stroke="{L}" stroke-width="8"/>')
+
+
 # --- app icon --------------------------------------------------------------
 with open(os.path.join(ROOT, "..", "..", "icon.svg"), "w", encoding="utf-8", newline="\n") as f:
     f.write('''<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
