@@ -11,10 +11,19 @@ static func open(parent: Node, summary: Dictionary) -> void:
 		UiKit.FONT_SMALL, UiKit.DAWN if victory else UiKit.MUTED, true)
 	sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	content.add_child(sub)
+	var progress: String = night_progress_text(summary)
+	if not progress.is_empty():
+		var note: Label = UiKit.label(progress, UiKit.FONT, UiKit.GOOD if victory else UiKit.GOLD, true)
+		note.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		note.custom_minimum_size = Vector2(780.0, 0.0)
+		content.add_child(note)
 	var coins: Array[int] = [RunCommit.coins_for(summary)]
 	var timber: int = RunCommit.timber_for(summary)
 	var seconds: int = int(float(summary["time"]))
 	@warning_ignore("integer_division")
+	var night: WaveData = NightLogic.night(str(summary.get("night", "")))
+	if night != null:
+		_line(content, "Night", "%d · %s" % [NightLogic.number(night.id), night.display_name])
 	_line(content, "Time survived", "%d:%02d" % [seconds / 60, seconds % 60])
 	_line(content, "Creatures defeated", UiKit.number(int(summary["kills"])))
 	_line(content, "Level reached", str(int(summary["level"])))
@@ -46,6 +55,20 @@ static func open(parent: Node, summary: Dictionary) -> void:
 	content.add_child(UiKit.button("Continue", func() -> void:
 		RunCommit.commit(summary, coins[0])
 		SceneRouter.goto("home")))
+
+
+## What this night meant for progress: a new night unlocked, or what it takes.
+static func night_progress_text(summary: Dictionary) -> String:
+	var id: String = str(summary.get("night", ""))
+	var unlocked: String = NightLogic.unlocks_after(summary)
+	if not unlocked.is_empty():
+		var next: WaveData = NightLogic.night(unlocked)
+		return "Night %d unlocked: %s!" % [NightLogic.number(unlocked), next.display_name]
+	var next_night: WaveData = NightLogic.next_night(id)
+	if not bool(summary.get("victory", false)) and next_night != null and not NightLogic.is_unlocked(next_night.id):
+		var wave: WaveData = NightLogic.night(id)
+		return "Survive until dawn (%s) to unlock Night %d." % [NightLogic.clock(wave.duration), NightLogic.number(next_night.id)]
+	return ""
 
 
 static func _line(content: VBoxContainer, title: String, value: String) -> Label:

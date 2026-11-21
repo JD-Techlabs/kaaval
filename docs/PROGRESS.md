@@ -1,6 +1,6 @@
 # PROGRESS — KAAVAL: Guardians of Dawn
 
-Last updated: 2026-11-16
+Last updated: 2026-11-21
 
 ## Status
 
@@ -8,7 +8,7 @@ Phases 0–7 are implemented in code. The owner asked for the whole game in one 
 
 | Phase | State | Verified how |
 |---|---|---|
-| 0 Project setup | Done | Headless import, 133 GUT tests pass |
+| 0 Project setup | Done | Headless import, 153 GUT tests pass |
 | 1 Core loop | Done | Simulated 15-minute run in tests; played on desktop and Android emulator |
 | 2 Content | Done | Tests: every weapon damages, every evolution obtainable, 3 bosses spawn, wave timeline |
 | 3 Meta-progression | Done | Tests: save round-trip/migration/corruption, wall-clock timers across restart, economy |
@@ -35,7 +35,7 @@ Follow `docs/RELEASE_CHECKLIST.md` for all of these.
 # Tests
 .tools\Godot_v4.7.2-stable_win64_console.exe --headless --path . -s addons/gut/gut_cmdln.gd -gdir=res://tests -gexit
 
-# How long a simple bot survives (balance check)
+# How long a simple bot survives (balance check); add --night=paddy_fields or --night=old_fort for later nights
 .tools\Godot_v4.7.2-stable_win64_console.exe --headless --path . res://tools/balance_probe.tscn -- --seeds=6 --village=0 --hero=hero_muthu
 
 # Compile every script and load every resource
@@ -178,14 +178,37 @@ Things to decide before launch:
 - Store listing text was brought up to date (six guardians, Hero Gifts, new creatures) and no longer claims everything can be earned by playing, because two heroes are purchase-only.
 - Still needed from the owner before a release build: a hosted privacy policy URL, an upload keystore, and real AdMob IDs.
 
+**Owner's third round (2026-11-21): how to play, a clear goal, more nights with their own bosses**
+
+Owner feedback after playing on a phone: (1) add instructions at the start with a Skip option, (2) make the objective clear, (3) "every time I start it is level 0; can we have multiple levels with different bosses?". The "level 0" on the home screen was the village level, which only rises with building upgrades; the hero's level restarts at 1 every night, as in the genre. All of the below is outside the spec and was asked for by the owner.
+
+- *How to play* (`scripts/ui/how_to_play.gd`). Five short pages (goal, moving, embers and upgrades, bosses, village and nights) with Skip and Next. It opens the first time Start Night is pressed (`how_to_play_seen` in the profile), also for existing saves, and any time from Settings → How to play. Boss times and the number of nights are read from the night data. The three in-run first-night hints are unchanged.
+- *Clear goal.* Each night opens with a card for 4.5 s: "NIGHT 2 · PADDY FIELDS / Survive until dawn (15:00)". Under the timer a goal line always shows what to do: "Survive to dawn · Boss in 3:12", "Defeat the Thorn Queen! · Dawn in 9:40", and in the last 45 s "Hold on! Dawn in 0:30" (`objective.*` in `data/balance.json`). The results screen says which night was played and either "Night 2 unlocked: Paddy Fields!" or "Survive until dawn (15:00) to unlock Night 2."
+- *Three nights* (`data/waves/*.tres`, `scripts/meta/night_logic.gd`). Each night is a WaveData with its own wave table, three bosses, map colours, edge sprite and props, plus difficulty and reward multipliers:
+
+  | Night | Map | Bosses (5:00 / 10:00 / 14:30) | Creature HP / damage | Coins |
+  |---|---|---|---|---|
+  | 1 | Forest Edge | Thorn Queen 800 · Banyan Wraith 3,000 · Eclipse Beast 8,000 | ×1.0 / ×1.0 | ×1.0 |
+  | 2 | Paddy Fields | Mire Serpent 1,100 · Straw Giant 4,000 · Storm Heron 10,500 | ×1.25 / ×1.15 | ×1.3 |
+  | 3 | Old Fort | Iron Tusk 1,400 · Hollow Captain 5,200 · Night Colossus 13,500 | ×1.6 / ×1.3 | ×1.7 |
+
+  Night 2 has more moths and a moth ring swarm; Night 3 brings shades and beetles early and a shade ring at 8:00. Spawn rates are 10–30% higher than Night 1.
+- *Bosses.* Five new bosses reuse the existing attack scripts with their own numbers and summons (Mire Serpent and Iron Tusk charge like the Thorn Queen; Straw Giant and Hollow Captain raise ground spikes like the Banyan Wraith; Night Colossus darkens the screen like the Eclipse Beast, with more bullets). The Storm Heron has a new attack (`boss_storm_heron.gd`): bursts of a turning feather spiral (capped at 120 bullets on screen), a dive between bursts, more arms and speed below 30% HP. New art is original, made by `tools/gen_art.py` (six bosses, reeds, haystack, fort wall, rubble).
+- *Unlocks.* Night 1 is open. Reaching dawn in a night unlocks the next one and selects it. Earlier nights stay playable. The home screen has a night picker above Start Night (arrows step through every night; locked ones show what unlocks them, and Start shows "LOCKED"). It shows the goal, the boss schedule and "Best 6:12" / "Cleared!". Progress is saved in the profile as `nights` and `selected_night`, recorded only when the results screen commits.
+- `run.map_id` was removed from `data/balance.json`; the run plays the selected night.
+- Tools: `balance_probe` takes `--night=<id>`; the screenshot tool takes `--night=<id>` and `--how-to-play`.
+
+Bot medians (`balance_probe`, Lampwarden, 3–5 seeds): village L4: Forest Edge 3:18, Paddy Fields 1:49, Old Fort 1:38. Village L10: 4:12, 3:20, 3:09. **No bot reaches dawn, even with a full village.** The bot walks to embers and never dodges, so it says little about a person, but if players also cannot reach 15:00, Night 2 will stay locked for them. Decide after playing; easy levers are `run.early_damage_mult`, the remote-config scaling, or unlocking on the first boss instead of dawn.
+
 ## Known issues
 
-- `scripts/run/run_manager.gd` is about 445 lines, over the 300-line preference.
+- `scripts/run/run_manager.gd` is about 455 lines, over the 300-line preference.
 - Package name is `com.jdtechlabs.kaaval`, developer JD Techlabs, support email set (2026-11-16). `data/app_config.json` still has a placeholder privacy policy URL: the policy must be hosted first.
 - The first frame after launch on Android compiles shaders (a one-time "Failed to load cached shader, recompiling" warning in logcat).
 - Thrown-weapon and hit sounds are throttled to one per 45 ms; no separate volume buses.
 - Target API level is Godot's default. Play may require a newer one at upload time.
 - GUT reports leaked instances at exit from static data caches; harmless.
+- Once, during a scripted screenshot capture of Old Fort skipped to 5:10, Godot printed "Parent node is busy setting up children, add_child() failed". It did not happen again in four repeats, never in tests, and the screenshot was correct. Watch for it.
 
 ## Changes made outside the project folder
 

@@ -6,6 +6,8 @@ extends Node
 ##   --shot-delay=<sec>   default 2
 ##   --skip=<sec>         fast-forward a run by this many seconds first
 ##   --demo-profile       use a throwaway mid-game profile (the real save is untouched)
+##   --night=<id>         with --demo-profile: unlock and pick that night
+##   --how-to-play        open How to play on the first screen
 
 const STEP: float = 0.05
 const DEMO_SAVE: String = "user://demo_save.json"
@@ -15,6 +17,7 @@ var _shot_path: String = ""
 var _delay: float = 2.0
 var _skip: float = 0.0
 var _counter: int = 0
+var _how_to_play: bool = false
 
 
 func _ready() -> void:
@@ -28,6 +31,11 @@ func _ready() -> void:
 			_skip = float(arg.trim_prefix("--skip="))
 		elif arg == "--demo-profile":
 			_demo_profile()
+		elif arg == "--how-to-play":
+			_how_to_play = true
+	for arg: String in OS.get_cmdline_user_args():
+		if arg.begins_with("--night="):
+			_unlock_to(arg.trim_prefix("--night="))
 	if not _shot_path.is_empty():
 		# Render at the full 1080x1920 design size even in a small desktop window.
 		get_tree().root.content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
@@ -48,6 +56,15 @@ func _demo_profile() -> void:
 	GameState.grant({"coins": 4200, "timber": 36, "gems": 180, "potions": 2, "gifts": 3})
 
 
+## Marks every night before `id` as won and picks `id`.
+func _unlock_to(id: String) -> void:
+	for wave: WaveData in GameData.waves():
+		if wave.id == id:
+			GameState.p["selected_night"] = id
+			return
+		(GameState.p["nights"] as Dictionary)[wave.id] = {"won": true, "best_time": wave.duration}
+
+
 func _unhandled_key_input(event: InputEvent) -> void:
 	var key: InputEventKey = event as InputEventKey
 	if key != null and key.pressed and key.keycode == KEY_F12:
@@ -60,6 +77,8 @@ func _on_screen_changed(_screen: String) -> void:
 	if _shot_path.is_empty():
 		return
 	await get_tree().create_timer(0.4).timeout
+	if _how_to_play:
+		HowToPlay.open(get_tree().current_scene)
 	if _skip > 0.0:
 		_fast_forward()
 	await get_tree().create_timer(_delay).timeout

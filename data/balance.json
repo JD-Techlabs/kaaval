@@ -28,7 +28,6 @@
     "burn_tick": 0.5
   },
   "run": {
-    "map_id": "forest_edge",
     "camera_zoom": 1.6,
     "dawn_start": 780,
     "early_damage_mult": 0.5,
@@ -119,5 +118,9 @@
     "mission_reward_gems": 10,
     "starter_pack_countdown_hours": 72,
     "max_processed_tokens": 100
+  },
+  "objective": {
+    "hold_on_seconds": 45,
+    "intro_seconds": 4.5
   }
 }

@@ -1,13 +1,15 @@
 class_name HomeScreen
 extends Control
-## Home / Village (spec §10): village view, currencies, Start Night, hero
-## portrait and the bottom navigation.
+## Home / Village (spec §10): village view, currencies, night picker, Start
+## Night, hero portrait and the bottom navigation.
 
 const NAV: Array[Array] = [["Village", "home"], ["Heroes", "heroes"], ["Shop", "shop"], ["Missions", "missions"], ["Settings", "settings"]]
 
 var _village: VillageView
 var _currency_holder: Control
 var _hero_row: HBoxContainer
+var _nights: NightPicker
+var _start: Button
 var _panel: VBoxContainer
 var _panel_id: String = ""
 var _nav_buttons: Dictionary = {}
@@ -36,10 +38,13 @@ func _ready() -> void:
 	column.add_child(_village)
 	_hero_row = UiKit.hbox()
 	column.add_child(_hero_row)
-	var start: Button = UiKit.button("START NIGHT", func() -> void: SceneRouter.goto("run"))
-	start.custom_minimum_size = Vector2(0.0, 190.0)
-	start.add_theme_font_size_override("font_size", UiKit.FONT_BIG)
-	column.add_child(start)
+	_nights = NightPicker.new()
+	_nights.changed.connect(_update_start)
+	column.add_child(_nights)
+	_start = UiKit.button("START NIGHT", _start_night)
+	_start.custom_minimum_size = Vector2(0.0, 170.0)
+	_start.add_theme_font_size_override("font_size", UiKit.FONT_BIG)
+	column.add_child(_start)
 	var nav: HBoxContainer = UiKit.hbox(8)
 	column.add_child(nav)
 	for entry: Array in NAV:
@@ -62,6 +67,22 @@ func _ready() -> void:
 	DailyLogic.ensure_today()
 	_refresh()
 	_maybe_offer_starter_pack()
+
+
+## First press shows How to play (with Skip); after that, straight into the night.
+func _start_night() -> void:
+	if not _nights.is_playable():
+		return
+	if HowToPlay.seen():
+		SceneRouter.goto("run")
+	else:
+		HowToPlay.open(self, func() -> void: SceneRouter.goto("run"))
+
+
+func _update_start() -> void:
+	var playable: bool = _nights.is_playable()
+	_start.disabled = not playable
+	_start.text = "START NIGHT %d" % (_nights.index + 1) if playable else "LOCKED"
 
 
 func _goto(screen: String) -> void:
@@ -92,12 +113,14 @@ func _refresh() -> void:
 	var text: VBoxContainer = UiKit.vbox(4)
 	text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	text.add_child(UiKit.label("%s, %s" % [hero.display_name, hero.title], UiKit.FONT))
-	text.add_child(UiKit.label("Village level %d" % VillageLogic.total_level(), UiKit.FONT_SMALL, UiKit.MUTED))
+	text.add_child(UiKit.label("Village level %d · build to grow stronger" % VillageLogic.total_level(), UiKit.FONT_SMALL, UiKit.MUTED, true))
 	_hero_row.add_child(text)
 	_hero_row.add_child(UiKit.button("Change", func() -> void: SceneRouter.goto("heroes"), "secondary"))
 	(_nav_buttons["missions"] as Button).text = "Missions •" if DailyLogic.anything_claimable() else "Missions"
 	(_nav_buttons["heroes"] as Button).text = "Heroes •" if GiftLogic.count() > 0 else "Heroes"
 	(_nav_buttons["shop"] as Button).text = "Shop •" if ChestLogic.free_remaining() <= 0.0 else "Shop"
+	_nights.refresh()
+	_update_start()
 	_village.queue_redraw()
 	if _panel != null and is_instance_valid(_panel):
 		UiKit.close_modal(_panel)

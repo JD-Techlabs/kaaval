@@ -46,6 +46,9 @@ static func default_profile() -> Dictionary:
 		},
 		"runs_played": 0,
 		"hints_done": false,
+		"how_to_play_seen": false,
+		"selected_night": "",
+		"nights": {},
 		"starter_pack_shown_at": 0,
 		"consent_done": false,
 	}

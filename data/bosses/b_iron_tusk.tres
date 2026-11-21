@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="BossData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/boss_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "b_iron_tusk"
+display_name = "Iron Tusk"
+hp = 1400.0
+speed = 115.0
+contact_damage = 24.0
+xp = 60.0
+radius = 70.0
+script_path = "res://scripts/entities/boss_thorn_queen.gd"
+timber = 5
+warning_text = "Iron Tusk charges out of the ruins!"
+params = {"charge_interval": 2.6, "telegraph": 0.55, "charge_speed": 780.0, "charge_time": 0.9, "summon_hp_pct": 0.5, "summon_id": "e_beetle", "summon_count": 6.0}
+texture = "res://assets/sprites/b_iron_tusk.svg"
+behaviour = "boss"

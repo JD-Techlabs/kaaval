@@ -148,6 +148,65 @@ svg("b_eclipse_beast", 240, 240, f'''
 <path d="M70 104 L106 118 L70 132 Z" fill="#ffe08a"/><path d="M170 104 L134 118 L170 132 Z" fill="#ffe08a"/>
 <path d="M76 160 L92 176 L106 160 L120 176 L134 160 L148 176 L164 160" stroke="#ffe08a" stroke-width="6" fill="none" stroke-linejoin="round"/>''')
 
+# Night 2, Paddy Fields.
+svg("b_mire_serpent", 200, 168, f'''
+<path d="M18 128 Q10 92 46 92 Q82 92 80 124 Q78 152 112 152 Q150 152 150 118" fill="none" stroke="#4f7a3a" stroke-width="34" stroke-linecap="round"/>
+<path d="M18 128 Q10 92 46 92 Q82 92 80 124 Q78 152 112 152 Q150 152 150 118" fill="none" stroke="#c9e88a" stroke-width="4" stroke-dasharray="10 12" stroke-linecap="round"/>
+<path d="M126 112 Q118 40 158 30 Q196 26 192 66 Q190 98 150 110 Z" fill="#3d6630" stroke="#c9e88a" stroke-width="5" stroke-linejoin="round"/>
+<circle cx="150" cy="56" r="9" fill="#ffe14d"/><circle cx="176" cy="54" r="9" fill="#ffe14d"/>
+<path d="M146 86 Q164 98 184 84" stroke="{OUT}" stroke-width="5" fill="none" stroke-linecap="round"/>
+<path d="M164 94 L160 112 M172 92 L176 110" stroke="#ff6b5a" stroke-width="4" stroke-linecap="round"/>''')
+svg("b_straw_giant", 216, 232, f'''
+<path d="M70 224 L84 150 M146 224 L132 150" stroke="#c99a3e" stroke-width="16" stroke-linecap="round"/>
+<path d="M56 160 Q48 96 108 92 Q168 96 160 160 Q108 176 56 160 Z" fill="#d8b24a" stroke="#fff0b0" stroke-width="5" stroke-linejoin="round"/>
+<path d="M70 110 L60 168 M90 102 L86 170 M126 102 L130 170 M146 110 L156 168" stroke="#a87e2c" stroke-width="4"/>
+<path d="M56 112 L8 92 M160 112 L208 92" stroke="#d8b24a" stroke-width="18" stroke-linecap="round"/>
+<path d="M2 82 L16 100 M10 76 L22 96 M214 82 L200 100 M206 76 L194 96" stroke="#fff0b0" stroke-width="4" stroke-linecap="round"/>
+<circle cx="108" cy="62" r="40" fill="#e6c25a" stroke="#fff0b0" stroke-width="5"/>
+<path d="M58 40 Q108 -6 158 40 Z" fill="#7a4e24" stroke="#fff0b0" stroke-width="4" stroke-linejoin="round"/>
+<path d="M90 54 L102 64 L90 72 Z M126 54 L114 64 L126 72 Z" fill="#ff7a2a"/>
+<path d="M92 84 L100 78 L108 84 L116 78 L124 84" stroke="{OUT}" stroke-width="4" fill="none" stroke-linejoin="round"/>''')
+svg("b_storm_heron", 240, 232, f'''
+<circle cx="120" cy="120" r="108" fill="#6fd6ff" opacity="0.22"/>
+<path d="M120 112 Q40 40 6 92 Q40 104 70 128 Z M120 112 Q200 40 234 92 Q200 104 170 128 Z" fill="#3a5f8a" stroke="#cfefff" stroke-width="5" stroke-linejoin="round"/>
+<path d="M30 90 L52 108 M58 72 L76 100 M210 90 L188 108 M182 72 L164 100" stroke="#cfefff" stroke-width="4" stroke-linecap="round"/>
+<ellipse cx="120" cy="140" rx="44" ry="58" fill="#e8f4ff" stroke="#6fd6ff" stroke-width="5"/>
+<path d="M104 196 L96 228 M136 196 L144 228" stroke="#ffcf40" stroke-width="7" stroke-linecap="round"/>
+<circle cx="120" cy="70" r="26" fill="#e8f4ff" stroke="#6fd6ff" stroke-width="5"/>
+<path d="M140 66 L196 78 L140 84 Z" fill="#ffcf40" stroke="{OUT}" stroke-width="3" stroke-linejoin="round"/>
+<circle cx="122" cy="64" r="6" fill="#1c6fd6"/>
+<path d="M96 120 L112 104 L106 124 L124 110 M130 150 L148 134 L140 156" stroke="#ffe14d" stroke-width="5" fill="none" stroke-linejoin="round"/>''')
+
+# Night 3, Old Fort.
+svg("b_iron_tusk", 208, 176, f'''
+<path d="M40 138 L32 170 M76 148 L72 174 M132 148 L136 174 M168 138 L176 170" stroke="#5a4a3e" stroke-width="12" stroke-linecap="round"/>
+<ellipse cx="104" cy="104" rx="88" ry="56" fill="#6b5446" stroke="#d6dde8" stroke-width="5"/>
+<path d="M40 64 L56 40 L74 58 L92 34 L110 54 L128 32 L144 56 L164 40 L172 66" fill="none" stroke="#2c2420" stroke-width="10" stroke-linejoin="round"/>
+<rect x="128" y="74" width="70" height="56" rx="18" fill="#7d6556" stroke="#d6dde8" stroke-width="5"/>
+<path d="M150 124 Q140 160 112 158 M184 124 Q196 160 206 150" stroke="#e8ecf2" stroke-width="10" fill="none" stroke-linecap="round"/>
+<path d="M150 124 Q140 160 112 158 M184 124 Q196 160 206 150" stroke="{OUT}" stroke-width="2" fill="none" stroke-linecap="round"/>
+<circle cx="152" cy="94" r="7" fill="#ff5252"/><circle cx="178" cy="94" r="7" fill="#ff5252"/>
+<path d="M30 92 H64 M30 110 H58" stroke="#9aa6b8" stroke-width="6" stroke-linecap="round"/>''')
+svg("b_hollow_captain", 208, 232, f'''
+<path d="M44 224 Q34 140 104 112 Q174 140 164 224 Q144 206 124 224 Q104 206 84 224 Q64 206 44 224 Z" fill="#232a44" stroke="#7fe0c8" stroke-width="5" stroke-linejoin="round"/>
+<path d="M62 150 H146 V176 H62 Z" fill="#4a556e" stroke="#d6dde8" stroke-width="4"/>
+<path d="M76 150 V176 M104 150 V176 M132 150 V176" stroke="#2c3550" stroke-width="4"/>
+<path d="M178 70 V214" stroke="#9aa6b8" stroke-width="8" stroke-linecap="round"/>
+<path d="M178 70 L196 40 L188 76 Z" fill="#d6dde8" stroke="{OUT}" stroke-width="3" stroke-linejoin="round"/>
+<circle cx="104" cy="80" r="40" fill="#1c2238" stroke="#7fe0c8" stroke-width="5"/>
+<path d="M58 66 Q104 14 150 66 L142 72 Q104 40 66 72 Z" fill="#8a96ac" stroke="#d6dde8" stroke-width="4" stroke-linejoin="round"/>
+<path d="M104 26 V8" stroke="#e2553d" stroke-width="8" stroke-linecap="round"/>
+<path d="M82 78 L98 86 L82 94 Z M126 78 L110 86 L126 94 Z" fill="#7fe0c8"/>''')
+svg("b_night_colossus", 248, 248, f'''
+<circle cx="124" cy="124" r="112" fill="#9a6bff" opacity="0.25"/>
+<path d="M44 236 L60 168 M204 236 L188 168" stroke="#2c2a3e" stroke-width="26" stroke-linecap="round"/>
+<path d="M40 180 Q28 84 124 72 Q220 84 208 180 Q124 204 40 180 Z" fill="#3a3652" stroke="#c9b8ff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M64 110 H96 V140 H64 Z M152 110 H184 V140 H152 Z M108 150 H140 V176 H108 Z" fill="#2c2a3e" stroke="#6f62a0" stroke-width="3"/>
+<path d="M40 110 L8 158 M208 110 L240 158" stroke="#3a3652" stroke-width="24" stroke-linecap="round"/>
+<circle cx="124" cy="54" r="40" fill="#2c2a3e" stroke="#c9b8ff" stroke-width="6"/>
+<path d="M98 50 L118 58 L98 66 Z M150 50 L130 58 L150 66 Z" fill="#ffe08a"/>
+<path d="M84 22 L94 6 L104 20 M144 20 L154 6 L164 22" stroke="#c9b8ff" stroke-width="6" fill="none" stroke-linejoin="round"/>''')
+
 # --- projectiles, pickups, props -------------------------------------------
 svg("stone", 32, 32, f'<circle cx="16" cy="16" r="12" fill="#cfd3dc" stroke="{OUT}" stroke-width="3"/><circle cx="12" cy="12" r="4" fill="#fff" opacity="0.7"/>')
 svg("meteor", 40, 40, f'<circle cx="20" cy="20" r="16" fill="#ff8a2a" stroke="#fff3c4" stroke-width="3"/><circle cx="20" cy="20" r="8" fill="#ffe08a"/>')
@@ -161,6 +220,11 @@ svg("tree", 160, 200, '<rect x="68" y="130" width="24" height="64" rx="6" fill="
 svg("rock", 72, 52, '<path d="M6 46 Q2 20 26 10 Q52 2 66 28 Q72 46 60 48 Z" fill="#3a4560"/><path d="M20 20 Q34 12 46 18" stroke="#56648a" stroke-width="4" fill="none" stroke-linecap="round"/>')
 svg("bush", 80, 56, '<circle cx="24" cy="34" r="20" fill="#17463a"/><circle cx="46" cy="26" r="24" fill="#1c5446"/><circle cx="62" cy="38" r="16" fill="#17463a"/>')
 svg("lamp", 48, 96, '<circle cx="24" cy="22" r="22" fill="#ffb347" opacity="0.3"/><rect x="21" y="34" width="6" height="56" fill="#4a3a2a"/><rect x="14" y="10" width="20" height="26" rx="4" fill="#ffd36b" stroke="#7a5230" stroke-width="3"/>')
+# Paddy Fields edge and props; Old Fort wall and props.
+svg("reeds", 140, 180, '<path d="M20 178 Q16 90 30 20 M44 178 Q44 80 60 8 M70 178 Q66 100 84 30 M96 178 Q98 90 112 16 M120 178 Q118 110 132 44" stroke="#5f8a3a" stroke-width="9" fill="none" stroke-linecap="round"/><path d="M30 20 Q22 34 30 48 Q38 34 30 20 Z M60 8 Q52 22 60 36 Q68 22 60 8 Z M112 16 Q104 30 112 44 Q120 30 112 16 Z" fill="#a98a4a"/><path d="M8 178 Q70 150 132 178 Z" fill="#3f6a2c"/>')
+svg("haystack", 96, 80, '<path d="M6 76 Q10 18 48 8 Q86 18 90 76 Z" fill="#c99a3e" stroke="#7a5a24" stroke-width="3" stroke-linejoin="round"/><path d="M22 70 Q26 36 40 22 M48 74 V18 M74 70 Q70 36 56 22" stroke="#e6c25a" stroke-width="3" fill="none"/>')
+svg("fort_wall", 140, 170, '<rect x="6" y="40" width="128" height="128" fill="#4a4f60"/><path d="M6 40 V14 H34 V40 M52 40 V14 H88 V40 M106 40 V14 H134 V40" fill="#5a6074" stroke="#2c3040" stroke-width="3"/><path d="M6 78 H134 M6 118 H134 M40 40 V78 M94 40 V78 M66 78 V118 M24 118 V168 M110 118 V168" stroke="#2c3040" stroke-width="4"/>')
+svg("rubble", 88, 56, '<path d="M4 52 L10 30 L30 26 L36 52 Z" fill="#5a6074" stroke="#2c3040" stroke-width="3" stroke-linejoin="round"/><path d="M32 52 L40 18 L64 14 L72 52 Z" fill="#4a4f60" stroke="#2c3040" stroke-width="3" stroke-linejoin="round"/><path d="M64 52 L70 36 L84 38 L86 52 Z" fill="#5a6074" stroke="#2c3040" stroke-width="3" stroke-linejoin="round"/>')
 svg("joy_base", 256, 256, '<circle cx="128" cy="128" r="120" fill="#fff" opacity="0.10" stroke="#fff" stroke-opacity="0.35" stroke-width="6"/>')
 svg("joy_knob", 128, 128, '<circle cx="64" cy="64" r="56" fill="#ffb347" opacity="0.75" stroke="#fff3c4" stroke-width="5"/>')
 

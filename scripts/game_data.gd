@@ -126,6 +126,13 @@ static func wave(id: String) -> WaveData:
 	return _dir("waves").get(id) as WaveData
 
 
+## Every night, in play order.
+static func waves() -> Array[WaveData]:
+	var out: Array[WaveData] = []
+	out.assign(_sorted("waves"))
+	return out
+
+
 static func building(id: String) -> BuildingData:
 	return _dir("buildings").get(id) as BuildingData
 

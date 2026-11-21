@@ -19,6 +19,8 @@ func build() -> void:
 		row("Ad privacy choices", "", UiKit.button("Review", AdsService.show_privacy_options, "secondary"))
 	row("Support", str(app["support_email"]), UiKit.button("Email", func() -> void:
 		OS.shell_open("mailto:%s" % str(app["support_email"])), "secondary"))
+	row("How to play", "The goal, controls, bosses and nights.", UiKit.button("Open", func() -> void:
+		HowToPlay.open(self), "secondary"))
 	row("Credits", "", UiKit.button("View", func() -> void:
 		UiKit.message(self, "Credits", _credits_text()), "secondary"))
 	content.add_child(UiKit.label("Version %s" % str(ProjectSettings.get_setting("application/config/version")),

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="BossData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/boss_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "b_hollow_captain"
+display_name = "Hollow Captain"
+hp = 5200.0
+speed = 80.0
+contact_damage = 28.0
+xp = 110.0
+radius = 76.0
+script_path = "res://scripts/entities/boss_banyan_wraith.gd"
+timber = 8
+warning_text = "The Hollow Captain calls the guard!"
+params = {"root_interval": 1.8, "root_radius": 130.0, "root_delay": 0.9, "root_damage": 30.0, "summon_interval": 6.0, "summon_id": "e_shade", "summon_count": 8.0}
+texture = "res://assets/sprites/b_hollow_captain.svg"
+behaviour = "boss"

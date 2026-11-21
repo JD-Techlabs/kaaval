@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="BossData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/boss_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "b_mire_serpent"
+display_name = "Mire Serpent"
+hp = 1100.0
+speed = 110.0
+contact_damage = 20.0
+xp = 50.0
+radius = 64.0
+script_path = "res://scripts/entities/boss_thorn_queen.gd"
+timber = 4
+warning_text = "The Mire Serpent slides out of the water!"
+params = {"charge_interval": 3.2, "telegraph": 0.6, "charge_speed": 700.0, "charge_time": 0.8, "summon_hp_pct": 0.5, "summon_id": "e_mud_pup", "summon_count": 10.0}
+texture = "res://assets/sprites/b_mire_serpent.svg"
+behaviour = "boss"

@@ -17,6 +17,7 @@ static func commit(summary: Dictionary, coins: int) -> void:
 	GameState.grant({"coins": coins, "timber": timber_for(summary), "gifts": int(summary.get("gifts", 0))})
 	GameState.spend("potions", mini(int(summary.get("potions_used", 0)), GameState.amount("potions")))
 	DailyLogic.record_run(summary)
+	NightLogic.record_run(summary)
 	GameState.p["runs_played"] = int(GameState.p["runs_played"]) + 1
 	GameState.p["hints_done"] = true
 	GameState.save()

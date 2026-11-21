@@ -1,8 +1,9 @@
 class_name Hud
 extends Control
 ## Run HUD (spec §10): XP bar with the level on it, HP bar with the numbers on
-## it, timer, kill and coin chips, build icons, pause, potion button, boss bar,
-## warning banner and first-run hints. The developer overlay (FPS, entity
+## it, timer, the night's goal line, kill and coin chips, build icons, pause,
+## potion button, boss bar, warning banner, the night's opening goal card and
+## first-run hints. The developer overlay (FPS, entity
 ## counts) is off unless switched on in Settings in a debug build.
 
 signal pause_pressed
@@ -34,6 +35,8 @@ var _boss_name: Label
 var _boss_bar: ProgressBar
 var _boss: Enemy
 var _banner: Label
+var _goal: Label
+var _intro: Label
 var _hint: Label
 var _debug: Label
 var _debug_timer: float = 0.0
@@ -92,6 +95,12 @@ func _ready() -> void:
 	_potion.visible = false
 	right.add_child(_potion)
 
+	_goal = UiKit.label("", UiKit.FONT_SMALL, UiKit.GOLD)
+	_goal.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_goal.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_outline(_goal)
+	column.add_child(_goal)
+
 	_icons = UiKit.hbox(8)
 	_icons.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	column.add_child(_icons)
@@ -109,6 +118,8 @@ func _ready() -> void:
 
 	_banner = _floating_label(UiKit.FONT_BIG, UiKit.DANGER)
 	column.add_child(_banner)
+	_intro = _floating_label(UiKit.FONT_BIG, UiKit.GOLD)
+	column.add_child(_intro)
 	column.add_child(UiKit.spacer())
 	_hint = _floating_label(UiKit.FONT, UiKit.TEXT)
 	column.add_child(_hint)
@@ -128,6 +139,13 @@ func _ready() -> void:
 	run.hint_requested.connect(func(index: int) -> void: _flash(_hint, HINTS[index - 1], HINT_SECONDS))
 	run.notice_requested.connect(func(text: String) -> void: _flash(_hint, text, NOTICE_SECONDS))
 	_rebuild_icons()
+	_flash(_intro, intro_text(run.wave), GameData.num("objective", "intro_seconds"))
+
+
+## The card shown as a night begins: which night, and what winning means.
+static func intro_text(wave: WaveData) -> String:
+	return "NIGHT %d · %s\nSurvive until dawn (%s)" % [NightLogic.number(wave.id), wave.display_name.to_upper(),
+		NightLogic.clock(wave.duration)]
 
 
 ## Centred text drawn on top of a bar (level on the XP bar, numbers on the HP bar).
@@ -190,7 +208,7 @@ func _process(delta: float) -> void:
 	_level.text = "LEVEL %d" % state.level
 	_hp_text.text = "%d / %d" % [mini(ceili(run.player.hp), roundi(run.player.stats.max_hp)), roundi(run.player.stats.max_hp)]
 	_kills.text = UiKit.number(state.kills)
-	_coins.text = UiKit.number(Economy.run_coins(state.kills, state.time, false, run.player.stats.coin_mult,
+	_coins.text = UiKit.number(Economy.run_coins(state.kills, state.time, false, run.coin_mult(),
 		RemoteConfig.num("coin_multiplier"), state.bonus_coins))
 	var carried: int = run.potions.carried_left()
 	_potion.visible = carried > 0
@@ -198,6 +216,7 @@ func _process(delta: float) -> void:
 	_potion.disabled = run.player.hp >= run.player.stats.max_hp
 	var boss_alive: bool = is_instance_valid(_boss) and _boss.alive
 	_boss_box.visible = boss_alive
+	_goal.text = NightLogic.objective(run.wave, state.time, _boss.data.display_name if boss_alive else "")
 	if boss_alive:
 		_boss_name.text = _boss.data.display_name
 		_boss_bar.max_value = _boss.max_hp

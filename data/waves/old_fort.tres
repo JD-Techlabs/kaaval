@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="WaveData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/wave_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "old_fort"
+display_name = "Old Fort"
+sort_order = 3
+tagline = "Broken walls on the hill. Shades and armoured beetles hold the ruins."
+map_size = Vector2(4000, 4000)
+duration = 900.0
+segments = Array[Dictionary]([{"start": 0.0, "end": 60.0, "rate": 1.3, "mix": {"e_wisp": 60.0, "e_shade": 40.0}, "crow_interval": 0.0}, {"start": 60.0, "end": 180.0, "rate": 2.6, "mix": {"e_wisp": 45.0, "e_shade": 30.0, "e_crawler": 25.0}, "crow_interval": 0.0}, {"start": 180.0, "end": 300.0, "rate": 3.8, "mix": {"e_wisp": 35.0, "e_shade": 25.0, "e_crawler": 25.0, "e_beetle": 15.0}, "crow_interval": 25.0}, {"start": 300.0, "end": 480.0, "rate": 5.2, "mix": {"e_wisp": 30.0, "e_shade": 25.0, "e_crawler": 20.0, "e_beetle": 15.0, "e_thief": 10.0}, "crow_interval": 20.0}, {"start": 480.0, "end": 600.0, "rate": 6.8, "mix": {"e_wisp": 25.0, "e_shade": 25.0, "e_beetle": 20.0, "e_golem": 20.0, "e_thief": 10.0}, "crow_interval": 0.0}, {"start": 600.0, "end": 780.0, "rate": 8.5, "mix": {"e_wisp": 20.0, "e_shade": 25.0, "e_beetle": 20.0, "e_golem": 25.0, "e_thief": 10.0}, "crow_interval": 18.0}, {"start": 780.0, "end": 900.0, "rate": 10.5, "mix": {"e_wisp": 20.0, "e_shade": 25.0, "e_beetle": 20.0, "e_golem": 25.0, "e_thief": 10.0}, "crow_interval": 15.0}])
+events = Array[Dictionary]([{"time": 300.0, "type": "boss", "id": "b_iron_tusk", "count": 1}, {"time": 480.0, "type": "ring", "id": "e_shade", "count": 30}, {"time": 600.0, "type": "boss", "id": "b_hollow_captain", "count": 1}, {"time": 780.0, "type": "ring", "id": "e_wisp", "count": 50}, {"time": 870.0, "type": "boss", "id": "b_night_colossus", "count": 1}])
+crow_id = "e_crow"
+crow_line_count = 10
+crow_line_spacing = 80.0
+ring_radius = 760.0
+enemy_hp_mult = 1.6
+enemy_dmg_mult = 1.3
+coin_mult = 1.7
+ground_color = Color(0.17, 0.16, 0.18, 1)
+patch_color = Color(0.21, 0.2, 0.22, 1)
+outside_color = Color(0.06, 0.06, 0.09, 1)
+edge_sprite = "res://assets/sprites/fort_wall.svg"
+props = Array[String](["res://assets/sprites/rubble.svg", "res://assets/sprites/rock.svg", "res://assets/sprites/lamp.svg"])

@@ -56,9 +56,10 @@ var _hint_step: int = 0
 func _ready() -> void:
 	rng.randomize()
 	hero = GameData.hero(str(GameState.p["selected_hero"]))
-	wave = GameData.wave(str(GameData.balance("run")["map_id"]))
+	wave = NightLogic.selected()
 	_build_world()
 	state.hero_id = hero.id
+	state.night_id = wave.id
 	state.weapon_slots = player.stats.weapon_slots
 	state.passive_slots = player.stats.passive_slots
 	state.rerolls_left = int(GameData.num("run", "free_rerolls"))
@@ -67,14 +68,14 @@ func _ready() -> void:
 	apply_card({"kind": "weapon", "id": hero.starting_weapon, "level": 1})
 	_hints_on = not bool(GameState.p["hints_done"])
 	AudioManager.play_music("music_night")
-	Analytics.log_event("run_start", {"hero": hero.id})
+	Analytics.log_event("run_start", {"hero": hero.id, "night": wave.id})
 	_request_hint(1)
 
 
 func _build_world() -> void:
 	var map: MapView = MapView.new()
 	add_child(map)
-	map.setup(wave.map_size)
+	map.setup(wave)
 	embers = EmberField.new()
 	add_child(embers)
 	hazards = Hazards.new()
@@ -207,11 +208,16 @@ func _update_view(delta: float) -> void:
 # --- helpers used by weapons / enemies ------------------------------------
 
 func hp_scale() -> float:
-	return 1.0 + RemoteConfig.num("enemy_hp_scale_per_min") * state.time / 60.0
+	return (1.0 + RemoteConfig.num("enemy_hp_scale_per_min") * state.time / 60.0) * wave.enemy_hp_mult
 
 
 func dmg_scale() -> float:
-	return (1.0 + RemoteConfig.num("enemy_dmg_scale_per_min") * state.time / 60.0) * early_damage_mult(state.time)
+	return (1.0 + RemoteConfig.num("enemy_dmg_scale_per_min") * state.time / 60.0) * early_damage_mult(state.time) 		* wave.enemy_dmg_mult
+
+
+## Coin multiplier for this night: village and hero bonuses times the night's own bonus.
+func coin_mult() -> float:
+	return player.stats.coin_mult * wave.coin_mult
 
 
 ## Creatures hit softer at the start of a night and reach full strength once the ramp ends.
@@ -397,7 +403,7 @@ func _finish(victory: bool) -> void:
 	Analytics.log_event("run_end", {"result": "dawn" if victory else "defeat", "time": roundi(state.time),
 		"kills": state.kills, "level": state.level, "coins": state.bonus_coins})
 	var summary: Dictionary = state.summary()
-	summary["coin_mult"] = player.stats.coin_mult
+	summary["coin_mult"] = coin_mult()
 	run_ended.emit(summary)
 
 

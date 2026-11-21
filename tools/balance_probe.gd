@@ -1,7 +1,7 @@
 extends Node
 ## Balance probe: plays nights headlessly with a plain bot and prints how long
 ## it survives, plus simulation cost and how much the crowd overlaps.
-##   godot --headless --path . res://tools/balance_probe.tscn -- --seeds=6 --village=0 --hero=hero_muthu
+##   godot --headless --path . res://tools/balance_probe.tscn -- --seeds=6 --village=0 --hero=hero_muthu [--night=paddy_fields]
 ## Uses a throwaway profile; the real save is never read or written.
 
 const STEP: float = 0.05
@@ -11,6 +11,7 @@ func _ready() -> void:
 	var seeds: int = 6
 	var village: int = 0
 	var hero: String = "hero_muthu"
+	var night: String = ""
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--seeds="):
 			seeds = int(arg.trim_prefix("--seeds="))
@@ -18,11 +19,20 @@ func _ready() -> void:
 			village = int(arg.trim_prefix("--village="))
 		elif arg.begins_with("--hero="):
 			hero = arg.trim_prefix("--hero=")
+		elif arg.begins_with("--night="):
+			night = arg.trim_prefix("--night=")
 	SaveManager.path = PROBE_SAVE
 	GameState.reset_profile()
 	var profile: Dictionary = GameState.p
 	profile["hints_done"] = true
 	profile["selected_hero"] = hero
+	if not night.is_empty():
+		# Unlock every night up to the one asked for.
+		for wave: WaveData in GameData.waves():
+			profile["selected_night"] = wave.id
+			if wave.id == night:
+				break
+			(profile["nights"] as Dictionary)[wave.id] = {"won": true, "best_time": wave.duration}
 	(profile["heroes"] as Array).append(hero)
 	for building: BuildingData in GameData.buildings():
 		(profile["buildings"] as Dictionary)[building.id] = village
@@ -33,7 +43,7 @@ func _ready() -> void:
 	var total: float = 0.0
 	for value: float in times:
 		total += value
-	print("RESULT hero=%s village=%d seeds=%d  min=%s median=%s max=%s mean=%s" % [hero, village, seeds,
+	print("RESULT night=%s hero=%s village=%d seeds=%d  min=%s median=%s max=%s mean=%s" % [NightLogic.selected().id, hero, village, seeds,
 		_clock(times[0]), _clock(times[times.size() / 2]), _clock(times[times.size() - 1]), _clock(total / float(seeds))])
 	get_tree().quit()
 

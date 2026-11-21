@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="BossData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/boss_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "b_straw_giant"
+display_name = "Straw Giant"
+hp = 4000.0
+speed = 70.0
+contact_damage = 24.0
+xp = 95.0
+radius = 76.0
+script_path = "res://scripts/entities/boss_banyan_wraith.gd"
+timber = 7
+warning_text = "The Straw Giant rises from the field!"
+params = {"root_interval": 2.0, "root_radius": 120.0, "root_delay": 1.0, "root_damage": 26.0, "summon_interval": 6.5, "summon_id": "e_moth", "summon_count": 8.0}
+texture = "res://assets/sprites/b_straw_giant.svg"
+behaviour = "boss"

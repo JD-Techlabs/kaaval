@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="BossData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/boss_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "b_night_colossus"
+display_name = "Night Colossus"
+hp = 13500.0
+speed = 100.0
+contact_damage = 34.0
+xp = 200.0
+radius = 92.0
+script_path = "res://scripts/entities/boss_eclipse_beast.gd"
+timber = 0
+warning_text = "The Night Colossus blots out the stars!"
+params = {"light_radius": 340.0, "pattern_interval": 3.0, "telegraph": 0.65, "charge_speed": 760.0, "charge_time": 0.7, "ring_bullets": 18.0, "bullet_speed": 340.0, "bullet_damage": 18.0, "bullet_radius": 16.0, "bullet_life": 5.0, "root_count": 4.0, "root_radius": 125.0, "root_delay": 0.9, "root_damage": 32.0, "root_spread": 260.0, "enrage_hp_pct": 0.3, "enrage_speed_mult": 1.4, "enrage_interval_mult": 0.55}
+texture = "res://assets/sprites/b_night_colossus.svg"
+behaviour = "boss"
