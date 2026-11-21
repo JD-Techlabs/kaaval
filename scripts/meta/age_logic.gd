@@ -92,6 +92,7 @@ static func advance() -> bool:
 	for kind: String in target.advance_cost.keys():
 		GameState.spend(kind, int(target.advance_cost[kind]))
 	GameState.p["age"] = target.id
+	ProductionLogic.sync_clocks()
 	Analytics.log_event("age_advance", {"age": target.id})
 	GameState.save()
 	GameState.changed.emit()
@@ -100,7 +101,9 @@ static func advance() -> bool:
 
 ## Resources a finished run pays: {kind: amount}. `age_id` is the age the run was played in.
 ## Timber is not included; it keeps its own boss + dawn formula (RunCommit.timber_for).
-static func run_resources(age_id: String, seconds: float, victory: bool, bosses: int, night_mult: float) -> Dictionary:
+## `bonus` is the hero's {kind: fraction} on top.
+static func run_resources(age_id: String, seconds: float, victory: bool, bosses: int, night_mult: float,
+		bonus: Dictionary = {}) -> Dictionary:
 	var played: AgeData = age(age_id)
 	if played == null:
 		played = ages()[0]
@@ -112,7 +115,7 @@ static func run_resources(age_id: String, seconds: float, victory: bool, bosses:
 		var base: float = seconds / 60.0 * float(rates.get("per_minute", 0.0)) + bosses * float(rates.get("per_boss", 0.0))
 		if victory:
 			base += float(rates.get("dawn", 0.0))
-		var value: int = roundi(base * played.resource_mult * night_mult)
+		var value: int = roundi(base * played.resource_mult * night_mult * (1.0 + float(bonus.get(kind, 0.0))))
 		if value > 0:
 			out[kind] = value
 	return out

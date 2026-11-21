@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="LandData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/land_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "land_works"
+display_name = "Ironworks Yard"
+sort_order = 4
+description = "Black earth with oil beneath it."
+coin_cost = 12000
+required_age = "age_steam"
+ground_color = Color(0.145, 0.149, 0.173, 1)

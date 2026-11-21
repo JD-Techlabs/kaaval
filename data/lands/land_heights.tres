@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="LandData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/land_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "land_heights"
+display_name = "Steel Heights"
+sort_order = 5
+description = "High ground for the village's strongest defences."
+coin_cost = 20000
+required_age = "age_steel"
+ground_color = Color(0.169, 0.184, 0.239, 1)

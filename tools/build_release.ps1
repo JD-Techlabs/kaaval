@@ -1,8 +1,8 @@
 # Builds the signed release AAB for Google Play.
 #
 # Before running, set these environment variables (never commit them):
-#   $env:GODOT_ANDROID_KEYSTORE_RELEASE_PATH     = "C:\secure\kaaval-upload.keystore"
-#   $env:GODOT_ANDROID_KEYSTORE_RELEASE_USER     = "kaaval-upload"
+#   $env:GODOT_ANDROID_KEYSTORE_RELEASE_PATH     = "C:\secure\kavaryn-upload.keystore"
+#   $env:GODOT_ANDROID_KEYSTORE_RELEASE_USER     = "kavaryn-upload"
 #   $env:GODOT_ANDROID_KEYSTORE_RELEASE_PASSWORD = "<your password>"
 # and create release_config\ads_release.json (see release_config.example).
 #
@@ -11,7 +11,7 @@
 param(
     [string]$Godot = ".tools\Godot_v4.7.2-stable_win64_console.exe",
     [string]$Preset = "Android Release",
-    [string]$Output = "build\kaaval-release.aab"
+    [string]$Output = "build\kavaryn-release.aab"
 )
 
 $ErrorActionPreference = "Stop"

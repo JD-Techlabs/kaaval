@@ -16,6 +16,7 @@ bonus_text = "+%s max HP"
 bonus_is_percent = false
 reroll_levels = Array[int]([])
 revive_unlock_level = 0
+extra_costs = {"food": 15}
 village_pos = Vector2(0.76, 0.26)
 wall_color = Color(0.784, 0.722, 0.541, 1)
 roof_color = Color(0.310, 0.541, 0.357, 1)

@@ -34,6 +34,7 @@ static func draw(c: CanvasItem, data: BuildingData, stage: int) -> float:
 			_healer_extras(c, stage)
 		_:
 			top = _house(c, data, stage)
+			VillageArtExtras.draw(c, data, stage, top)
 	return top
 
 

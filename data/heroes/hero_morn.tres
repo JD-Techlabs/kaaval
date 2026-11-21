@@ -12,6 +12,7 @@ texture = "res://assets/sprites/hero_morn.svg"
 starting_weapon = "w_bamboo_spear"
 sort_order = 5
 mods = Array[Dictionary]([{"stat": "max_hp", "mode": "pct", "value": 0.4}, {"stat": "damage_mult", "mode": "add", "value": 0.25}, {"stat": "area_mult", "mode": "add", "value": 0.2}, {"stat": "hp_regen", "mode": "add", "value": 1.5}, {"stat": "armor", "mode": "add", "value": 2.0}, {"stat": "xp_mult", "mode": "add", "value": 0.15}])
+resource_bonus = {"food": 0.08, "stone": 0.08, "knowledge": 0.08, "oil": 0.08, "rare_metals": 0.08}
 tier = "Elite"
 unlock_coins = 0
 pieces_needed = 0

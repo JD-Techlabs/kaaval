@@ -27,7 +27,7 @@ func _ready() -> void:
 	UiKit.safe_area(self, 120).add_child(column)
 	var logo: TextureRect = UiKit.icon("res://icon.svg", 420.0)
 	column.add_child(logo)
-	var title: Label = UiKit.label("KAAVAL", 120, UiKit.GOLD)
+	var title: Label = UiKit.label("KAVARYN", 120, UiKit.GOLD)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	column.add_child(title)
 	var subtitle: Label = UiKit.label("Guardians of Dawn", UiKit.FONT_BIG, UiKit.TEXT)

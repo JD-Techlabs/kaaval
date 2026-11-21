@@ -6,7 +6,7 @@ var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
 ## Plenty of currency, in the last age so no building is capped by age.
 func _rich() -> void:
-	GameState.grant({"coins": 1_000_000, "timber": 10_000, "gems": 10_000})
+	GameState.grant({"coins": 1_000_000, "timber": 10_000, "gems": 10_000, "food": 1_000_000})
 	GameState.p["age"] = "age_circuits"
 
 
@@ -103,7 +103,8 @@ func test_library_gives_rerolls_and_lamp_tower_unlocks_revive() -> void:
 	assert_eq(library.rerolls_at(3), 1)
 	assert_eq(library.rerolls_at(9), 3)
 	assert_eq(GameData.building("bld_lamp_tower").revive_unlock_level, 1)
-	assert_eq(GameData.buildings().size(), 7)
+	assert_eq(LandLogic.buildings_on("land_core").size(), 7, "the spec's seven on the village green")
+	assert_eq(GameData.buildings().size(), 16, "plus nine age buildings")
 
 
 func test_hero_unlock_with_coins() -> void:

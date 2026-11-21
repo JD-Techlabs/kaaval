@@ -199,6 +199,8 @@ func _flash(node: Label, text: String, seconds: float) -> void:
 func _process(delta: float) -> void:
 	var state: RunState = run.state
 	var seconds: int = int(state.time)
+	# The intro card belongs to the first seconds of the night (also when a capture skips ahead).
+	_intro.visible = state.time < GameData.num("objective", "intro_seconds") + 0.6
 	@warning_ignore("integer_division")
 	_timer.text = "%d:%02d" % [seconds / 60, seconds % 60]
 	_xp.max_value = XpSystem.xp_to_next(state.level)
@@ -235,7 +237,7 @@ func _rebuild_icons() -> void:
 		child.queue_free()
 	for id: String in run.state.weapons.keys():
 		var tag: String = "EVO" if run.state.evolved.has(id) else str(int(run.state.weapons[id]))
-		_icons.add_child(build_icon(GameData.weapon(id).icon, tag))
+		_icons.add_child(build_icon(WeaponLine.weapon_for(id).icon, tag))
 	for id: String in run.state.passives.keys():
 		_icons.add_child(build_icon(GameData.passive(id).icon, str(int(run.state.passives[id]))))
 

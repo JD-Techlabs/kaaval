@@ -74,6 +74,39 @@ hero("hero_morn", "#d9cfae", "#ff8a2a", "#e3a52c", "#8f5a3a",
      f'<circle cx="48" cy="30" r="30" fill="#ffd36b" opacity="0.16"/>'
      f'<path d="M48 0 L52 10 L62 4 L62 14 L72 14 L66 24 Q56 16 48 18 Q40 16 30 24 L24 14 L34 14 L34 4 L44 10 Z" fill="#ffcf40" stroke="{OUT}" stroke-width="3" stroke-linejoin="round"/>')
 
+# Age looks: the same gear for every guardian, drawn over their own body so
+# each hero keeps their colours and silhouette. One file per hero per age.
+STEEL, BRASS, OLIVE, CYAN = "#8c93a6", "#c9a24a", "#55623a", "#59d6c9"
+AGE_GEAR = {
+    "keeps": (f'<path d="M30 27 Q29 9 48 9 Q67 9 66 27 Q57 22 48 22 Q39 22 30 27 Z" fill="{STEEL}" stroke="{OUT}" stroke-width="3" stroke-linejoin="round"/>'
+              f'<path d="M48 9 V22" stroke="#cfd3dc" stroke-width="3"/><rect x="45.5" y="22" width="5" height="12" rx="2" fill="{STEEL}" stroke="{OUT}" stroke-width="2"/>'
+              f'<path d="M30 49 Q18 48 18 60 L33 60 Z M66 49 Q78 48 78 60 L63 60 Z" fill="{STEEL}" stroke="{OUT}" stroke-width="3" stroke-linejoin="round"/>'),
+    "blackpowder": (f'<path d="M34 52 L62 78" stroke="#5d3a17" stroke-width="6" stroke-linecap="round"/>'
+                    f'<rect x="39" y="56" width="7" height="7" rx="1.5" fill="#3f2b1a" transform="rotate(42 42 59)"/><rect x="50" y="66" width="7" height="7" rx="1.5" fill="#3f2b1a" transform="rotate(42 53 69)"/>'
+                    f'<ellipse cx="48" cy="20" rx="27" ry="6" fill="#2a1c14" stroke="{OUT}" stroke-width="3"/>'
+                    f'<path d="M35 20 Q35 4 48 4 Q61 4 61 20 Z" fill="#2a1c14" stroke="{OUT}" stroke-width="3" stroke-linejoin="round"/>'
+                    f'<path d="M60 12 Q74 4 78 -2 Q76 10 62 16 Z" fill="#e2553d" stroke="{OUT}" stroke-width="2"/>'),
+    "learning": (f'<path d="M24 16 L48 8 L72 16 L48 24 Z" fill="#2b2440" stroke="{OUT}" stroke-width="3" stroke-linejoin="round"/>'
+                 f'<path d="M34 19 V25 Q48 30 62 25 V19" fill="#2b2440" stroke="{OUT}" stroke-width="3"/><path d="M70 16 V30" stroke="#ffd36b" stroke-width="2.5"/><circle cx="70" cy="31" r="2.5" fill="#ffd36b"/>'
+                 f'<circle cx="40" cy="32" r="6" fill="none" stroke="#c9a24a" stroke-width="2"/><circle cx="56" cy="32" r="6" fill="none" stroke="#c9a24a" stroke-width="2"/><path d="M46 32 H50" stroke="#c9a24a" stroke-width="2"/>'
+                 f'<rect x="62" y="68" width="14" height="17" rx="2" fill="#b7a6d6" stroke="{OUT}" stroke-width="2.5"/><path d="M69 68 V85" stroke="{OUT}" stroke-width="1.5"/>'),
+    "steam": (f'<path d="M30 21 H66" stroke="#3f2b1a" stroke-width="5"/>'
+              f'<circle cx="40" cy="20" r="7" fill="#8fd0ff" stroke="{BRASS}" stroke-width="3.5"/><circle cx="56" cy="20" r="7" fill="#8fd0ff" stroke="{BRASS}" stroke-width="3.5"/>'
+              f'<path d="M66 52 Q82 52 82 64 V84" stroke="{BRASS}" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="82" cy="58" r="5" fill="{BRASS}" stroke="{OUT}" stroke-width="2"/>'
+              f'<path d="M30 49 Q20 49 20 58 L32 58 Z" fill="{BRASS}" stroke="{OUT}" stroke-width="3" stroke-linejoin="round"/>'),
+    "steel": (f'<path d="M36 52 Q48 58 60 52 L62 72 Q48 78 34 72 Z" fill="{STEEL}" stroke="{OUT}" stroke-width="3" stroke-linejoin="round"/><path d="M48 55 V75" stroke="#cfd3dc" stroke-width="2"/>'
+              f'<path d="M28 28 Q28 8 48 8 Q68 8 68 28 L64 29 Q60 18 48 18 Q36 18 32 29 Z" fill="{OLIVE}" stroke="{OUT}" stroke-width="3" stroke-linejoin="round"/>'
+              f'<path d="M30 49 Q18 48 18 60 L33 60 Z M66 49 Q78 48 78 60 L63 60 Z" fill="{OLIVE}" stroke="{OUT}" stroke-width="3" stroke-linejoin="round"/>'),
+    "circuits": (f'<path d="M30 28 Q48 22 66 28 L66 36 Q48 40 30 36 Z" fill="{CYAN}" opacity="0.75" stroke="#e7fffb" stroke-width="2"/>'
+                 f'<path d="M38 60 H44 V68 H52 M58 56 V64 H54" stroke="{CYAN}" stroke-width="2.5" fill="none"/><circle cx="52" cy="68" r="2.5" fill="#e7fffb"/><circle cx="54" cy="64" r="2.5" fill="#e7fffb"/>'
+                 f'<circle cx="24" cy="54" r="6" fill="{CYAN}" opacity="0.35"/><circle cx="24" cy="54" r="3.5" fill="#e7fffb"/>'
+                 f'<path d="M66 14 L74 6" stroke="{STEEL}" stroke-width="3"/><circle cx="75" cy="5" r="3" fill="{CYAN}"/>'),
+}
+for hero_name, body in HERO_BODIES.items():
+    for gear_name, gear_svg in AGE_GEAR.items():
+        svg(f"hero_looks/{hero_name}_{gear_name}", 96, 96, body + "\n" + gear_svg)
+
+
 # Android adaptive launcher icon: night-and-dawn background, Lampwarden in the safe zone.
 svg("icon_bg", 432, 432, '<rect width="432" height="432" fill="#101831"/><circle cx="216" cy="300" r="250" fill="#1b2a4f"/><circle cx="216" cy="250" r="150" fill="#ff8a2a" opacity="0.28"/><circle cx="216" cy="250" r="96" fill="#ffb347" opacity="0.22"/><path d="M0 432 Q30 300 100 330 Q130 280 170 330 L170 432 Z M432 432 Q402 300 332 330 Q302 280 262 330 L262 432 Z" fill="#0c312b"/>')
 svg("icon_fg", 432, 432, f'<g transform="translate(100 104) scale(2.3)">{HERO_BODIES["hero_muthu"]}</g>')
@@ -258,6 +291,37 @@ icon("knowledge", "#2b2440", '<path d="M14 28 Q30 22 48 30 V78 Q30 70 14 76 Z" f
 icon("oil", "#1c2228", '<path d="M48 14 Q72 46 72 60 A24 24 0 0 1 24 60 Q24 46 48 14 Z" fill="#2c2c34" stroke="#ffd36b" stroke-width="4" stroke-linejoin="round"/><path d="M36 60 Q38 70 48 72" stroke="#8fd0ff" stroke-width="4" fill="none" stroke-linecap="round"/>')
 icon("rare_metals", "#24283a", '<path d="M14 62 L32 40 H64 L82 62 L64 80 H32 Z" fill="#9fb6d8" stroke="#e7fffb" stroke-width="4" stroke-linejoin="round"/><path d="M32 40 L40 24 H56 L64 40" fill="#c8d8f0" stroke="#e7fffb" stroke-width="3" stroke-linejoin="round"/><path d="M14 62 H82" stroke="#e7fffb" stroke-width="2"/>')
 icon("heal", "#2a3d2c", '<path d="M40 20 H56 V40 H76 V56 H56 V76 H40 V56 H20 V40 H40 Z" fill="#6fe08a" stroke="#e7fffb" stroke-width="3" stroke-linejoin="round"/>')
+
+# --- weapon lines (ages): projectiles, vehicles, tier icons ---------------
+svg("arrow", 64, 16, '<path d="M4 8 H50" stroke="#c48a4a" stroke-width="4" stroke-linecap="round"/><path d="M48 2 L62 8 L48 14 Z" fill="#cfd3dc"/><path d="M4 8 L12 2 M4 8 L12 14" stroke="#e8ecf2" stroke-width="3"/>')
+svg("bullet", 32, 16, '<path d="M2 3 H20 Q30 8 20 13 H2 Z" fill="#ffd36b" stroke="#a8742a" stroke-width="2"/><path d="M0 8 H-0" stroke="#fff"/>')
+svg("shell", 40, 22, '<path d="M2 4 H24 Q38 11 24 18 H2 Z" fill="#8c93a6" stroke="#3a3f4c" stroke-width="2.5"/><rect x="2" y="4" width="6" height="14" fill="#c48a4a"/>')
+svg("missile", 64, 24, '<path d="M8 6 H46 Q60 12 46 18 H8 Z" fill="#e8ecf2" stroke="#3a3f4c" stroke-width="2.5"/><path d="M8 6 L2 0 V24 L8 18 Z" fill="#e2553d"/><path d="M0 9 H-10" stroke="#ffb347" stroke-width="6"/><circle cx="4" cy="12" r="4" fill="#ffb347"/>')
+svg("spark", 48, 48, '<circle cx="24" cy="24" r="20" fill="#ffd36b" opacity="0.35"/><path d="M24 4 L29 19 L44 24 L29 29 L24 44 L19 29 L4 24 L19 19 Z" fill="#fff3c4" stroke="#ffb347" stroke-width="2"/>')
+svg("plasma", 52, 52, '<circle cx="26" cy="26" r="24" fill="#59d6c9" opacity="0.3"/><circle cx="26" cy="26" r="15" fill="#8ff0e6" stroke="#e7fffb" stroke-width="3"/><circle cx="21" cy="21" r="5" fill="#ffffff"/>')
+svg("disc", 48, 48, '<circle cx="24" cy="24" r="20" fill="#9aa5b8" stroke="#e8ecf2" stroke-width="3"/><circle cx="24" cy="24" r="7" fill="#3a3f4c"/><path d="M24 4 L28 12 M44 24 L36 28 M24 44 L20 36 M4 24 L12 20" stroke="#fff" stroke-width="3"/>')
+svg("pike", 96, 20, '<path d="M2 10 H70" stroke="#6b4a2b" stroke-width="6" stroke-linecap="round"/><path d="M66 2 L94 10 L66 18 Z" fill="#cfd3dc" stroke="#3a3f4c" stroke-width="2"/>')
+svg("tank", 150, 90, '<ellipse cx="75" cy="84" rx="70" ry="6" fill="#000" opacity="0.3"/><rect x="10" y="56" width="130" height="26" rx="13" fill="#2f3326" stroke="#141a2e" stroke-width="3"/><circle cx="30" cy="69" r="8" fill="#6b705a"/><circle cx="56" cy="69" r="8" fill="#6b705a"/><circle cx="82" cy="69" r="8" fill="#6b705a"/><circle cx="108" cy="69" r="8" fill="#6b705a"/><circle cx="130" cy="69" r="7" fill="#6b705a"/><path d="M20 56 L30 34 H120 L132 56 Z" fill="#5a6a3a" stroke="#141a2e" stroke-width="3" stroke-linejoin="round"/><rect x="52" y="16" width="46" height="22" rx="6" fill="#6b7d45" stroke="#141a2e" stroke-width="3"/><rect x="96" y="22" width="52" height="9" rx="3" fill="#4a5a30" stroke="#141a2e" stroke-width="2.5"/><circle cx="66" cy="27" r="4" fill="#ffd36b"/>')
+svg("jet", 160, 70, '<path d="M8 36 L120 28 Q154 34 156 36 Q154 38 120 44 Z" fill="#b8c2d6" stroke="#141a2e" stroke-width="3" stroke-linejoin="round"/><path d="M60 32 L96 4 H108 L88 34 Z" fill="#8c98b0" stroke="#141a2e" stroke-width="3" stroke-linejoin="round"/><path d="M60 40 L96 66 H108 L88 38 Z" fill="#8c98b0" stroke="#141a2e" stroke-width="3" stroke-linejoin="round"/><path d="M10 34 L2 18 H16 L28 34 Z" fill="#8c98b0" stroke="#141a2e" stroke-width="3"/><path d="M118 30 Q132 32 136 36 L118 38 Z" fill="#59d6c9"/><path d="M8 36 H-20" stroke="#ffb347" stroke-width="8" opacity="0.7"/>')
+
+T = "#2e2a3e"
+icon("t_bow", T, '<path d="M30 14 Q74 48 30 82" stroke="#c48a4a" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M30 14 V82" stroke="#e8ecf2" stroke-width="2"/><path d="M22 48 H82" stroke="#cfd3dc" stroke-width="4"/><path d="M76 42 L86 48 L76 54 Z" fill="#cfd3dc"/>')
+icon("t_musket", T, '<path d="M12 62 L30 56 L84 30" stroke="#6b4a2b" stroke-width="10" stroke-linecap="round"/><path d="M40 51 L86 29" stroke="#8c93a6" stroke-width="5" stroke-linecap="round"/><circle cx="34" cy="60" r="4" fill="#ffd36b"/>')
+icon("t_rifle", T, '<path d="M10 64 L32 58 L88 34" stroke="#4a3a2a" stroke-width="9" stroke-linecap="round"/><path d="M40 52 L90 30" stroke="#5b6478" stroke-width="5" stroke-linecap="round"/><rect x="44" y="40" width="18" height="6" fill="#2c3040" transform="rotate(-24 53 43)"/>')
+icon("t_heavy_gun", T, '<rect x="20" y="40" width="52" height="18" rx="5" fill="#5b6478" stroke="#2c3040" stroke-width="3"/><path d="M70 44 H88 M70 49 H88 M70 54 H88" stroke="#8c93a6" stroke-width="3"/><path d="M30 58 L22 80 M52 58 L60 80" stroke="#3f2b1a" stroke-width="5" stroke-linecap="round"/><path d="M28 40 V30 H44" stroke="#ffd36b" stroke-width="4" fill="none"/>')
+icon("t_tank", T, '<rect x="12" y="56" width="72" height="18" rx="9" fill="#2f3326"/><path d="M18 56 L26 42 H72 L80 56 Z" fill="#5a6a3a"/><rect x="36" y="30" width="26" height="14" rx="4" fill="#6b7d45"/><rect x="60" y="34" width="28" height="6" fill="#4a5a30"/>')
+icon("t_jet", T, '<path d="M10 50 L70 44 Q90 48 90 50 Q90 52 70 56 Z" fill="#b8c2d6"/><path d="M40 46 L60 22 H68 L56 48 Z M40 54 L60 78 H68 L56 52 Z" fill="#8c98b0"/><path d="M12 48 L6 36 H14 L22 48 Z" fill="#8c98b0"/>')
+icon("t_missiles", T, '<path d="M16 66 L66 30" stroke="#e8ecf2" stroke-width="9" stroke-linecap="round"/><path d="M62 26 L76 22 L72 36 Z" fill="#e2553d"/><path d="M30 78 L80 42" stroke="#e8ecf2" stroke-width="9" stroke-linecap="round"/><path d="M76 38 L90 34 L86 48 Z" fill="#e2553d"/><circle cx="14" cy="68" r="6" fill="#ffb347"/><circle cx="28" cy="80" r="6" fill="#ffb347"/>')
+icon("t_cannon", T, '<path d="M18 62 L74 34" stroke="#3a3f4c" stroke-width="18" stroke-linecap="round"/><circle cx="34" cy="68" r="12" fill="#6b4a2b" stroke="#3f2b1a" stroke-width="3"/><circle cx="80" cy="30" r="5" fill="#ffb347"/>')
+icon("t_torch", T, '<path d="M48 82 L42 44 H54 Z" fill="#6b4a2b"/><path d="M48 16 Q64 30 56 44 H40 Q32 30 48 16 Z" fill="#ffb347" stroke="#fff3c4" stroke-width="3"/>')
+icon("t_lantern", T, '<path d="M36 26 H60 L66 70 H30 Z" fill="#fff3c4" opacity="0.85" stroke="#7a5230" stroke-width="4"/><circle cx="48" cy="50" r="9" fill="#ffb347"/><path d="M40 26 Q48 12 56 26" stroke="#7a5230" stroke-width="4" fill="none"/>')
+icon("t_plasma", T, '<circle cx="48" cy="48" r="30" fill="none" stroke="#59d6c9" stroke-width="5" stroke-dasharray="10 6"/><circle cx="48" cy="48" r="14" fill="#8ff0e6" stroke="#e7fffb" stroke-width="3"/>')
+icon("t_flail", T, '<path d="M18 78 L40 50" stroke="#6b4a2b" stroke-width="7" stroke-linecap="round"/><path d="M40 50 Q52 40 58 34" stroke="#cfd3dc" stroke-width="3" stroke-dasharray="4 3" fill="none"/><circle cx="64" cy="28" r="12" fill="#8c93a6"/><path d="M64 12 V18 M80 28 H74 M64 44 V38 M48 28 H54" stroke="#cfd3dc" stroke-width="4"/>')
+icon("t_sabre", T, '<path d="M22 76 Q40 30 80 16" stroke="#e8ecf2" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M16 70 L32 82" stroke="#c48a4a" stroke-width="6" stroke-linecap="round"/>')
+icon("t_hammer", T, '<path d="M30 80 L58 40" stroke="#6b4a2b" stroke-width="8" stroke-linecap="round"/><rect x="46" y="16" width="38" height="24" rx="4" fill="#5b6478" stroke="#2c3040" stroke-width="3" transform="rotate(34 65 28)"/><circle cx="70" cy="22" r="5" fill="#ffd36b"/>')
+icon("t_disc", T, '<circle cx="48" cy="48" r="26" fill="#9aa5b8" stroke="#e8ecf2" stroke-width="4"/><circle cx="48" cy="48" r="9" fill="#2e2a3e"/>')
+icon("t_pike", T, '<path d="M16 80 L70 26" stroke="#6b4a2b" stroke-width="7" stroke-linecap="round"/><path d="M64 20 L84 12 L76 32 Z" fill="#cfd3dc" stroke="#3a3f4c" stroke-width="2"/>')
+
 
 # --- app icon --------------------------------------------------------------
 with open(os.path.join(ROOT, "..", "..", "icon.svg"), "w", encoding="utf-8", newline="\n") as f:

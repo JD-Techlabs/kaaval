@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="LandData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/land_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "land_core"
+display_name = "Village Green"
+sort_order = 0
+description = "The heart of the village."
+coin_cost = 0
+required_age = "age_founders"
+ground_color = Color(0.086, 0.188, 0.169, 1)

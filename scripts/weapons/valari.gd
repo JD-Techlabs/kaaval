@@ -12,7 +12,7 @@ var _spiral_angle: float = 0.0
 func fire() -> bool:
 	var amount: int = int(stat("projectiles"))
 	var origin: Vector2 = run.player.position
-	var texture: Texture2D = tex("valari")
+	var texture: Texture2D = sprite("valari")
 	if stat("spiral") > 0.0:
 		_spiral_angle += 0.9
 		for i: int in amount:

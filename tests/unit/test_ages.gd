@@ -46,6 +46,8 @@ func test_every_requirement_is_reachable_in_the_age_before() -> void:
 		assert_gt(list[i].resource_mult, before.resource_mult, "%s pays more" % list[i].id)
 		for id: String in list[i].required_buildings.keys():
 			assert_not_null(GameData.building(id), "%s needs real building %s" % [list[i].id, id])
+			var land: LandData = GameData.land(GameData.building(id).land)
+			assert_lte(AgeLogic.number(land.required_age), i, "%s: %s stands on land open in an earlier age" % [list[i].id, id])
 			assert_lte(int(list[i].required_buildings[id]), before.building_cap, "%s %s fits the earlier cap" % [list[i].id, id])
 		for kind: String in list[i].advance_cost.keys():
 			assert_true(before.resources.has(kind), "%s costs %s, earned in %s" % [list[i].id, kind, before.id])
@@ -67,7 +69,7 @@ func test_new_and_old_profiles_start_in_the_first_age() -> void:
 
 
 func test_building_cap_blocks_upgrades_until_next_age() -> void:
-	GameState.grant({"coins": 1_000_000, "timber": 10_000})
+	GameState.grant({"coins": 1_000_000, "timber": 10_000, "food": 10_000})
 	_set_levels({"bld_blacksmith": 3})
 	assert_eq(VillageLogic.blocker("bld_blacksmith"), "Next age needed")
 	assert_false(VillageLogic.start("bld_blacksmith"))
@@ -77,7 +79,7 @@ func test_building_cap_blocks_upgrades_until_next_age() -> void:
 
 func test_advance_needs_buildings_then_resources() -> void:
 	assert_eq(AgeLogic.blocker(), "Upgrade buildings")
-	_set_levels({"bld_blacksmith": 3, "bld_healer": 3, "bld_granary": 2})
+	_set_levels({"bld_blacksmith": 3, "bld_healer": 3, "bld_granary": 2, "bld_farm": 2})
 	assert_eq(AgeLogic.blocker(), "Need resources")
 	GameState.grant({"food": 249, "timber": 30})
 	assert_false(AgeLogic.advance())
@@ -97,7 +99,7 @@ func test_final_age_cannot_advance() -> void:
 
 
 func test_advance_survives_a_restart() -> void:
-	_set_levels({"bld_blacksmith": 3, "bld_healer": 3, "bld_granary": 2})
+	_set_levels({"bld_blacksmith": 3, "bld_healer": 3, "bld_granary": 2, "bld_farm": 2})
 	GameState.grant({"food": 300, "timber": 30})
 	assert_true(AgeLogic.advance())
 	GameState.reset_profile()
@@ -129,7 +131,7 @@ func test_rare_metals_come_from_bosses_and_dawn_only() -> void:
 
 func test_commit_grants_resources_for_the_age_played() -> void:
 	RunCommit.commit(_run("age_founders", false, 300.0), 0)
-	assert_eq(GameState.amount("food"), 40)
+	assert_eq(GameState.amount("food"), 44, "40 food + Lampwarden's 10%")
 	assert_eq(GameState.amount("stone"), 0, "stone is not open in the first age")
 	RunCommit.commit(_run("age_keeps", false, 300.0), 0)
-	assert_eq(GameState.amount("stone"), roundi(25 * 1.25))
+	assert_eq(GameState.amount("stone"), roundi(25 * 1.25), "no stone bonus for Lampwarden")

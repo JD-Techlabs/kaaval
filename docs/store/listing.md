@@ -1,12 +1,12 @@
 # Google Play store listing
 
-Developer name: **JD Techlabs**. Package: `com.jdtechlabs.kaaval`. Support email: jdtechlabs.support@gmail.com.
+Developer name: **JD Techlabs**. Package: `com.jdtechlabs.kavaryn`. Support email: jdtechlabs.support@gmail.com.
 
 Check the game name and the hero names for trademark and Play availability before publishing (spec §19).
 
 ## App name (max 30 characters)
 
-KAAVAL: Guardians of Dawn
+Kavaryn: Guardians of Dawn
 
 ## Short description (max 80 characters)
 
@@ -30,9 +30,16 @@ SIX GUARDIANS
 • Reach level 10, 20 and 30 in a night to earn Hero Gifts. Collect hero pieces from gifts to unlock new guardians.
 
 EVERY NIGHT BUILDS SOMETHING
-• Win or lose, you bring coins and timber home.
+• Win or lose, you bring coins, timber, food and more home.
 • Rebuild the Blacksmith, Healer's Hut, Watchtower, Granary, Training Ground, Library and Lamp Tower. You can see each one grow.
+• Buy new land and raise farms, quarries, mills, oil wells and workshops that keep producing while you are away.
 • A stronger village makes a stronger guardian. More lamps light up as it grows.
+
+LEAD YOUR VILLAGE THROUGH SEVEN AGES
+• From the Founders' Age to the Age of Keeps, the Blackpowder Age, the Age of Learning, the Age of Steam, the Age of Steel and the Age of Circuits.
+• Each age opens new resources, new buildings and higher building levels.
+• Your guardian's weapon grows with the village: from a sling to bows, muskets, rifles and heavy guns, with tanks, jets and missiles called in at the end.
+• Every guardian has their own weapon line, their own look in each age, and a bonus to one resource.
 
 FACE WHAT HIDES IN THE DARK
 • Shadow Wisps, Thorn Crawlers, Gloom Moths, Shell Beetles, Hollow Shades, Mud Golems and ember-stealing Lantern Thieves.
@@ -92,6 +99,6 @@ All in `docs/store/graphics/`, produced by `tools/store_graphics.ps1`:
 
 - `icon_512.png` — store icon, 512×512.
 - `feature_graphic.png` — 1024×500.
-- `screenshot_1_village.png` … `screenshot_5_missions.png` — phone screenshots, 9:16.
+- `screenshot_1_village.png` … `screenshot_6_ages.png` — phone screenshots, 9:16.
 
 Re-run the script after any visual change so the store matches the game.

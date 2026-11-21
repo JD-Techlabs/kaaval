@@ -34,7 +34,14 @@ func stat(key: String) -> float:
 
 
 func damage() -> float:
-	return stat("damage") * run.player.stats.damage_mult
+	return stat("damage") * data.power * run.player.stats.damage_mult
+
+
+## The weapon line's sprite for this age, else the weapon's own default sprite.
+func sprite(default_name: String) -> Texture2D:
+	if data.sprite.is_empty():
+		return tex(default_name)
+	return load(data.sprite) as Texture2D
 
 
 ## Any size-like stat, scaled by the hero's area multiplier.

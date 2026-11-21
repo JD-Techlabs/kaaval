@@ -31,6 +31,14 @@ func building_timber_cost(target_level: int) -> int:
 	return roundi(_c("timber_base") * pow(_c("timber_growth"), target_level - from_level))
 
 
+## Extra resource costs to reach `target_level`: {kind: amount}.
+func building_resource_costs(data: BuildingData, target_level: int) -> Dictionary:
+	var out: Dictionary = {}
+	for kind: String in data.extra_costs.keys():
+		out[kind] = roundi(float(data.extra_costs[kind]) * pow(_c("resource_cost_growth"), target_level - 1))
+	return out
+
+
 ## Build time in seconds to reach `target_level`.
 func build_seconds(target_level: int, timer_mult: float) -> float:
 	var from_level: int = int(_c("timer_from_level"))

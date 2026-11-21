@@ -1,4 +1,4 @@
-# PROGRESS — KAAVAL: Guardians of Dawn
+# PROGRESS — Kavaryn: Guardians of Dawn
 
 Last updated: 2026-11-21
 
@@ -8,14 +8,14 @@ Phases 0–7 are implemented in code. The owner asked for the whole game in one 
 
 | Phase | State | Verified how |
 |---|---|---|
-| 0 Project setup | Done | Headless import, 164 GUT tests pass |
+| 0 Project setup | Done | Headless import, 198 GUT tests pass |
 | 1 Core loop | Done | Simulated 15-minute run in tests; played on desktop and Android emulator |
 | 2 Content | Done | Tests: every weapon damages, every evolution obtainable, 3 bosses spawn, wave timeline |
 | 3 Meta-progression | Done | Tests: save round-trip/migration/corruption, wall-clock timers across restart, economy |
 | 4 UI polish & juice | Done, with a deviation (original art instead of Kenney packs, see Decisions) | Screenshots on desktop and emulator |
 | 5 Monetization | Code done. **Not verified with real purchases or real ads** | Mock store tests; on the emulator the billing and AdMob plugins load and the consent call completes |
 | 6 Remote config & analytics | Done. Remote URL is empty until you host the JSON | Tests: overrides change scaling and rewards |
-| 7 Release prep | Debug APK builds and runs on the emulator. **Signed AAB not built** (needs your keystore, package name, AdMob IDs) | `build/kaaval-debug.apk` |
+| 7 Release prep | Debug APK builds and runs on the emulator. **Signed AAB not built** (needs your keystore, package name, AdMob IDs) | `build/kavaryn-debug.apk` |
 
 ## Not verified — needs you
 
@@ -43,8 +43,8 @@ Follow `docs/RELEASE_CHECKLIST.md` for all of these.
 
 # Debug APK, then install on a connected phone
 $env:JAVA_TOOL_OPTIONS = "-Djava.net.preferIPv4Stack=true"
-.tools\Godot_v4.7.2-stable_win64_console.exe --headless --path . --export-debug "Android" build\kaaval-debug.apk
-adb install -r build\kaaval-debug.apk
+.tools\Godot_v4.7.2-stable_win64_console.exe --headless --path . --export-debug "Android" build\kavaryn-debug.apk
+adb install -r build\kavaryn-debug.apk
 ```
 
 The headless exporter sometimes does not exit after printing `[ DONE ] export`; the APK is complete at that point and the process can be closed.
@@ -218,13 +218,65 @@ Decisions (stage 1):
 - The night's existing `coin_mult` (×1.0 / ×1.3 / ×1.7) also multiplies resources.
 - All numbers are first guesses; tune them after playing.
 
+Stage 2 (done): buildings, production and land
+- *Land* (`data/lands/*.tres`, `scripts/resources/land_data.gd`, `scripts/meta/land_logic.gd`): Village Green (free, the spec's seven buildings), Riverside Fields (500 coins, Founders'), Stony Hill (2,000, Keeps), Mill Row (5,000, Blackpowder), Ironworks Yard (12,000, Steam), Steel Heights (20,000, Steel), Circuit Park (30,000, Circuits). Owned land is saved as `lands` in the profile.
+- *Village map.* The village view now scrolls: the green fills the screen as before, and each piece of land is a band below it, with a fence and its name. Land not bought is dimmed with "For sale · N coins" or "Opens in the …"; tapping it opens a land panel with Buy. A tap that moves more than 24 px counts as a scroll.
+- *Nine new buildings* (still `BuildingData`, with new `land`, `produces`, `per_hour`, `storage_hours`, `extra_costs` fields): Farm (food) and Lumber Camp (timber) on Riverside Fields; Quarry (stone); Food Factory (food) and Timber Mill (timber); Oil Well (oil) and Metal Factory (rare metals); Armory (−2% cooldown per level); AI Lab (+6% production for every producer per level). The Library also makes knowledge from the Age of Learning. Each new building has its own details drawn next to the shared house shape (`scripts/ui/village_art_extras.gd`).
+- *Production* (`scripts/meta/production_logic.gd`): wall-clock, so it runs while the app is closed. Each producer stores up to 8 hours, and only makes resources its age has opened. A bubble above the building shows what is waiting; the building panel shows stored/capacity and Collect; a "Collect +N" button next to the age bar collects everything. Part-units carry over between collections. Upgrading a producer banks what it made at the old level first.
+- *Resource costs.* Building upgrades now also cost resources: 15 food at L1 for the green's buildings, and resources from their own age for the new ones, ×1.45 per level (`economy.resource_cost_growth`).
+- *Age requirements* now include the producers: Keeps needs Farm L2, Blackpowder Quarry L3, Learning Food Factory L3 and Timber Mill L2, Steel Oil Well L4 and Metal Factory L3, Circuits Armory L5.
+- The screenshot tool takes `--scroll=<px>`; the demo profile owns three pieces of land with producers running.
+
+Decisions (stage 2):
+- Rare metals now open in the Age of Steam (where the Metal Factory is), not Steel. Steel and Circuits cost 25 and 60 rare metals to enter.
+- Land is fixed bands with set spots, not free placement: simpler on a phone and keeps every building tappable.
+- The Learning age gets no land of its own; its building is the existing Library, which now makes knowledge.
+- A producer whose resource is not open yet starts counting when the age opens it (via `sync_clocks` on the home screen and on advancing), so it can be full right away.
+- The "all buildings level 5" achievement and the village lamps now count all 16 buildings, so both are slower to reach.
+
+Stage 3 (done): weapon ladder
+- *Weapon lines* (`data/weapon_lines/line_*.tres`, `scripts/resources/weapon_line_data.gd`, `scripts/run/weapon_line.gd`): each hero's starting weapon has seven tiers, one per age. A tier gives the weapon a new name, description, icon and projectile/flame sprite, a damage multiplier (×1.0, 1.2, 1.45, 1.7, 2.0, 2.3, 2.7, new `WeaponData.power`) and flat stat gains (more projectiles, pierce, flames, reach, faster cooldown). Lampwarden follows the owner's ladder: Sling Stone → Longbow → Musket → Rifle → Heavy Gun → Heavy Gun + Tank → Heavy Gun + Air Support (jet and missiles). The other five heroes have their own lines (Voltmantle: crossbow, hand cannon, volley and rotary guns, rocket battery, jet; Kindlecrest: torches, flares, lanterns, gaslight, arc lamps, plasma halo; Banyanshield: flail, bayonet, sabre, steam hammer, tank; Galestride: boomerang, steel discs, buzz blades, jet; Mornhelm: pike, bayonet lance, harpoon gun, rail spike, tank).
+- Only the hero's own starting weapon is tiered; other weapons picked up in a run stay as they are. The tiered weapon is used in the run, the HUD, level-up and chest cards, and the Heroes screen.
+- *Strikes* (`scripts/run/strike_caller.gd`), from the Age of Steel: **tank** drives across the view below the hero firing explosive shells at the nearest creatures; **jet** flies across the view along a creature's row, hitting everything on its path once; **missiles** fire a volley of explosive missiles at the nearest creatures. First strike 3 s into the night, then every `cooldown` × the hero's cooldown; damage × the hero's damage. Numbers are in each line's data.
+- New original art in `tools/gen_art.py`: arrow, bullet, shell, missile, spark, plasma, disc and pike projectiles, tank and jet sprites, 16 tier icons.
+- `balance_probe` and the screenshot tool take `--age=<id>`. How to play mentions the weapon upgrades.
+
+Bot medians, Forest Edge, Lampwarden, 4 seeds, every building at the age's cap: Founders' 3:32, Keeps 3:35, Blackpowder 3:30, Learning 5:31, Steam 10:05, Steel 10:12, Circuits 14:38. The ladder outpaces the harder creatures from the Age of Learning on; the late ages may be too easy for a person who dodges. Levers: tier `power`, strike damage, and the ages' `enemy_hp_mult`.
+
+Decisions (stage 3):
+- The tier damage is a separate `power` multiplier rather than a change to `params.damage`, so evolutions (which override params) keep the age bonus.
+- The age weapon is read from the selected hero and the current age (`WeaponLine.weapon_for`), not stored per run; the age cannot change during a night.
+- Strikes are not weapon slots or level-up cards; they come with the tier.
+
+Stage 4 (done): hero looks, hero bonuses, strike visibility, balance
+- *Age looks.* Every age after the first has its own gear (`AgeData.hero_gear`): Keeps steel helm and pauldrons, Blackpowder wide hat and bandolier, Learning scholar's cap, spectacles and book, Steam brass goggles and pipes, Steel combat helmet and chest plate, Circuits glowing visor and circuit lines. `tools/gen_art.py` draws the gear over each hero's own body (36 sprites in `assets/sprites/hero_looks/`), so heroes keep their colours and silhouette; skins still tint them. Used in the night, on the home screen and on the Heroes screen (`HeroData.texture_for`). The shop keeps the base look.
+- *Hero resource bonuses* (`HeroData.resource_bonus`, applied when the night is committed, shown on the Heroes screen): Lampwarden +10% food, Kindlecrest +15% knowledge, Galestride +15% oil, Banyanshield +15% stone, Voltmantle +20% rare metals, Mornhelm +8% of every resource.
+- *Strikes are visible at night.* Tank and jet sprites are drawn on a screen layer above the darkness (below the run UI), placed from their world position each frame.
+- *Balance.* Later ages are tougher: creature HP ×1.6 / 1.9 / 2.3 and damage ×1.14 / 1.22 / 1.3 in Steam / Steel / Circuits (was 1.45 / 1.6 / 1.8 and 1.12 / 1.16 / 1.2). Kindlecrest's line gets more flames and faster hits in later tiers.
+
+Bot medians after stage 4 (Forest Edge, buildings at the age's cap, 4–6 seeds; noisy): Lampwarden Founders' 3:21, Learning 5:31, Steam 12:33, Steel 8:28, Circuits 13:46. Kindlecrest Founders' 2:06, Learning 2:55, Steam 3:59, Steel 4:11, Circuits 4:15. The bot never dodges, which hurts the close-range orbit hero most; Kindlecrest was already behind Lampwarden before the ages (2:06 vs 3:21). **Play the late ages with Kindlecrest** before release; levers are her line's `power`/`add` values and her base stats.
+
+Decisions (stage 4):
+- One set of gear shared by all heroes, drawn over each hero, rather than 36 separate designs.
+- Bonuses apply to night rewards only, not to building production.
+
+The four-stage ages feature is complete.
+
+Follow-ups after stage 4:
+- The tank's row now moves with the hero, so it always crosses the screen.
+- Store listing describes the ages, land and production, and the weapon ladder (2,935 of 4,000 characters). `tools/store_graphics.ps1` adds `screenshot_6_ages.png` (the age panel); all store graphics were regenerated.
+- The night intro card hides once the night is past its first seconds (night time, not real time), so captures that skip ahead no longer show it.
+- `docs/ARCHITECTURE.md` covers the new data, logic and run parts.
+
+**Rename (2026-11-21).** Another app on Play is already called Kaaval, so the owner renamed the game to **Kavaryn: Guardians of Dawn**. The package changed from `com.jdtechlabs.kaaval` to `com.jdtechlabs.kavaryn` (nothing had been uploaded yet, so this was still possible). Updated: project name, both export presets (app name "Kavaryn", output files `kavaryn-*`), splash, home and settings titles, feature graphic, store listing, privacy policy, credits, docs and build-script examples. The save-file checksum salt keeps its old value on purpose: it is never shown and changing it would invalidate saves. Phones with the old debug build keep it as a separate app (different package); uninstall it to free the space. On desktop the save folder follows the project name, so desktop testing starts with a fresh profile.
+
 ## Known issues
 
 - Later ages are harder (creature HP up to ×1.8) but nothing makes the hero stronger per age until stage 3 (weapon ladder). Until then, the building cap rising is the only counterweight.
 - With bots surviving 3–4 minutes, a run in Founders' Age pays about 30 food; Age of Keeps needs 250 food and 30 timber. Expect several nights per age early on.
 
 - `scripts/run/run_manager.gd` is about 455 lines, over the 300-line preference.
-- Package name is `com.jdtechlabs.kaaval`, developer JD Techlabs, support email set (2026-11-16). `data/app_config.json` still has a placeholder privacy policy URL: the policy must be hosted first.
+- Package name is `com.jdtechlabs.kavaryn` (renamed 2026-11-21), developer JD Techlabs, support email set. `data/app_config.json` still has a placeholder privacy policy URL: the policy must be hosted first.
 - The first frame after launch on Android compiles shaders (a one-time "Failed to load cached shader, recompiling" warning in logcat).
 - Thrown-weapon and hit sounds are throttled to one per 45 ms; no separate volume buses.
 - Target API level is Godot's default. Play may require a newer one at upload time.

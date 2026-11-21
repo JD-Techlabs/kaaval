@@ -1,6 +1,6 @@
 # Credits
 
-KAAVAL: Guardians of Dawn
+Kavaryn: Guardians of Dawn
 
 ## Game
 

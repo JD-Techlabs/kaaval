@@ -23,12 +23,12 @@ const BAR_OFFSET_Y: float = 54.0
 var _iframe_time: float
 
 
-func setup(hero: HeroData, tint: Color, p_stats: PlayerStats) -> void:
+func setup(hero: HeroData, tint: Color, p_stats: PlayerStats, age: AgeData = null) -> void:
 	stats = p_stats
 	hp = stats.max_hp
 	_iframe_time = GameData.num("combat", "iframes")
 	sprite = Sprite2D.new()
-	sprite.texture = load(hero.texture) as Texture2D
+	sprite.texture = load(hero.texture_for(age)) as Texture2D
 	sprite.modulate = tint
 	add_child(sprite)
 	hp_changed.connect(queue_redraw)

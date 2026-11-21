@@ -12,6 +12,7 @@ texture = "res://assets/sprites/hero_gale.svg"
 starting_weapon = "w_valari"
 sort_order = 2
 mods = Array[Dictionary]([{"stat": "move_speed", "mode": "pct", "value": 0.15}, {"stat": "damage_mult", "mode": "add", "value": 0.1}, {"stat": "cooldown_mult", "mode": "add", "value": -0.1}])
+resource_bonus = {"oil": 0.15}
 tier = "Good"
 unlock_coins = 0
 pieces_needed = 10

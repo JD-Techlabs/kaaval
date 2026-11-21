@@ -11,6 +11,9 @@ extends Resource
 @export var tagline: String = ""
 ## Resources that runs pay out while in this age (timber is always paid).
 @export var resources: Array[String] = []
+## Gear the heroes wear in this age ("" = their own look). Picks
+## res://assets/sprites/hero_looks/<hero id>_<gear>.svg.
+@export var hero_gear: String = ""
 ## Highest building level allowed in this age.
 @export var building_cap: int = 3
 ## Building levels needed to advance INTO this age: {building_id: level}.

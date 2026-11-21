@@ -9,7 +9,7 @@ func refresh() -> void:
 	var amount: int = int(stat("flames"))
 	while _flames.size() < amount:
 		var flame: Sprite2D = Sprite2D.new()
-		flame.texture = tex("flame")
+		flame.texture = sprite("flame")
 		add_child(flame)
 		_flames.append(flame)
 	while _flames.size() > amount:

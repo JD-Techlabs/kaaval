@@ -40,7 +40,7 @@ static func _credits_text() -> String:
 	var path: String = "res://CREDITS.md"
 	if FileAccess.file_exists(path):
 		return FileAccess.get_file_as_string(path).replace("#", "").replace("|", " ").replace("---", "").strip_edges()
-	return "KAAVAL: Guardians of Dawn"
+	return "Kavaryn: Guardians of Dawn"
 
 
 ## Music / SFX / haptics / damage numbers / joystick size controls.

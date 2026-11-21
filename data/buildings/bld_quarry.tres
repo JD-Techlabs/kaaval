@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="BuildingData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/building_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "bld_quarry"
+display_name = "Quarry"
+description = "Cuts stone from the hill over time."
+max_level = 10
+sort_order = 10
+stat = ""
+mode = "add"
+per_level = 0
+bonus_text = ""
+bonus_is_percent = true
+reroll_levels = Array[int]([])
+revive_unlock_level = 0
+land = "land_hill"
+produces = "stone"
+per_hour = 4
+storage_hours = 8.0
+extra_costs = {"food": 40, "timber": 4}
+village_pos = Vector2(0.5, 0.6)
+wall_color = Color(0.541, 0.576, 0.651, 1)
+roof_color = Color(0.290, 0.310, 0.376, 1)
+emblem = "rocks"

@@ -14,7 +14,7 @@ static func open(run: RunManager) -> Array[Dictionary]:
 		var evo: EvolutionData = evolutions[rng.randi() % evolutions.size()]
 		run.apply_evolution(evo)
 		lines.append({"title": evo.display_name, "tag": "EVOLVE", "desc": evo.description,
-			"icon": GameData.weapon(evo.weapon_id).icon})
+			"icon": WeaponLine.weapon_for(evo.weapon_id).icon})
 	else:
 		var low: int = int(GameData.num("boss_chest", "min_upgrades"))
 		var high: int = int(GameData.num("boss_chest", "max_upgrades"))
@@ -35,7 +35,7 @@ static func describe_card(card: Dictionary) -> Dictionary:
 	var level: int = int(card["level"])
 	match str(card["kind"]):
 		"weapon":
-			var weapon: WeaponData = GameData.weapon(str(card["id"]))
+			var weapon: WeaponData = WeaponLine.weapon_for(str(card["id"]))
 			var desc: String = weapon.description if level <= 1 else "\n".join(weapon.level_changes(level))
 			return {"title": weapon.display_name, "tag": "NEW" if level <= 1 else "Lv %d" % level, "desc": desc, "icon": weapon.icon}
 		"passive":

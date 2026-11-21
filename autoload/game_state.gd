@@ -26,6 +26,8 @@ static func default_profile() -> Dictionary:
 		"coins": 0, "timber": 0, "gems": 0,
 		"food": 0, "stone": 0, "knowledge": 0, "oil": 0, "rare_metals": 0,
 		"age": "age_founders",
+		"lands": [],
+		"production": {},
 		"potions": 0, "gifts": 0,
 		"hero_pieces": {},
 		"buildings": {},

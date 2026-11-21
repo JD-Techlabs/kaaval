@@ -32,7 +32,7 @@ static func pages() -> Array[Dictionary]:
 		{"icon": UiKit.ICON_DIR + "coin.svg", "title": "Grow stronger",
 			"text": "Spend coins and timber on village buildings to make your hero stronger. Reach dawn to unlock the next night. There are %d nights, each with new bosses." % NightLogic.nights().size()},
 		{"icon": UiKit.ICON_DIR + "food.svg", "title": "Grow through the ages",
-			"text": "Nights also bring food, stone and more. Upgrade buildings and gather resources to lead the village from the %s to the %s, %d ages in all. Tap the age bar on the home screen to see what the next age needs." % [AgeLogic.ages()[0].display_name, AgeLogic.ages()[-1].display_name, AgeLogic.ages().size()]},
+			"text": "Nights also bring food, stone and more. Upgrade buildings and gather resources to lead the village from the %s to the %s, %d ages in all. Buy land below the village for farms, quarries and more: they make resources even while you are away. Each age also upgrades your hero's weapon, up to tanks, jets and missiles. Tap the age bar to see what the next age needs." % [AgeLogic.ages()[0].display_name, AgeLogic.ages()[-1].display_name, AgeLogic.ages().size()]},
 	]
 
 

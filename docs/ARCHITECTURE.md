@@ -1,4 +1,4 @@
-# KAAVAL: Guardians of Dawn — Architecture and Flows
+# Kavaryn: Guardians of Dawn — Architecture and Flows
 
 This document explains how the game is put together: the layers, what happens at run time, and which file owns each piece of behaviour. It describes the code as it stands on 2026-11-16.
 
@@ -6,7 +6,7 @@ Related documents: `docs/GAME_SPEC.md` (the design, source of truth), `docs/PROG
 
 ## 1. The game in one paragraph
 
-KAAVAL is a portrait, one-thumb survival game for Android built with Godot 4.7 (GDScript, Compatibility renderer, 1080×1920). The player picks a hero and survives a 15-minute night against waves of creatures; weapons fire on their own, defeated creatures drop embers (XP), and each level-up offers a choice of upgrades. Between nights the player spends coins and timber on a village whose buildings make every later night easier. Money comes from optional in-app purchases and rewarded ads.
+Kavaryn is a portrait, one-thumb survival game for Android built with Godot 4.7 (GDScript, Compatibility renderer, 1080×1920). The player picks a hero and survives a 15-minute night against waves of creatures; weapons fire on their own, defeated creatures drop embers (XP), and each level-up offers a choice of upgrades. Between nights the player spends coins and timber on a village whose buildings make every later night easier. Money comes from optional in-app purchases and rewarded ads.
 
 ## 2. Layers
 
@@ -66,11 +66,14 @@ Registered in `project.godot` and loaded in this order.
 | `data/weapons/*.tres` | `WeaponData` | Eight weapons: level-1 values and per-level growth. |
 | `data/passives/*.tres` | `PassiveData` | Six passives: stat, mode, value per level. |
 | `data/evolutions/*.tres` | `EvolutionData` | Weapon + passive pairs and the evolved weapon's overrides. |
-| `data/heroes/*.tres` | `HeroData` | Six heroes: stat modifiers, starting weapon, strength band, coin price, pieces needed, Play product. |
+| `data/heroes/*.tres` | `HeroData` | Six heroes: stat modifiers, starting weapon, resource bonus, strength band, coin price, pieces needed, Play product. |
+| `data/weapon_lines/*.tres` | `WeaponLineData` | Each hero's starting weapon through the seven ages: name, icon, sprite, power, stat gains, called-in strikes. |
+| `data/ages/*.tres` | `AgeData` | Seven village ages: resources paid, building cap, building levels and resources needed to enter, creature HP/damage and resource multipliers, hero gear. |
+| `data/lands/*.tres` | `LandData` | The village green and six pieces of land: coin price and the age that opens them. |
 | `data/enemies/*.tres` | `EnemyData` | Nine creatures: HP, speed, damage, XP, radius, behaviour, split on death. |
 | `data/bosses/*.tres` | `BossData` | Three bosses: stats, script, warning text, timber reward. |
 | `data/waves/forest_edge.tres` | `WaveData` | The night's timeline: spawn-rate segments, creature mix, timed events (bosses, ring swarm). |
-| `data/buildings/*.tres` | `BuildingData` | Seven buildings: stat bonus per level, village position, colours. |
+| `data/buildings/*.tres` | `BuildingData` | Sixteen buildings: land, stat bonus and/or production per level, storage hours, extra resource costs, position inside the land, colours. |
 | `data/roster.json` | JSON | Creature ranks and which creature debuts at each hero level. |
 | `data/chests.json` | JSON | Drop tables for the Free Chest, Guardian Chest and Hero Gift. Rolls and the on-screen odds both read these weights. |
 | `data/missions.json` | JSON | Daily mission pool, 7-day login calendar, achievements. |
@@ -78,7 +81,7 @@ Registered in `project.godot` and loaded in this order.
 | `data/remote_config_defaults.json` | JSON | Default values for every remotely tunable key. |
 | `data/app_config.json` | JSON | Privacy policy URL, support email, remote config URL, ad unit IDs for debug. |
 
-The Resource classes behind the `.tres` files are in `scripts/resources/` (`weapon_data.gd`, `passive_data.gd`, `evolution_data.gd`, `hero_data.gd`, `enemy_data.gd`, `boss_data.gd`, `wave_data.gd`, `building_data.gd`).
+The Resource classes behind the `.tres` files are in `scripts/resources/` (`weapon_data.gd`, `passive_data.gd`, `evolution_data.gd`, `hero_data.gd`, `enemy_data.gd`, `boss_data.gd`, `wave_data.gd`, `building_data.gd`, `age_data.gd`, `land_data.gd`, `weapon_line_data.gd`).
 
 ## 5. Screens and navigation
 
@@ -132,6 +135,8 @@ Shared UI code:
 | Hero | `scripts/entities/player.gd` | Movement, HP, invulnerability frames, heal, revive, small HP bar. |
 | Hero stats | `scripts/run/player_stats.gd` | `(base + flat) × (1 + percent)` from hero, buildings and passives. Pure. |
 | Weapons | `scripts/weapons/base_weapon.gd` + one file per weapon | Cooldown loop and data-driven stats; each weapon overrides `fire()` or `step()`. |
+| Weapon line | `scripts/run/weapon_line.gd` | `weapon_for()` turns the hero's starting weapon into its tier for the current age (a tiered copy of `WeaponData`). Used by the run and every UI that shows a weapon. |
+| Strikes | `scripts/run/strike_caller.gd` | Tank, jet and missile strikes from the tier's data; vehicles drawn on a screen layer above the darkness. |
 | Creatures | `scripts/run/enemy_manager.gd`, `scripts/entities/enemy.gd` | Pool, movement, crowd spreading, contact damage, damage and death. |
 | Grid | `scripts/run/spatial_grid.gd` | Uniform grid rebuilt each step for fast "who is near here" queries. |
 | Bosses | `scripts/entities/boss.gd`, `boss_thorn_queen.gd`, `boss_banyan_wraith.gd`, `boss_eclipse_beast.gd` | Shared chase and charge, plus each boss's own attacks. |
@@ -206,7 +211,10 @@ All rules are static functions in `scripts/meta/`.
 | Hero Gifts | `gift_logic.gd` | `earned_for_level()` counts gifts for a night's level; `open()` spends one gift and rolls the `hero_gift` table. A hero-piece drop goes to a random collectable hero the player lacks; a complete set unlocks the hero. |
 | Supplies | `supply_logic.gd` | Buy a life potion with coins, or a pack with gems. |
 | Daily systems | `daily_logic.gd` | Three missions per local day (seeded by date), a looping 7-day login calendar, and achievements read from lifetime stats. |
-| Run commit | `run_commit.gd` | Coins and timber for a night, the commit itself, hero unlock with coins, skin purchase with gems. |
+| Run commit | `run_commit.gd` | Coins, timber and age resources (with the hero's bonus) for a night, the commit itself, hero unlock with coins, skin purchase with gems. |
+| Ages | `age_logic.gd` | The current age, what the next one needs (`missing_buildings`, `missing_resources`, `blocker`), `advance()`, and the pure `run_resources()` formula. |
+| Land | `land_logic.gd` | Owned land, `blocker()` (age, coins) and `buy()`. |
+| Production | `production_logic.gd` | Wall-clock output per producer, storage cap, `collect()` / `collect_all()`, the AI Lab's village-wide bonus. |
 
 Buildings affect a night through `PlayerStats.compute()`, which reads the building levels from `GameState` when the night starts.
 
@@ -306,3 +314,7 @@ Commands for running the game, tests and builds are in `docs/PROGRESS.md` under 
 | Products and example prices | `data/products.json` (real prices are set in Play Console) |
 | A screen's layout | its script in `scripts/ui/` |
 | A rule about the profile | the matching file in `scripts/meta/`, with a test |
+| An age (names, caps, requirements, difficulty) | `data/ages/*.tres` |
+| Land prices and order | `data/lands/*.tres` |
+| A hero's weapon in each age, or their strikes | `data/weapon_lines/line_<hero>.tres` |
+| A hero's age look | `AGE_GEAR` in `tools/gen_art.py`, then run it |

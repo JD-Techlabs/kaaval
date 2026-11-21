@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="BuildingData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/building_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "bld_timber_mill"
+display_name = "Timber Mill"
+description = "A water-driven saw that makes timber fast."
+max_level = 10
+sort_order = 12
+stat = ""
+mode = "add"
+per_level = 0
+bonus_text = ""
+bonus_is_percent = true
+reroll_levels = Array[int]([])
+revive_unlock_level = 0
+land = "land_mills"
+produces = "timber"
+per_hour = 1.5
+storage_hours = 8.0
+extra_costs = {"food": 60, "stone": 60}
+village_pos = Vector2(0.72, 0.6)
+wall_color = Color(0.549, 0.416, 0.267, 1)
+roof_color = Color(0.247, 0.353, 0.431, 1)
+emblem = "wheel"

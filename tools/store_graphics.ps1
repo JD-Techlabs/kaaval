@@ -1,5 +1,5 @@
 # Produces every Google Play graphic into docs\store\graphics:
-#   icon_512.png, feature_graphic.png and five 9:16 phone screenshots.
+#   icon_512.png, feature_graphic.png and six 9:16 phone screenshots.
 # Screenshots use a throwaway demo profile; your own save is not touched.
 # They are saved at 1080x1920 whatever the window size.
 #
@@ -24,17 +24,20 @@ Write-Host "Icons..."
 Write-Host "Feature graphic..."
 & $Godot --path . res://tools/feature_graphic.tscn -- --out=docs/store/graphics/feature_graphic.png
 
-# name, screen, seconds of the night to skip first
+# name, screen, seconds of the night to skip first, extra argument ("" = none)
 $shots = @(
-    @("screenshot_1_village", "home", 0),
-    @("screenshot_2_night", "run", 95),
-    @("screenshot_3_swarm", "run", 230),
-    @("screenshot_4_boss", "run", 318),
-    @("screenshot_5_missions", "missions", 0)
+    @("screenshot_1_village", "home", 0, ""),
+    @("screenshot_2_night", "run", 95, ""),
+    @("screenshot_3_swarm", "run", 230, ""),
+    @("screenshot_4_boss", "run", 318, ""),
+    @("screenshot_5_missions", "missions", 0, ""),
+    @("screenshot_6_ages", "home", 0, "--age-panel")
 )
 foreach ($shot in $shots) {
     $file = Join-Path (Resolve-Path $out) ($shot[0] + ".png")
     Write-Host "Screenshot $($shot[0])..."
-    & $Godot --path . --resolution $Resolution -- --screenshot-mode --demo-profile "--goto=$($shot[1])" "--skip=$($shot[2])" --shot-delay=1.5 "--shot=$file"
+    $extra = @()
+    if ($shot[3] -ne "") { $extra = @($shot[3]) }
+    & $Godot --path . --resolution $Resolution -- --screenshot-mode --demo-profile "--goto=$($shot[1])" "--skip=$($shot[2])" --shot-delay=1.5 "--shot=$file" @extra
 }
 Write-Host "Done: $out"

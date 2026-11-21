@@ -12,6 +12,7 @@ texture = "res://assets/sprites/hero_volt.svg"
 starting_weapon = "w_sling"
 sort_order = 4
 mods = Array[Dictionary]([{"stat": "damage_mult", "mode": "add", "value": 0.3}, {"stat": "cooldown_mult", "mode": "add", "value": -0.2}, {"stat": "move_speed", "mode": "pct", "value": 0.1}, {"stat": "max_hp", "mode": "pct", "value": 0.2}, {"stat": "armor", "mode": "add", "value": 1.0}])
+resource_bonus = {"rare_metals": 0.2}
 tier = "Elite"
 unlock_coins = 0
 pieces_needed = 0

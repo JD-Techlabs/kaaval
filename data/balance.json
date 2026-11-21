@@ -108,6 +108,7 @@
     "timber_from_level": 4,
     "timber_base": 2,
     "timber_growth": 1.4,
+    "resource_cost_growth": 1.45,
     "timer_from_level": 4,
     "timer_base_minutes": 5,
     "timer_growth": 1.8,
