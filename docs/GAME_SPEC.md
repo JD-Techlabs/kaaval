@@ -1,4 +1,4 @@
-# KAAVAL: Guardians of Dawn — Game Design & Build Specification
+# Kavaryn: Guardians of Dawn — Game Design & Build Specification
 
 > Working title. Check trademark/Play Store availability before launch.
 > Version 1.0 · Android-first · Godot 4 · Solo developer + Claude Code

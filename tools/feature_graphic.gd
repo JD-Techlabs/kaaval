@@ -34,7 +34,7 @@ func _ready() -> void:
 	_viewport.add_child(art)
 	for entry: Array in CAST:
 		art.add_child(_sprite(str(entry[0]), Vector2(float(entry[1]), float(entry[2])), float(entry[3])))
-	_text(art, "KAAVAL", 132, UiKit.GOLD, Vector2(56.0, 96.0))
+	_text(art, "KAVARYN", 132, UiKit.GOLD, Vector2(56.0, 96.0))
 	_text(art, "Guardians of Dawn", 52, UiKit.TEXT, Vector2(62.0, 262.0))
 	_text(art, "Survive the night. See the dawn.", 30, UiKit.AMBER, Vector2(64.0, 344.0))
 

@@ -29,7 +29,7 @@ func _ready() -> void:
 	_currency_holder = Control.new()
 	_currency_holder.custom_minimum_size = Vector2(0.0, 100.0)
 	column.add_child(_currency_holder)
-	var title: Label = UiKit.label("KAAVAL · Guardians of Dawn", UiKit.FONT, UiKit.GOLD)
+	var title: Label = UiKit.label("Kavaryn · Guardians of Dawn", UiKit.FONT, UiKit.GOLD)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	column.add_child(title)
 	var tip: Label = UiKit.label("Tap a building to build or upgrade it. Scroll down for more land.", UiKit.FONT_SMALL, UiKit.MUTED, true)

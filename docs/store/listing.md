@@ -1,12 +1,12 @@
 # Google Play store listing
 
-Developer name: **JD Techlabs**. Package: `com.jdtechlabs.kaaval`. Support email: jdtechlabs.support@gmail.com.
+Developer name: **JD Techlabs**. Package: `com.jdtechlabs.kavaryn`. Support email: jdtechlabs.support@gmail.com.
 
 Check the game name and the hero names for trademark and Play availability before publishing (spec §19).
 
 ## App name (max 30 characters)
 
-KAAVAL: Guardians of Dawn
+Kavaryn: Guardians of Dawn
 
 ## Short description (max 80 characters)
 

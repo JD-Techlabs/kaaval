@@ -1,4 +1,4 @@
-# KAAVAL: Guardians of Dawn — Architecture and Flows
+# Kavaryn: Guardians of Dawn — Architecture and Flows
 
 This document explains how the game is put together: the layers, what happens at run time, and which file owns each piece of behaviour. It describes the code as it stands on 2026-11-16.
 
@@ -6,7 +6,7 @@ Related documents: `docs/GAME_SPEC.md` (the design, source of truth), `docs/PROG
 
 ## 1. The game in one paragraph
 
-KAAVAL is a portrait, one-thumb survival game for Android built with Godot 4.7 (GDScript, Compatibility renderer, 1080×1920). The player picks a hero and survives a 15-minute night against waves of creatures; weapons fire on their own, defeated creatures drop embers (XP), and each level-up offers a choice of upgrades. Between nights the player spends coins and timber on a village whose buildings make every later night easier. Money comes from optional in-app purchases and rewarded ads.
+Kavaryn is a portrait, one-thumb survival game for Android built with Godot 4.7 (GDScript, Compatibility renderer, 1080×1920). The player picks a hero and survives a 15-minute night against waves of creatures; weapons fire on their own, defeated creatures drop embers (XP), and each level-up offers a choice of upgrades. Between nights the player spends coins and timber on a village whose buildings make every later night easier. Money comes from optional in-app purchases and rewarded ads.
 
 ## 2. Layers
 

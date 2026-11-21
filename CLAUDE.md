@@ -1,4 +1,4 @@
-# CLAUDE.md — KAAVAL: Guardians of Dawn
+# CLAUDE.md — Kavaryn: Guardians of Dawn
 
 Godot 4 roguelite survivor game for Android. Full spec: `docs/GAME_SPEC.md` (source of truth). Progress log: `docs/PROGRESS.md`.
 

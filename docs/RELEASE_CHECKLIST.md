@@ -1,11 +1,11 @@
-# Release checklist — KAAVAL: Guardians of Dawn
+# Release checklist — Kavaryn: Guardians of Dawn
 
 Everything the code can do is done. This list is what **you** must do by hand, in order, with the exact commands. Paths assume Windows PowerShell in the project root.
 
 ## 0. Decisions to make first
 
 - [ ] **Final game name** and trademark / Play Store name check (spec §19).
-- [x] **Package name:** `com.jdtechlabs.kaaval` (set in both presets of `export_presets.cfg` on 2026-11-16). It can never be changed after the first upload.
+- [x] **Package name:** `com.jdtechlabs.kavaryn` (set in both presets of `export_presets.cfg` on 2026-11-21, when the game was renamed from KAAVAL). It can never be changed after the first upload.
 - [ ] Personal vs organisation Play account (personal accounts need the 12-tester closed test, step 9).
 - [ ] Check your employment contract for moonlighting / IP clauses before publishing (spec §19).
 - [x] Support email `jdtechlabs.support@gmail.com` and developer name **JD Techlabs** are set (`data/app_config.json`, privacy policy, store listing, credits).
@@ -21,8 +21,8 @@ Already on this machine: Godot 4.7.2 (`.tools\`), Android SDK, Godot export temp
 ## 2. Test on a real phone (debug build)
 
 ```powershell
-.tools\Godot_v4.7.2-stable_win64_console.exe --headless --path . --export-debug "Android" build\kaaval-debug.apk
-adb install -r build\kaaval-debug.apk
+.tools\Godot_v4.7.2-stable_win64_console.exe --headless --path . --export-debug "Android" build\kavaryn-debug.apk
+adb install -r build\kavaryn-debug.apk
 ```
 
 - [ ] Plays at 60 FPS in the last five minutes of a night on a mid-range phone (the debug overlay bottom-left shows FPS and entity counts).
@@ -32,7 +32,7 @@ adb install -r build\kaaval-debug.apk
 ## 3. Upload keystore (once, keep it forever)
 
 ```powershell
-keytool -genkeypair -v -keystore C:\secure\kaaval-upload.keystore -alias kaaval-upload -keyalg RSA -keysize 2048 -validity 10000
+keytool -genkeypair -v -keystore C:\secure\kavaryn-upload.keystore -alias kavaryn-upload -keyalg RSA -keysize 2048 -validity 10000
 ```
 
 - [ ] Back the keystore and its password up somewhere safe that is **not** this repository. `.gitignore` already blocks `*.keystore` and `*.jks`.
@@ -76,10 +76,10 @@ Play has no consumable/non-consumable switch: all are "in-app products". The gam
 
 ## 6. Hosting (GitHub Pages) — privacy policy and remote config
 
-1. Create a public GitHub repository, e.g. `kaaval-site`.
+1. Create a public GitHub repository, e.g. `kavaryn-site`.
 2. Copy in `docs/store/privacy_policy.html` (developer name, support email and effective date are already filled in; change the date if you publish later) and `docs/remote_config/remote_config.json`.
 3. Repository → Settings → Pages → Deploy from branch `main`, folder `/`.
-4. Your URLs become `https://<user>.github.io/kaaval-site/privacy_policy.html` and `https://<user>.github.io/kaaval-site/remote_config.json`.
+4. Your URLs become `https://<user>.github.io/kavaryn-site/privacy_policy.html` and `https://<user>.github.io/kavaryn-site/remote_config.json`.
 5. Put them in `data/app_config.json` (`privacy_policy_url`, `remote_config_url`).
 
 Changing the hosted JSON changes difficulty and rewards without a new build: the game fetches it at launch (3 s timeout), caches it, and falls back to the bundled defaults. Only the keys already in that file are accepted. GitHub Pages can take a few minutes to serve an edit.
@@ -91,13 +91,13 @@ Before every upload raise `version/code` (must increase each time) and `version/
 ## 8. Build the signed AAB
 
 ```powershell
-$env:GODOT_ANDROID_KEYSTORE_RELEASE_PATH     = "C:\secure\kaaval-upload.keystore"
-$env:GODOT_ANDROID_KEYSTORE_RELEASE_USER     = "kaaval-upload"
+$env:GODOT_ANDROID_KEYSTORE_RELEASE_PATH     = "C:\secure\kavaryn-upload.keystore"
+$env:GODOT_ANDROID_KEYSTORE_RELEASE_USER     = "kavaryn-upload"
 $env:GODOT_ANDROID_KEYSTORE_RELEASE_PASSWORD = "<your password>"
 powershell -ExecutionPolicy Bypass -File tools\build_release.ps1
 ```
 
-The script runs the tests, checks that the package name and ad IDs are real, writes your AdMob App ID into the manifest for this build only, and produces `build\kaaval-release.aab`. Check the AAB is under 80 MB.
+The script runs the tests, checks that the package name and ad IDs are real, writes your AdMob App ID into the manifest for this build only, and produces `build\kavaryn-release.aab`. Check the AAB is under 80 MB.
 
 - [ ] Check the target API level Play currently requires (Play Console warns on upload). If it is newer than Godot's default, set `gradle_build/target_sdk` in the release preset.
 
@@ -115,6 +115,6 @@ Screenshot mode hides the debug overlay. On desktop:
 .tools\Godot_v4.7.2-stable_win64_console.exe --path . -- --screenshot-mode
 ```
 
-Press **F12** at any time; PNGs go to `%APPDATA%\Godot\app_userdata\KAAVAL_ Guardians of Dawn\screenshots`. For Play's phone-screenshot size, set the window to 1080×1920 first (Project Settings → Display → Window → *Window Width/Height Override*), or take them on the phone.
+Press **F12** at any time; PNGs go to `%APPDATA%\Godot\app_userdata\Kavaryn_ Guardians of Dawn\screenshots`. For Play's phone-screenshot size, set the window to 1080×1920 first (Project Settings → Display → Window → *Window Width/Height Override*), or take them on the phone.
 
 Scripted captures: `-- --screenshot-mode --goto=run --skip=400 --shot=C:\shots\run.png` (skips 400 s into a night, saves, quits). `--goto` accepts `home`, `run`, `heroes`, `shop`, `missions`, `settings`. Add `--demo-profile` to capture with a mid-game profile (every building stage, gifts, pieces) without touching your own save.

@@ -1,4 +1,4 @@
-# PROGRESS — KAAVAL: Guardians of Dawn
+# PROGRESS — Kavaryn: Guardians of Dawn
 
 Last updated: 2026-11-21
 
@@ -15,7 +15,7 @@ Phases 0–7 are implemented in code. The owner asked for the whole game in one 
 | 4 UI polish & juice | Done, with a deviation (original art instead of Kenney packs, see Decisions) | Screenshots on desktop and emulator |
 | 5 Monetization | Code done. **Not verified with real purchases or real ads** | Mock store tests; on the emulator the billing and AdMob plugins load and the consent call completes |
 | 6 Remote config & analytics | Done. Remote URL is empty until you host the JSON | Tests: overrides change scaling and rewards |
-| 7 Release prep | Debug APK builds and runs on the emulator. **Signed AAB not built** (needs your keystore, package name, AdMob IDs) | `build/kaaval-debug.apk` |
+| 7 Release prep | Debug APK builds and runs on the emulator. **Signed AAB not built** (needs your keystore, package name, AdMob IDs) | `build/kavaryn-debug.apk` |
 
 ## Not verified — needs you
 
@@ -43,8 +43,8 @@ Follow `docs/RELEASE_CHECKLIST.md` for all of these.
 
 # Debug APK, then install on a connected phone
 $env:JAVA_TOOL_OPTIONS = "-Djava.net.preferIPv4Stack=true"
-.tools\Godot_v4.7.2-stable_win64_console.exe --headless --path . --export-debug "Android" build\kaaval-debug.apk
-adb install -r build\kaaval-debug.apk
+.tools\Godot_v4.7.2-stable_win64_console.exe --headless --path . --export-debug "Android" build\kavaryn-debug.apk
+adb install -r build\kavaryn-debug.apk
 ```
 
 The headless exporter sometimes does not exit after printing `[ DONE ] export`; the APK is complete at that point and the process can be closed.
@@ -268,13 +268,15 @@ Follow-ups after stage 4:
 - The night intro card hides once the night is past its first seconds (night time, not real time), so captures that skip ahead no longer show it.
 - `docs/ARCHITECTURE.md` covers the new data, logic and run parts.
 
+**Rename (2026-11-21).** Another app on Play is already called Kaaval, so the owner renamed the game to **Kavaryn: Guardians of Dawn**. The package changed from `com.jdtechlabs.kaaval` to `com.jdtechlabs.kavaryn` (nothing had been uploaded yet, so this was still possible). Updated: project name, both export presets (app name "Kavaryn", output files `kavaryn-*`), splash, home and settings titles, feature graphic, store listing, privacy policy, credits, docs and build-script examples. The save-file checksum salt keeps its old value on purpose: it is never shown and changing it would invalidate saves. Phones with the old debug build keep it as a separate app (different package); uninstall it to free the space. On desktop the save folder follows the project name, so desktop testing starts with a fresh profile.
+
 ## Known issues
 
 - Later ages are harder (creature HP up to ×1.8) but nothing makes the hero stronger per age until stage 3 (weapon ladder). Until then, the building cap rising is the only counterweight.
 - With bots surviving 3–4 minutes, a run in Founders' Age pays about 30 food; Age of Keeps needs 250 food and 30 timber. Expect several nights per age early on.
 
 - `scripts/run/run_manager.gd` is about 455 lines, over the 300-line preference.
-- Package name is `com.jdtechlabs.kaaval`, developer JD Techlabs, support email set (2026-11-16). `data/app_config.json` still has a placeholder privacy policy URL: the policy must be hosted first.
+- Package name is `com.jdtechlabs.kavaryn` (renamed 2026-11-21), developer JD Techlabs, support email set. `data/app_config.json` still has a placeholder privacy policy URL: the policy must be hosted first.
 - The first frame after launch on Android compiles shaders (a one-time "Failed to load cached shader, recompiling" warning in logcat).
 - Thrown-weapon and hit sounds are throttled to one per 45 ms; no separate volume buses.
 - Target API level is Godot's default. Play may require a newer one at upload time.
