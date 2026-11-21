@@ -8,7 +8,7 @@ Phases 0–7 are implemented in code. The owner asked for the whole game in one 
 
 | Phase | State | Verified how |
 |---|---|---|
-| 0 Project setup | Done | Headless import, 191 GUT tests pass |
+| 0 Project setup | Done | Headless import, 197 GUT tests pass |
 | 1 Core loop | Done | Simulated 15-minute run in tests; played on desktop and Android emulator |
 | 2 Content | Done | Tests: every weapon damages, every evolution obtainable, 3 bosses spawn, wave timeline |
 | 3 Meta-progression | Done | Tests: save round-trip/migration/corruption, wall-clock timers across restart, economy |
@@ -248,9 +248,24 @@ Decisions (stage 3):
 - The age weapon is read from the selected hero and the current age (`WeaponLine.weapon_for`), not stored per run; the age cannot change during a night.
 - Strikes are not weapon slots or level-up cards; they come with the tier.
 
+Stage 4 (done): hero looks, hero bonuses, strike visibility, balance
+- *Age looks.* Every age after the first has its own gear (`AgeData.hero_gear`): Keeps steel helm and pauldrons, Blackpowder wide hat and bandolier, Learning scholar's cap, spectacles and book, Steam brass goggles and pipes, Steel combat helmet and chest plate, Circuits glowing visor and circuit lines. `tools/gen_art.py` draws the gear over each hero's own body (36 sprites in `assets/sprites/hero_looks/`), so heroes keep their colours and silhouette; skins still tint them. Used in the night, on the home screen and on the Heroes screen (`HeroData.texture_for`). The shop keeps the base look.
+- *Hero resource bonuses* (`HeroData.resource_bonus`, applied when the night is committed, shown on the Heroes screen): Lampwarden +10% food, Kindlecrest +15% knowledge, Galestride +15% oil, Banyanshield +15% stone, Voltmantle +20% rare metals, Mornhelm +8% of every resource.
+- *Strikes are visible at night.* Tank and jet sprites are drawn on a screen layer above the darkness (below the run UI), placed from their world position each frame.
+- *Balance.* Later ages are tougher: creature HP ×1.6 / 1.9 / 2.3 and damage ×1.14 / 1.22 / 1.3 in Steam / Steel / Circuits (was 1.45 / 1.6 / 1.8 and 1.12 / 1.16 / 1.2). Kindlecrest's line gets more flames and faster hits in later tiers.
+
+Bot medians after stage 4 (Forest Edge, buildings at the age's cap, 4–6 seeds; noisy): Lampwarden Founders' 3:21, Learning 5:31, Steam 12:33, Steel 8:28, Circuits 13:46. Kindlecrest Founders' 2:06, Learning 2:55, Steam 3:59, Steel 4:11, Circuits 4:15. The bot never dodges, which hurts the close-range orbit hero most; Kindlecrest was already behind Lampwarden before the ages (2:06 vs 3:21). **Play the late ages with Kindlecrest** before release; levers are her line's `power`/`add` values and her base stats.
+
+Decisions (stage 4):
+- One set of gear shared by all heroes, drawn over each hero, rather than 36 separate designs.
+- Bonuses apply to night rewards only, not to building production.
+
+The four-stage ages feature is complete.
+
 ## Known issues
 
-- Strike vehicles are drawn in the world, so the night's darkness dims the tank and jet when they are away from the hero's light.
+- The store listing (`docs/`) does not mention ages, land, production or the weapon ladder yet.
+- The tank's row is fixed in the world when it drives in, so if the hero runs far away it may pass off screen.
 
 - Later ages are harder (creature HP up to ×1.8) but nothing makes the hero stronger per age until stage 3 (weapon ladder). Until then, the building cap rising is the only counterweight.
 - With bots surviving 3–4 minutes, a run in Founders' Age pays about 30 food; Age of Keeps needs 250 food and 30 timber. Expect several nights per age early on.

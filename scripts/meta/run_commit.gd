@@ -17,8 +17,10 @@ static func timber_for(summary: Dictionary) -> int:
 static func resources_for(summary: Dictionary) -> Dictionary:
 	var night: WaveData = NightLogic.night(str(summary.get("night", "")))
 	var night_mult: float = night.coin_mult if night != null else 1.0
+	var hero: HeroData = GameData.hero(str(summary.get("hero", "")))
+	var bonus: Dictionary = hero.resource_bonus if hero != null else {}
 	return AgeLogic.run_resources(str(summary.get("age", "")), float(summary["time"]), bool(summary["victory"]),
-		(summary.get("bosses", []) as Array).size(), night_mult)
+		(summary.get("bosses", []) as Array).size(), night_mult, bonus)
 
 
 static func commit(summary: Dictionary, coins: int) -> void:

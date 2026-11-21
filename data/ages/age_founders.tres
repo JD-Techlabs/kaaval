@@ -9,6 +9,7 @@ display_name = "Founders' Age"
 sort_order = 1
 tagline = "A few huts, a fire, and a watch to keep."
 resources = Array[String](["food", "timber"])
+hero_gear = ""
 building_cap = 3
 required_buildings = {}
 advance_cost = {}

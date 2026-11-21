@@ -12,6 +12,7 @@ texture = "res://assets/sprites/hero_banyan.svg"
 starting_weapon = "w_thorn_whip"
 sort_order = 3
 mods = Array[Dictionary]([{"stat": "max_hp", "mode": "pct", "value": 0.35}, {"stat": "armor", "mode": "add", "value": 2.0}, {"stat": "hp_regen", "mode": "add", "value": 0.5}, {"stat": "damage_mult", "mode": "add", "value": 0.1}])
+resource_bonus = {"stone": 0.15}
 tier = "Better"
 unlock_coins = 0
 pieces_needed = 20

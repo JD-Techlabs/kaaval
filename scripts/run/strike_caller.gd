@@ -5,6 +5,8 @@ extends Node2D
 ## - jet: flies across the view through a creature, hitting all along its path;
 ## - missiles: a volley of explosive missiles from the hero at the nearest creatures.
 ## Numbers come from the strike data; cooldowns scale with the hero's cooldown.
+## Vehicles are drawn on a screen layer above the night's darkness so they stay
+## visible away from the hero's light; their world position is kept in "pos".
 
 const FIRST_DELAY: float = 3.0
 const TANK_SPEED: float = 260.0
@@ -16,12 +18,21 @@ const MISSILE_SPEED: float = 950.0
 const MISSILE_RANGE: float = 1100.0
 const PROJECTILE_RADIUS: float = 18.0
 const PROJECTILE_LIFE: float = 1.6
+## Above the darkness (layer 1); the run UI shares layer 2 and is added later, so it stays on top.
+const OVERLAY_LAYER: int = 2
 
 var run: RunManager
 ## [{"data": strike, "left": seconds}]
 var _strikes: Array[Dictionary] = []
 ## Moving vehicles: {"type", "sprite", "vel", "end_x", "fire_every", "fire_left", "data", "hit"}
 var _vehicles: Array[Dictionary] = []
+var _overlay: CanvasLayer
+
+
+func _ready() -> void:
+	_overlay = CanvasLayer.new()
+	_overlay.layer = OVERLAY_LAYER
+	add_child(_overlay)
 
 
 func setup(p_run: RunManager, strikes: Array[Dictionary]) -> void:
@@ -68,13 +79,20 @@ func call_strike(strike: Dictionary) -> bool:
 func _vehicle(strike: Dictionary, texture_name: String, pos: Vector2, vel: Vector2, end_x: float) -> Dictionary:
 	var sprite_node: Sprite2D = Sprite2D.new()
 	sprite_node.texture = BaseWeapon.tex(texture_name)
-	sprite_node.position = pos
 	sprite_node.flip_h = vel.x < 0.0
-	add_child(sprite_node)
-	var vehicle: Dictionary = {"type": str(strike["type"]), "sprite": sprite_node, "vel": vel, "end_x": end_x,
+	_overlay.add_child(sprite_node)
+	var vehicle: Dictionary = {"type": str(strike["type"]), "sprite": sprite_node, "pos": pos, "vel": vel, "end_x": end_x,
 		"data": strike, "hit": {}, "fire_every": 0.0, "fire_left": 0.0}
 	_vehicles.append(vehicle)
+	_place(vehicle)
 	return vehicle
+
+
+## Screen position and size of a vehicle from its world position.
+func _place(vehicle: Dictionary) -> void:
+	var sprite_node: Sprite2D = vehicle["sprite"]
+	sprite_node.position = run.to_screen(vehicle["pos"])
+	sprite_node.scale = Vector2.ONE * run.zoom
 
 
 func _start_tank(strike: Dictionary) -> bool:
@@ -125,25 +143,26 @@ func _shell(from: Vector2, to: Vector2, strike: Dictionary, texture_name: String
 
 ## Moves one vehicle and lets it act. Returns false once it has left the view.
 func _move(vehicle: Dictionary, delta: float) -> bool:
-	var sprite_node: Sprite2D = vehicle["sprite"]
 	var vel: Vector2 = vehicle["vel"]
-	sprite_node.position += vel * delta
+	var pos: Vector2 = (vehicle["pos"] as Vector2) + vel * delta
+	vehicle["pos"] = pos
+	_place(vehicle)
 	var strike: Dictionary = vehicle["data"]
 	match str(vehicle["type"]):
 		"tank":
 			vehicle["fire_left"] = float(vehicle["fire_left"]) - delta
 			if float(vehicle["fire_left"]) <= 0.0:
 				vehicle["fire_left"] = vehicle["fire_every"]
-				var targets: Array[Enemy] = run.enemies.nearest(sprite_node.position, SHELL_RANGE, 1)
+				var targets: Array[Enemy] = run.enemies.nearest(pos, SHELL_RANGE, 1)
 				if not targets.is_empty():
-					_shell(sprite_node.position, targets[0].position, strike, "shell", SHELL_SPEED)
+					_shell(pos, targets[0].position, strike, "shell", SHELL_SPEED)
 		"jet":
 			var hit: Dictionary = vehicle["hit"]
 			var amount: float = _damage(strike)
-			for enemy: Enemy in run.enemies.query_circle(sprite_node.position, float(strike.get("area", 100.0)) * run.player.stats.area_mult):
+			for enemy: Enemy in run.enemies.query_circle(pos, float(strike.get("area", 100.0)) * run.player.stats.area_mult):
 				var key: int = enemy.get_instance_id()
 				if not hit.has(key):
 					hit[key] = true
 					run.enemies.damage(enemy, amount)
 	var end_x: float = vehicle["end_x"]
-	return sprite_node.position.x < end_x if vel.x > 0.0 else sprite_node.position.x > end_x
+	return pos.x < end_x if vel.x > 0.0 else pos.x > end_x

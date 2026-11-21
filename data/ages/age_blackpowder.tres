@@ -9,6 +9,7 @@ display_name = "Blackpowder Age"
 sort_order = 3
 tagline = "Powder and shot guard the night."
 resources = Array[String](["food", "timber", "stone"])
+hero_gear = "blackpowder"
 building_cap = 5
 required_buildings = {"bld_blacksmith": 4, "bld_healer": 4, "bld_watchtower": 3, "bld_training": 3, "bld_quarry": 3}
 advance_cost = {"food": 600, "timber": 60, "stone": 300}

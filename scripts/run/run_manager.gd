@@ -99,7 +99,7 @@ func _build_world() -> void:
 	player = Player.new()
 	add_child(player)
 	var skin: Dictionary = GameState.selected_skin(hero.id)
-	player.setup(hero, Color(str(skin.get("tint", "#ffffff"))), _compute_stats())
+	player.setup(hero, Color(str(skin.get("tint", "#ffffff"))), _compute_stats(), age)
 	player.position = wave.map_size * 0.5
 	player.died.connect(func() -> void: _died = true)
 	player.hurt.connect(_on_player_hurt)

@@ -74,6 +74,39 @@ hero("hero_morn", "#d9cfae", "#ff8a2a", "#e3a52c", "#8f5a3a",
      f'<circle cx="48" cy="30" r="30" fill="#ffd36b" opacity="0.16"/>'
      f'<path d="M48 0 L52 10 L62 4 L62 14 L72 14 L66 24 Q56 16 48 18 Q40 16 30 24 L24 14 L34 14 L34 4 L44 10 Z" fill="#ffcf40" stroke="{OUT}" stroke-width="3" stroke-linejoin="round"/>')
 
+# Age looks: the same gear for every guardian, drawn over their own body so
+# each hero keeps their colours and silhouette. One file per hero per age.
+STEEL, BRASS, OLIVE, CYAN = "#8c93a6", "#c9a24a", "#55623a", "#59d6c9"
+AGE_GEAR = {
+    "keeps": (f'<path d="M30 27 Q29 9 48 9 Q67 9 66 27 Q57 22 48 22 Q39 22 30 27 Z" fill="{STEEL}" stroke="{OUT}" stroke-width="3" stroke-linejoin="round"/>'
+              f'<path d="M48 9 V22" stroke="#cfd3dc" stroke-width="3"/><rect x="45.5" y="22" width="5" height="12" rx="2" fill="{STEEL}" stroke="{OUT}" stroke-width="2"/>'
+              f'<path d="M30 49 Q18 48 18 60 L33 60 Z M66 49 Q78 48 78 60 L63 60 Z" fill="{STEEL}" stroke="{OUT}" stroke-width="3" stroke-linejoin="round"/>'),
+    "blackpowder": (f'<path d="M34 52 L62 78" stroke="#5d3a17" stroke-width="6" stroke-linecap="round"/>'
+                    f'<rect x="39" y="56" width="7" height="7" rx="1.5" fill="#3f2b1a" transform="rotate(42 42 59)"/><rect x="50" y="66" width="7" height="7" rx="1.5" fill="#3f2b1a" transform="rotate(42 53 69)"/>'
+                    f'<ellipse cx="48" cy="20" rx="27" ry="6" fill="#2a1c14" stroke="{OUT}" stroke-width="3"/>'
+                    f'<path d="M35 20 Q35 4 48 4 Q61 4 61 20 Z" fill="#2a1c14" stroke="{OUT}" stroke-width="3" stroke-linejoin="round"/>'
+                    f'<path d="M60 12 Q74 4 78 -2 Q76 10 62 16 Z" fill="#e2553d" stroke="{OUT}" stroke-width="2"/>'),
+    "learning": (f'<path d="M24 16 L48 8 L72 16 L48 24 Z" fill="#2b2440" stroke="{OUT}" stroke-width="3" stroke-linejoin="round"/>'
+                 f'<path d="M34 19 V25 Q48 30 62 25 V19" fill="#2b2440" stroke="{OUT}" stroke-width="3"/><path d="M70 16 V30" stroke="#ffd36b" stroke-width="2.5"/><circle cx="70" cy="31" r="2.5" fill="#ffd36b"/>'
+                 f'<circle cx="40" cy="32" r="6" fill="none" stroke="#c9a24a" stroke-width="2"/><circle cx="56" cy="32" r="6" fill="none" stroke="#c9a24a" stroke-width="2"/><path d="M46 32 H50" stroke="#c9a24a" stroke-width="2"/>'
+                 f'<rect x="62" y="68" width="14" height="17" rx="2" fill="#b7a6d6" stroke="{OUT}" stroke-width="2.5"/><path d="M69 68 V85" stroke="{OUT}" stroke-width="1.5"/>'),
+    "steam": (f'<path d="M30 21 H66" stroke="#3f2b1a" stroke-width="5"/>'
+              f'<circle cx="40" cy="20" r="7" fill="#8fd0ff" stroke="{BRASS}" stroke-width="3.5"/><circle cx="56" cy="20" r="7" fill="#8fd0ff" stroke="{BRASS}" stroke-width="3.5"/>'
+              f'<path d="M66 52 Q82 52 82 64 V84" stroke="{BRASS}" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="82" cy="58" r="5" fill="{BRASS}" stroke="{OUT}" stroke-width="2"/>'
+              f'<path d="M30 49 Q20 49 20 58 L32 58 Z" fill="{BRASS}" stroke="{OUT}" stroke-width="3" stroke-linejoin="round"/>'),
+    "steel": (f'<path d="M36 52 Q48 58 60 52 L62 72 Q48 78 34 72 Z" fill="{STEEL}" stroke="{OUT}" stroke-width="3" stroke-linejoin="round"/><path d="M48 55 V75" stroke="#cfd3dc" stroke-width="2"/>'
+              f'<path d="M28 28 Q28 8 48 8 Q68 8 68 28 L64 29 Q60 18 48 18 Q36 18 32 29 Z" fill="{OLIVE}" stroke="{OUT}" stroke-width="3" stroke-linejoin="round"/>'
+              f'<path d="M30 49 Q18 48 18 60 L33 60 Z M66 49 Q78 48 78 60 L63 60 Z" fill="{OLIVE}" stroke="{OUT}" stroke-width="3" stroke-linejoin="round"/>'),
+    "circuits": (f'<path d="M30 28 Q48 22 66 28 L66 36 Q48 40 30 36 Z" fill="{CYAN}" opacity="0.75" stroke="#e7fffb" stroke-width="2"/>'
+                 f'<path d="M38 60 H44 V68 H52 M58 56 V64 H54" stroke="{CYAN}" stroke-width="2.5" fill="none"/><circle cx="52" cy="68" r="2.5" fill="#e7fffb"/><circle cx="54" cy="64" r="2.5" fill="#e7fffb"/>'
+                 f'<circle cx="24" cy="54" r="6" fill="{CYAN}" opacity="0.35"/><circle cx="24" cy="54" r="3.5" fill="#e7fffb"/>'
+                 f'<path d="M66 14 L74 6" stroke="{STEEL}" stroke-width="3"/><circle cx="75" cy="5" r="3" fill="{CYAN}"/>'),
+}
+for hero_name, body in HERO_BODIES.items():
+    for gear_name, gear_svg in AGE_GEAR.items():
+        svg(f"hero_looks/{hero_name}_{gear_name}", 96, 96, body + "\n" + gear_svg)
+
+
 # Android adaptive launcher icon: night-and-dawn background, Lampwarden in the safe zone.
 svg("icon_bg", 432, 432, '<rect width="432" height="432" fill="#101831"/><circle cx="216" cy="300" r="250" fill="#1b2a4f"/><circle cx="216" cy="250" r="150" fill="#ff8a2a" opacity="0.28"/><circle cx="216" cy="250" r="96" fill="#ffb347" opacity="0.22"/><path d="M0 432 Q30 300 100 330 Q130 280 170 330 L170 432 Z M432 432 Q402 300 332 330 Q302 280 262 330 L262 432 Z" fill="#0c312b"/>')
 svg("icon_fg", 432, 432, f'<g transform="translate(100 104) scale(2.3)">{HERO_BODIES["hero_muthu"]}</g>')

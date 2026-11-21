@@ -140,7 +140,7 @@ func _refresh() -> void:
 	for child: Node in _hero_row.get_children():
 		child.queue_free()
 	var hero: HeroData = GameData.hero(str(GameState.p["selected_hero"]))
-	var portrait: TextureRect = UiKit.icon(hero.texture, 130.0)
+	var portrait: TextureRect = UiKit.icon(hero.texture_for(AgeLogic.current()), 130.0)
 	portrait.modulate = Color(str(GameState.selected_skin(hero.id).get("tint", "#ffffff")))
 	_hero_row.add_child(portrait)
 	var text: VBoxContainer = UiKit.vbox(4)

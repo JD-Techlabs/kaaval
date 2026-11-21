@@ -72,7 +72,7 @@ func _hero_card(hero: HeroData) -> void:
 	card.add_child(column)
 	var top: HBoxContainer = UiKit.hbox(24)
 	column.add_child(top)
-	var portrait: TextureRect = UiKit.icon(hero.texture, 200.0)
+	var portrait: TextureRect = UiKit.icon(hero.texture_for(AgeLogic.current()), 200.0)
 	portrait.modulate = Color(str(GameState.selected_skin(hero.id).get("tint", "#ffffff")))
 	if not owned:
 		portrait.modulate = Color(0.25, 0.25, 0.3)
@@ -83,6 +83,8 @@ func _hero_card(hero: HeroData) -> void:
 	text.add_child(UiKit.label("%s, %s" % [hero.display_name, hero.title], UiKit.FONT, UiKit.GOLD, true))
 	text.add_child(UiKit.label(hero.tier, UiKit.FONT_SMALL, UiKit.DAWN if hero.tier == "Elite" else UiKit.GOOD))
 	text.add_child(UiKit.label(hero.description, UiKit.FONT_SMALL, UiKit.TEXT, true))
+	if not hero.bonus_text().is_empty():
+		text.add_child(UiKit.label(hero.bonus_text(), UiKit.FONT_SMALL, UiKit.GOLD, true))
 	var stats: PlayerStats = PlayerStats.compute(hero, GameState.building_levels(), {})
 	text.add_child(UiKit.label("HP %d · Speed %d · Starts with %s" % [roundi(stats.max_hp), roundi(stats.move_speed),
 		WeaponLine.weapon_for(hero.starting_weapon, hero.id).display_name], UiKit.FONT_SMALL, UiKit.MUTED, true))
