@@ -16,6 +16,7 @@ bonus_text = "+%s pickup radius"
 bonus_is_percent = true
 reroll_levels = Array[int]([])
 revive_unlock_level = 0
+extra_costs = {"food": 15}
 village_pos = Vector2(0.5, 0.14)
 wall_color = Color(0.604, 0.549, 0.478, 1)
 roof_color = Color(0.420, 0.357, 0.294, 1)

@@ -9,6 +9,7 @@ var _village: VillageView
 var _currency_holder: Control
 var _hero_row: HBoxContainer
 var _age_button: Button
+var _collect_button: Button
 var _nights: NightPicker
 var _start: Button
 var _panel: VBoxContainer
@@ -31,15 +32,28 @@ func _ready() -> void:
 	var title: Label = UiKit.label("KAAVAL · Guardians of Dawn", UiKit.FONT, UiKit.GOLD)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	column.add_child(title)
-	var tip: Label = UiKit.label("Tap a building to build or upgrade it. A green arrow means you can afford it.", UiKit.FONT_SMALL, UiKit.MUTED, true)
+	var tip: Label = UiKit.label("Tap a building to build or upgrade it. Scroll down for more land.", UiKit.FONT_SMALL, UiKit.MUTED, true)
 	tip.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	column.add_child(tip)
+	var age_row: HBoxContainer = UiKit.hbox(12)
+	column.add_child(age_row)
 	_age_button = UiKit.button("", func() -> void: AgePanel.open(self, Callable()), "secondary")
 	_age_button.add_theme_font_size_override("font_size", UiKit.FONT_SMALL)
-	column.add_child(_age_button)
+	_age_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	age_row.add_child(_age_button)
+	_collect_button = UiKit.button("Collect", _collect_all, "good")
+	_collect_button.add_theme_font_size_override("font_size", UiKit.FONT_SMALL)
+	age_row.add_child(_collect_button)
+	var scroll: ScrollContainer = ScrollContainer.new()
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.clip_contents = true
+	column.add_child(scroll)
 	_village = VillageView.new()
 	_village.building_selected.connect(_open_panel)
-	column.add_child(_village)
+	_village.land_selected.connect(func(id: String) -> void: LandPanel.open(self, id))
+	scroll.add_child(_village)
+	scroll.resized.connect(func() -> void: _village.set_visible_height(scroll.size.y))
 	_hero_row = UiKit.hbox()
 	column.add_child(_hero_row)
 	_nights = NightPicker.new()
@@ -68,6 +82,7 @@ func _ready() -> void:
 	GameState.changed.connect(_refresh)
 	AudioManager.play_music("music_night")
 	VillageLogic.complete_due()
+	ProductionLogic.sync_clocks()
 	DailyLogic.ensure_today()
 	_refresh()
 	_maybe_offer_starter_pack()
@@ -89,6 +104,19 @@ func _update_start() -> void:
 	_start.text = "START NIGHT %d" % (_nights.index + 1) if playable else "LOCKED"
 
 
+func _collect_all() -> void:
+	var got: Dictionary = ProductionLogic.collect_all()
+	if not got.is_empty():
+		AudioManager.play("purchase")
+		UiKit.message(self, "Collected", "You collected %s." % UiKit.rewards_text(got))
+
+
+func _update_collect() -> void:
+	var ready: int = ProductionLogic.total_ready()
+	_collect_button.visible = ready > 0
+	_collect_button.text = "Collect +%s" % UiKit.number(ready)
+
+
 func _goto(screen: String) -> void:
 	if screen != "home":
 		SceneRouter.goto(screen)
@@ -98,6 +126,7 @@ func _tick() -> void:
 	if not VillageLogic.complete_due().is_empty():
 		AudioManager.play("levelup")
 	_village.queue_redraw()
+	_update_collect()
 	if _panel != null and is_instance_valid(_panel):
 		BuildingPanel.update_timer(_panel, _panel_id)
 
@@ -121,6 +150,7 @@ func _refresh() -> void:
 	_hero_row.add_child(text)
 	_hero_row.add_child(UiKit.button("Change", func() -> void: SceneRouter.goto("heroes"), "secondary"))
 	_age_button.text = AgePanel.summary_text()
+	_update_collect()
 	(_nav_buttons["missions"] as Button).text = "Missions •" if DailyLogic.anything_claimable() else "Missions"
 	(_nav_buttons["heroes"] as Button).text = "Heroes •" if GiftLogic.count() > 0 else "Heroes"
 	(_nav_buttons["shop"] as Button).text = "Shop •" if ChestLogic.free_remaining() <= 0.0 else "Shop"

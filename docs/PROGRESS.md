@@ -8,7 +8,7 @@ Phases 0–7 are implemented in code. The owner asked for the whole game in one 
 
 | Phase | State | Verified how |
 |---|---|---|
-| 0 Project setup | Done | Headless import, 164 GUT tests pass |
+| 0 Project setup | Done | Headless import, 180 GUT tests pass |
 | 1 Core loop | Done | Simulated 15-minute run in tests; played on desktop and Android emulator |
 | 2 Content | Done | Tests: every weapon damages, every evolution obtainable, 3 bosses spawn, wave timeline |
 | 3 Meta-progression | Done | Tests: save round-trip/migration/corruption, wall-clock timers across restart, economy |
@@ -217,6 +217,22 @@ Decisions (stage 1):
 - Coins do not scale with age (building coin costs do not either), only resources do.
 - The night's existing `coin_mult` (×1.0 / ×1.3 / ×1.7) also multiplies resources.
 - All numbers are first guesses; tune them after playing.
+
+Stage 2 (done): buildings, production and land
+- *Land* (`data/lands/*.tres`, `scripts/resources/land_data.gd`, `scripts/meta/land_logic.gd`): Village Green (free, the spec's seven buildings), Riverside Fields (500 coins, Founders'), Stony Hill (2,000, Keeps), Mill Row (5,000, Blackpowder), Ironworks Yard (12,000, Steam), Steel Heights (20,000, Steel), Circuit Park (30,000, Circuits). Owned land is saved as `lands` in the profile.
+- *Village map.* The village view now scrolls: the green fills the screen as before, and each piece of land is a band below it, with a fence and its name. Land not bought is dimmed with "For sale · N coins" or "Opens in the …"; tapping it opens a land panel with Buy. A tap that moves more than 24 px counts as a scroll.
+- *Nine new buildings* (still `BuildingData`, with new `land`, `produces`, `per_hour`, `storage_hours`, `extra_costs` fields): Farm (food) and Lumber Camp (timber) on Riverside Fields; Quarry (stone); Food Factory (food) and Timber Mill (timber); Oil Well (oil) and Metal Factory (rare metals); Armory (−2% cooldown per level); AI Lab (+6% production for every producer per level). The Library also makes knowledge from the Age of Learning. Each new building has its own details drawn next to the shared house shape (`scripts/ui/village_art_extras.gd`).
+- *Production* (`scripts/meta/production_logic.gd`): wall-clock, so it runs while the app is closed. Each producer stores up to 8 hours, and only makes resources its age has opened. A bubble above the building shows what is waiting; the building panel shows stored/capacity and Collect; a "Collect +N" button next to the age bar collects everything. Part-units carry over between collections. Upgrading a producer banks what it made at the old level first.
+- *Resource costs.* Building upgrades now also cost resources: 15 food at L1 for the green's buildings, and resources from their own age for the new ones, ×1.45 per level (`economy.resource_cost_growth`).
+- *Age requirements* now include the producers: Keeps needs Farm L2, Blackpowder Quarry L3, Learning Food Factory L3 and Timber Mill L2, Steel Oil Well L4 and Metal Factory L3, Circuits Armory L5.
+- The screenshot tool takes `--scroll=<px>`; the demo profile owns three pieces of land with producers running.
+
+Decisions (stage 2):
+- Rare metals now open in the Age of Steam (where the Metal Factory is), not Steel. Steel and Circuits cost 25 and 60 rare metals to enter.
+- Land is fixed bands with set spots, not free placement: simpler on a phone and keeps every building tappable.
+- The Learning age gets no land of its own; its building is the existing Library, which now makes knowledge.
+- A producer whose resource is not open yet starts counting when the age opens it (via `sync_clocks` on the home screen and on advancing), so it can be full right away.
+- The "all buildings level 5" achievement and the village lamps now count all 16 buildings, so both are slower to reach.
 
 ## Known issues
 

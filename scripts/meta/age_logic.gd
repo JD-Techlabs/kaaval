@@ -92,6 +92,7 @@ static func advance() -> bool:
 	for kind: String in target.advance_cost.keys():
 		GameState.spend(kind, int(target.advance_cost[kind]))
 	GameState.p["age"] = target.id
+	ProductionLogic.sync_clocks()
 	Analytics.log_event("age_advance", {"age": target.id})
 	GameState.save()
 	GameState.changed.emit()

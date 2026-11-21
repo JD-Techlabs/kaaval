@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="LandData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/land_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "land_hill"
+display_name = "Stony Hill"
+sort_order = 2
+description = "A rocky rise where stone can be cut."
+coin_cost = 2000
+required_age = "age_keeps"
+ground_color = Color(0.180, 0.192, 0.220, 1)

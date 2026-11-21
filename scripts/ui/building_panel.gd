@@ -13,6 +13,7 @@ static func open(parent: Node, id: String, on_close: Callable) -> VBoxContainer:
 	_centered(content, data.description, UiKit.FONT_SMALL, UiKit.MUTED)
 	if level > 0:
 		_centered(content, "Now: " + data.describe(level), UiKit.FONT, UiKit.TEXT)
+	_production(content, data)
 	var job: Dictionary = VillageLogic.job_for(id)
 	if level < data.max_level:
 		var target: int = level + 1
@@ -22,6 +23,9 @@ static func open(parent: Node, id: String, on_close: Callable) -> VBoxContainer:
 			var timber: int = Economy.building_timber_cost(target)
 			if timber > 0:
 				cost += " + %d timber" % timber
+			var extra: Dictionary = Economy.building_resource_costs(data, target)
+			for kind: String in extra.keys():
+				cost += " + %s %s" % [UiKit.number(int(extra[kind])), UiKit.resource_name(kind)]
 			var seconds: float = Economy.build_seconds(target, RemoteConfig.num("build_timer_multiplier"))
 			var time_text: String = "instant" if seconds <= 0.0 else UiKit.duration(seconds)
 			_centered(content, "Cost: %s  ·  Build time: %s" % [cost, time_text], UiKit.FONT_SMALL, UiKit.GOLD)
@@ -48,6 +52,30 @@ static func open(parent: Node, id: String, on_close: Callable) -> VBoxContainer:
 		UiKit.close_modal(content)
 		on_close.call(), "secondary"))
 	return content
+
+
+## Stored output and Collect for buildings that make resources.
+static func _production(content: VBoxContainer, data: BuildingData) -> void:
+	if data.produces.is_empty() or GameState.building_level(data.id) <= 0:
+		return
+	var kind: String = UiKit.resource_name(data.produces)
+	if not AgeLogic.open_resources().has(data.produces):
+		var opens: String = ""
+		for age: AgeData in AgeLogic.ages():
+			if age.resources.has(data.produces):
+				opens = age.display_name
+				break
+		_centered(content, "Starts making %s in the %s." % [kind, opens], UiKit.FONT_SMALL, UiKit.MUTED)
+		return
+	var ready: int = ProductionLogic.ready(data)
+	_centered(content, "Stored: %s / %s %s" % [UiKit.number(ready), UiKit.number(ProductionLogic.capacity(data)), kind],
+		UiKit.FONT_SMALL, UiKit.GOLD)
+	var collect: Button = UiKit.button("Collect %s %s" % [UiKit.number(ready), kind], func() -> void:
+		if ProductionLogic.collect(data) > 0:
+			GameState.save()
+			AudioManager.play("purchase"), "good")
+	collect.disabled = ready <= 0
+	content.add_child(collect)
 
 
 ## Refreshes the countdown and gem price while a build is running.

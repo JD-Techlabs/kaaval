@@ -38,6 +38,8 @@ static func blocker(id: String) -> String:
 	var target: int = GameState.building_level(id) + 1
 	if target > data.max_level:
 		return "Max level"
+	if not LandLogic.owned(data.land):
+		return "Buy the land first"
 	if target > AgeLogic.building_cap():
 		return "Next age needed"
 	if not job_for(id).is_empty():
@@ -48,15 +50,25 @@ static func blocker(id: String) -> String:
 		return "Not enough coins"
 	if GameState.amount("timber") < Economy.building_timber_cost(target):
 		return "Not enough timber"
+	var extra: Dictionary = Economy.building_resource_costs(data, target)
+	for kind: String in extra.keys():
+		if GameState.amount(kind) < int(extra[kind]):
+			return "Not enough " + kind.replace("_", " ")
 	return ""
 
 
 static func start(id: String) -> bool:
 	if not blocker(id).is_empty():
 		return false
+	var data: BuildingData = GameData.building(id)
 	var target: int = GameState.building_level(id) + 1
+	# Bank what was made at the old level before the level changes.
+	ProductionLogic.collect(data)
 	GameState.spend("coins", Economy.building_coin_cost(target))
 	GameState.spend("timber", Economy.building_timber_cost(target))
+	var extra: Dictionary = Economy.building_resource_costs(data, target)
+	for kind: String in extra.keys():
+		GameState.spend(kind, int(extra[kind]))
 	var seconds: float = Economy.build_seconds(target, RemoteConfig.num("build_timer_multiplier"))
 	if seconds <= 0.0:
 		_finish(id)
@@ -101,4 +113,5 @@ static func skip(id: String) -> bool:
 static func _finish(id: String) -> void:
 	var levels: Dictionary = GameState.p["buildings"]
 	levels[id] = GameState.building_level(id) + 1
+	ProductionLogic.start_clock(GameData.building(id))
 	Analytics.log_event("building_upgrade", {"id": id, "level": int(levels[id])})

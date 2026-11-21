@@ -154,6 +154,17 @@ static func ages() -> Array[AgeData]:
 	return out
 
 
+static func land(id: String) -> LandData:
+	return _dir("lands").get(id) as LandData
+
+
+## Every piece of land, in map order (village green first).
+static func lands() -> Array[LandData]:
+	var out: Array[LandData] = []
+	out.assign(_sorted("lands"))
+	return out
+
+
 static func product(id: String) -> Dictionary:
 	var list: Array = json("products").get("products", [])
 	for entry: Dictionary in list:

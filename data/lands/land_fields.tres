@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="LandData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/land_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "land_fields"
+display_name = "Riverside Fields"
+sort_order = 1
+description = "Rich soil and a wood by the river: room for a farm and a lumber camp."
+coin_cost = 500
+required_age = "age_founders"
+ground_color = Color(0.114, 0.227, 0.149, 1)

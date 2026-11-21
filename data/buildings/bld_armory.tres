@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="BuildingData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/building_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "bld_armory"
+display_name = "Armory"
+description = "Better arms for every guardian: faster attacks."
+max_level = 10
+sort_order = 15
+stat = "cooldown_mult"
+mode = "add"
+per_level = -0.02
+bonus_text = "-%s cooldown"
+bonus_is_percent = true
+reroll_levels = Array[int]([])
+revive_unlock_level = 0
+land = "land_heights"
+produces = ""
+per_hour = 0
+storage_hours = 8.0
+extra_costs = {"stone": 300, "oil": 60, "rare_metals": 6}
+village_pos = Vector2(0.5, 0.6)
+wall_color = Color(0.490, 0.525, 0.600, 1)
+roof_color = Color(0.227, 0.259, 0.337, 1)
+emblem = "shield"

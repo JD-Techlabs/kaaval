@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="LandData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/land_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "land_mills"
+display_name = "Mill Row"
+sort_order = 3
+description = "Flat ground by the stream, good for mills and workshops."
+coin_cost = 5000
+required_age = "age_blackpowder"
+ground_color = Color(0.165, 0.200, 0.141, 1)

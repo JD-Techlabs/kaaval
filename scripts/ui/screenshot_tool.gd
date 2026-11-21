@@ -9,6 +9,7 @@ extends Node
 ##   --night=<id>         with --demo-profile: unlock and pick that night
 ##   --how-to-play        open How to play on the first screen
 ##   --age-panel          open the age panel on the first screen
+##   --scroll=<px>        scroll the village map down this far
 
 const STEP: float = 0.05
 const DEMO_SAVE: String = "user://demo_save.json"
@@ -20,6 +21,7 @@ var _skip: float = 0.0
 var _counter: int = 0
 var _how_to_play: bool = false
 var _age_panel: bool = false
+var _scroll: int = 0
 
 
 func _ready() -> void:
@@ -37,6 +39,8 @@ func _ready() -> void:
 			_how_to_play = true
 		elif arg == "--age-panel":
 			_age_panel = true
+		elif arg.begins_with("--scroll="):
+			_scroll = int(arg.trim_prefix("--scroll="))
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--night="):
 			_unlock_to(arg.trim_prefix("--night="))
@@ -50,9 +54,14 @@ func _ready() -> void:
 func _demo_profile() -> void:
 	SaveManager.path = DEMO_SAVE
 	GameState.reset_profile()
-	var buildings: Array[BuildingData] = GameData.buildings()
+	var buildings: Array[BuildingData] = LandLogic.buildings_on("land_core")
 	for i: int in buildings.size():
 		(GameState.p["buildings"] as Dictionary)[buildings[i].id] = DEMO_LEVELS[i % DEMO_LEVELS.size()]
+	GameState.p["lands"] = ["land_fields", "land_hill", "land_mills"]
+	var demo_producers: Dictionary = {"bld_farm": 5, "bld_lumber_camp": 4, "bld_quarry": 3, "bld_food_factory": 1}
+	for id: String in demo_producers.keys():
+		(GameState.p["buildings"] as Dictionary)[id] = demo_producers[id]
+		(GameState.p["production"] as Dictionary)[id] = GameState.now() - 3.0 * 3600.0
 	GameState.p["hero_pieces"] = {"hero_gale": 6, "hero_banyan": 3}
 	GameState.p["hints_done"] = true
 	GameState.p["runs_played"] = 5
@@ -87,6 +96,9 @@ func _on_screen_changed(_screen: String) -> void:
 		HowToPlay.open(get_tree().current_scene)
 	if _age_panel:
 		AgePanel.open(get_tree().current_scene, Callable())
+	if _scroll > 0:
+		for node: Node in get_tree().current_scene.find_children("*", "ScrollContainer", true, false):
+			(node as ScrollContainer).scroll_vertical = _scroll
 	if _skip > 0.0:
 		_fast_forward()
 	await get_tree().create_timer(_delay).timeout

@@ -16,6 +16,7 @@ bonus_text = "+%s coins from runs"
 bonus_is_percent = true
 reroll_levels = Array[int]([])
 revive_unlock_level = 0
+extra_costs = {"food": 15}
 village_pos = Vector2(0.2, 0.66)
 wall_color = Color(0.851, 0.643, 0.255, 1)
 roof_color = Color(0.659, 0.388, 0.165, 1)

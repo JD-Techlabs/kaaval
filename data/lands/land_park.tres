@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="LandData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/land_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "land_park"
+display_name = "Circuit Park"
+sort_order = 6
+description = "A clean new quarter for clever machines."
+coin_cost = 30000
+required_age = "age_circuits"
+ground_color = Color(0.110, 0.184, 0.227, 1)

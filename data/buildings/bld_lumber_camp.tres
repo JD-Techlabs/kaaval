@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="BuildingData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/building_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "bld_lumber_camp"
+display_name = "Lumber Camp"
+description = "Woodcutters bring in timber over time."
+max_level = 10
+sort_order = 9
+stat = ""
+mode = "add"
+per_level = 0
+bonus_text = ""
+bonus_is_percent = true
+reroll_levels = Array[int]([])
+revive_unlock_level = 0
+land = "land_fields"
+produces = "timber"
+per_hour = 0.5
+storage_hours = 8.0
+extra_costs = {"food": 20}
+village_pos = Vector2(0.72, 0.6)
+wall_color = Color(0.639, 0.471, 0.290, 1)
+roof_color = Color(0.365, 0.227, 0.090, 1)
+emblem = "logs"
