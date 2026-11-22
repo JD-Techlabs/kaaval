@@ -72,8 +72,8 @@ Play has no consumable/non-consumable switch: all are "in-app products". The gam
 
 ## 5. AdMob
 
-- [ ] Create an AdMob account, **add the app** (Android), and create one **Rewarded** ad unit.
-- [ ] Copy `release_config.example\ads_release.json` to `release_config\ads_release.json` and put in your real **App ID** (`ca-app-pub-…~…`) and **rewarded unit ID** (`ca-app-pub-…/…`). That folder is git-ignored. Debug builds never read it and always use Google's test IDs.
+- [x] Create an AdMob account, **add the app** (Android), and create one **Rewarded** ad unit (done 2026-11-21).
+- [x] Copy `release_config.example\ads_release.json` to `release_config\ads_release.json` and put in your real **App ID** (`ca-app-pub-…~…`) and **rewarded unit ID** (`ca-app-pub-…/…`). That folder is git-ignored. Debug builds never read it and always use Google's test IDs; the debug export preset also leaves the folder out of the APK. (Done 2026-11-21.)
 - [ ] **Privacy & messaging → GDPR**: create and publish a consent message for the app. Without it no consent form appears for EEA/UK users.
 - [ ] Put `app-ads.txt` at the **root** of your developer website (AdMob shows the exact line), and set that website as the developer website in Play Console. It must be at `https://<domain>/app-ads.txt`, so the game's Pages site (`jd-techlabs.github.io/kaaval/...`) cannot hold it. With GitHub, create a public repo named exactly `JD-Techlabs.github.io`, put `app-ads.txt` (and optionally a small `index.html`) in it, enable Pages, and use `https://jd-techlabs.github.io` as the developer website. AdMob can take up to 24 hours to find it.
 - [ ] Add your own phone as a **test device** in AdMob before tapping real ads. Never click your own live ads.

@@ -11,6 +11,8 @@ extends Node
 ##   --age-panel          open the age panel on the first screen
 ##   --scroll=<px>        scroll the village map down this far
 ##   --age=<id>           with --demo-profile: put the village in that age
+##   --new-player         use a throwaway brand-new profile (first-launch screens)
+##   --runs=<n>           with --new-player: nights already played (2+ also means the village guide was seen)
 
 const STEP: float = 0.05
 const DEMO_SAVE: String = "user://demo_save.json"
@@ -40,6 +42,9 @@ func _ready() -> void:
 			_how_to_play = true
 		elif arg == "--age-panel":
 			_age_panel = true
+		elif arg == "--new-player":
+			SaveManager.path = DEMO_SAVE
+			GameState.reset_profile()
 		elif arg.begins_with("--scroll="):
 			_scroll = int(arg.trim_prefix("--scroll="))
 	for arg: String in OS.get_cmdline_user_args():
@@ -47,6 +52,11 @@ func _ready() -> void:
 			_unlock_to(arg.trim_prefix("--night="))
 		elif arg.begins_with("--age="):
 			GameState.p["age"] = arg.trim_prefix("--age=")
+		elif arg.begins_with("--runs="):
+			var runs: int = int(arg.trim_prefix("--runs="))
+			GameState.p["runs_played"] = runs
+			GameState.p["hints_done"] = runs > 0
+			GameState.p["village_intro_seen"] = runs >= 2
 	if not _shot_path.is_empty():
 		# Render at the full 1080x1920 design size even in a small desktop window.
 		get_tree().root.content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
@@ -69,6 +79,9 @@ func _demo_profile() -> void:
 	GameState.p["hints_done"] = true
 	GameState.p["runs_played"] = 5
 	GameState.p["starter_pack_shown_at"] = GameState.now()
+	# Captures show the screens themselves, not the one-time village guide or daily popup.
+	GameState.p["village_intro_seen"] = true
+	GameState.p["daily_popup_date"] = GameState.today()
 	GameState.grant({"coins": 4200, "timber": 36, "gems": 180, "potions": 2, "gifts": 3,
 		"food": 1450, "stone": 520, "knowledge": 140})
 	GameState.p["age"] = "age_learning"

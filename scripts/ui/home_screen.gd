@@ -4,13 +4,13 @@ extends Control
 ## the screen), a "tonight" card (hero + night picker), Start Night and the
 ## bottom navigation bar.
 
-## The how-to tip shows only until the village reaches this total level.
-const TIP_UNTIL_LEVEL: int = 3
 
 var _village: VillageView
 var _currency_holder: Control
 var _hero_row: HBoxContainer
 var _tip: Label
+var _age_row: HBoxContainer
+var _scroll: ScrollContainer
 var _nav_holder: MarginContainer
 var _age_button: Button
 var _collect_button: Button
@@ -33,6 +33,7 @@ func _ready() -> void:
 	_currency_holder.custom_minimum_size = Vector2(0.0, 96.0)
 	column.add_child(_currency_holder)
 	var age_row: HBoxContainer = UiKit.hbox(12)
+	_age_row = age_row
 	column.add_child(age_row)
 	_age_button = UiKit.button("", func() -> void: AgePanel.open(self, Callable()), "secondary")
 	_age_button.add_theme_font_size_override("font_size", UiKit.FONT_SMALL)
@@ -43,10 +44,11 @@ func _ready() -> void:
 	_collect_button.add_theme_font_size_override("font_size", UiKit.FONT_SMALL)
 	_collect_button.custom_minimum_size = Vector2(0.0, 104.0)
 	age_row.add_child(_collect_button)
-	_tip = UiKit.label("Tap a building to build or upgrade it. Scroll down for more land.", 28, UiKit.MUTED, true)
+	_tip = UiKit.label("", 28, UiKit.MUTED, true)
 	_tip.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	column.add_child(_tip)
 	var scroll: ScrollContainer = ScrollContainer.new()
+	_scroll = scroll
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	scroll.clip_contents = true
@@ -90,7 +92,7 @@ func _ready() -> void:
 	ProductionLogic.sync_clocks()
 	DailyLogic.ensure_today()
 	_refresh()
-	_maybe_offer_starter_pack()
+	_show_home_popup.call_deferred()
 
 
 ## First press shows How to play (with Skip); after that, straight into the night.
@@ -100,7 +102,7 @@ func _start_night() -> void:
 	if HowToPlay.seen():
 		SceneRouter.goto("run")
 	else:
-		HowToPlay.open(self, func() -> void: SceneRouter.goto("run"))
+		HowToPlay.open(self, func() -> void: SceneRouter.goto("run"), "intro")
 
 
 func _update_start() -> void:
@@ -154,7 +156,14 @@ func _refresh() -> void:
 	change.add_theme_font_size_override("font_size", UiKit.FONT_SMALL)
 	change.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	_hero_row.add_child(change)
-	_tip.visible = VillageLogic.total_level() < TIP_UNTIL_LEVEL
+	# New players see the village green only; ages, Collect and land arrive after the first night.
+	var unlocked: bool = Onboarding.village_unlocked()
+	_age_row.visible = unlocked
+	if _village.show_lands != unlocked:
+		_village.show_lands = unlocked
+		_village.set_visible_height(_scroll.size.y)
+	_tip.visible = Onboarding.show_tip()
+	_tip.text = "Tap a building to build or upgrade it." + (" Scroll down for more land." if unlocked else "")
 	_age_button.text = AgePanel.summary_text()
 	_update_collect()
 	for child: Node in _nav_holder.get_children():
@@ -173,13 +182,22 @@ func _open_panel(id: String) -> void:
 	_panel = BuildingPanel.open(self, id, func() -> void: _panel = null)
 
 
-## Shown once, right after the player's first run (spec §9.2). No fake urgency:
-## the 72 h countdown starts here and never resets.
-func _maybe_offer_starter_pack() -> void:
-	if int(GameState.p["runs_played"]) < 1 or float(GameState.p["starter_pack_shown_at"]) > 0.0:
-		return
-	if BillingService.is_owned("starter_pack") or not RemoteConfig.flag("starter_pack_enabled"):
-		return
+## At most one popup per visit (Onboarding.next_home_popup): the village guide
+## after the first night, then the daily reward, then the starter pack.
+func _show_home_popup() -> void:
+	match Onboarding.next_home_popup():
+		"village_intro":
+			Onboarding.mark_village_intro_seen()
+			HowToPlay.open(self, Callable(), "village")
+		"daily":
+			DailyPopup.open(self)
+		"starter_pack":
+			_offer_starter_pack()
+
+
+## Offered once after the first night (spec §9.2). No fake urgency: the 72 h
+## countdown starts here and never resets.
+func _offer_starter_pack() -> void:
 	GameState.p["starter_pack_shown_at"] = GameState.now()
 	GameState.save()
 	var product: Dictionary = GameData.product("starter_pack")

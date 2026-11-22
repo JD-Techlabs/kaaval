@@ -130,6 +130,7 @@ func test_rare_metals_come_from_bosses_and_dawn_only() -> void:
 
 
 func test_commit_grants_resources_for_the_age_played() -> void:
+	GameState.p["runs_played"] = 1  # a returning player: no first-night bonus
 	RunCommit.commit(_run("age_founders", false, 300.0), 0)
 	assert_eq(GameState.amount("food"), 44, "40 food + Lampwarden's 10%")
 	assert_eq(GameState.amount("stone"), 0, "stone is not open in the first age")

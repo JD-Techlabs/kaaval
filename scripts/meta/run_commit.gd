@@ -26,6 +26,7 @@ static func resources_for(summary: Dictionary) -> Dictionary:
 static func commit(summary: Dictionary, coins: int) -> void:
 	GameState.grant({"coins": coins, "timber": timber_for(summary), "gifts": int(summary.get("gifts", 0))})
 	GameState.grant(resources_for(summary))
+	GameState.grant(Onboarding.first_night_bonus())
 	GameState.spend("potions", mini(int(summary.get("potions_used", 0)), GameState.amount("potions")))
 	DailyLogic.record_run(summary)
 	NightLogic.record_run(summary)

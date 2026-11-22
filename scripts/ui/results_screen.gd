@@ -32,6 +32,9 @@ static func open(parent: Node, summary: Dictionary) -> void:
 	var resources: Dictionary = RunCommit.resources_for(summary)
 	for kind: String in resources.keys():
 		_line(content, UiKit.resource_name(kind).capitalize(), UiKit.number(int(resources[kind])))
+	var bonus: Dictionary = Onboarding.first_night_bonus()
+	if not bonus.is_empty():
+		_line(content, "First night bonus", "+" + UiKit.rewards_text(bonus))
 	var gifts: int = int(summary.get("gifts", 0))
 	if gifts > 0:
 		_line(content, "Hero gifts", "+%d" % gifts)

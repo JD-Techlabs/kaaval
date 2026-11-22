@@ -37,6 +37,8 @@ var _font: Font
 ## Building id -> drawn height, from the last art pass.
 var _tops: Dictionary = {}
 var _core_height: float = 700.0
+## False until the first night is played: only the village green is shown.
+var show_lands: bool = true
 var _press: Vector2 = Vector2.INF
 var _icons: Dictionary = {}
 
@@ -51,7 +53,8 @@ func _ready() -> void:
 ## The village green fills the visible area; land bands extend below it.
 func set_visible_height(height: float) -> void:
 	_core_height = maxf(height, 400.0)
-	custom_minimum_size.y = _core_height + BAND_HEIGHT * float(GameData.lands().size() - 1)
+	var bands: int = GameData.lands().size() - 1 if show_lands else 0
+	custom_minimum_size.y = _core_height + BAND_HEIGHT * float(bands)
 	queue_redraw()
 
 
@@ -99,7 +102,7 @@ func _tap(pos: Vector2) -> void:
 			building_selected.emit(data.id)
 			return
 	for land: LandData in GameData.lands():
-		if not LandLogic.owned(land.id) and land_rect(land).has_point(pos):
+		if show_lands and not LandLogic.owned(land.id) and land_rect(land).has_point(pos):
 			AudioManager.play("click")
 			land_selected.emit(land.id)
 			return
@@ -118,8 +121,9 @@ func _draw() -> void:
 	buildings.sort_custom(func(a: BuildingData, b: BuildingData) -> bool: return _centre(a).y < _centre(b).y)
 	for data: BuildingData in buildings:
 		_draw_building(data)
-	for land: LandData in GameData.lands():
-		_draw_land_edge(land)
+	if show_lands:
+		for land: LandData in GameData.lands():
+			_draw_land_edge(land)
 	for data: BuildingData in buildings:
 		_draw_label(data)
 
