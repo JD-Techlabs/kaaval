@@ -74,6 +74,7 @@ func test_builder_slots() -> void:
 
 
 func test_run_commit_grants_rewards_once() -> void:
+	GameState.p["runs_played"] = 1  # a returning player: no first-night bonus
 	var summary: Dictionary = {"hero": "hero_muthu", "victory": true, "time": 900.0, "kills": 1600,
 		"kills_by_type": {"e_wisp": 1600}, "level": 30, "bonus_coins": 0, "boss_timber": 9,
 		"bosses": ["b_crawler_queen", "b_banyan_wraith"], "evolutions": 1, "coin_mult": 1.0}
@@ -84,4 +85,4 @@ func test_run_commit_grants_rewards_once() -> void:
 	assert_eq(GameState.amount("timber"), 19)
 	assert_eq(GameState.stat("dawns"), 1)
 	assert_eq(GameState.stat("kills"), 1600)
-	assert_eq(int(GameState.p["runs_played"]), 1)
+	assert_eq(int(GameState.p["runs_played"]), 2, "one more night played")

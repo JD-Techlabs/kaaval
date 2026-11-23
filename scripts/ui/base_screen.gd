@@ -1,12 +1,14 @@
 class_name BaseScreen
 extends Control
-## Common frame for menu screens: background, safe area, header with back
-## button + currencies, and a scrolling content column. Subclasses fill
-## `content` in build(); refresh() rebuilds after the profile changes.
+## Common frame for menu screens: background, safe area, title + currencies,
+## a scrolling content column and the bottom navigation bar (no top-left back
+## button: navigation stays within thumb reach; Android back goes home).
+## Subclasses fill `content` in build(); refresh() rebuilds after the profile changes.
 
 var title_text: String = ""
 var content: VBoxContainer
 var _currency_holder: Control
+var _nav_holder: MarginContainer
 var _refresh_queued: bool = false
 
 
@@ -19,17 +21,11 @@ func _ready() -> void:
 	add_child(background)
 	var column: VBoxContainer = UiKit.vbox(20)
 	UiKit.safe_area(self).add_child(column)
-	var header: HBoxContainer = UiKit.hbox()
-	column.add_child(header)
-	var back: Button = UiKit.button("‹", func() -> void: SceneRouter.goto("home"), "secondary")
-	back.add_theme_font_size_override("font_size", UiKit.FONT_BIG)
-	header.add_child(back)
-	var title: Label = UiKit.label(title_text, UiKit.FONT_BIG, UiKit.GOLD)
-	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	header.add_child(title)
 	_currency_holder = Control.new()
 	_currency_holder.custom_minimum_size = Vector2(0.0, 100.0)
 	column.add_child(_currency_holder)
+	var title: Label = UiKit.label(title_text, UiKit.FONT_BIG, UiKit.GOLD)
+	column.add_child(title)
 	var scroll: ScrollContainer = ScrollContainer.new()
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -37,6 +33,8 @@ func _ready() -> void:
 	content = UiKit.vbox(20)
 	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(content)
+	_nav_holder = MarginContainer.new()
+	column.add_child(_nav_holder)
 	GameState.changed.connect(refresh)
 	_rebuild()
 
@@ -60,6 +58,9 @@ func _rebuild() -> void:
 	var bar: HBoxContainer = UiKit.currency_bar(SceneRouter.current != "shop")
 	bar.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_currency_holder.add_child(bar)
+	for child: Node in _nav_holder.get_children():
+		child.queue_free()
+	_nav_holder.add_child(NavBar.build(SceneRouter.current, NavBar.badges()))
 	for child: Node in content.get_children():
 		content.remove_child(child)
 		child.queue_free()

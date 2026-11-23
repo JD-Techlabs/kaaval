@@ -26,15 +26,24 @@ func _ready() -> void:
 	run.run_ended.connect(func(summary: Dictionary) -> void: ResultsScreen.open(self, summary))
 
 
+## System events (focus lost, app backgrounded, back gesture) arrive while Godot
+## is passing the notification down the tree, and nodes cannot gain children
+## then ("Parent node is busy setting up children"). Opening the pause menu
+## directly used to fail silently while the night was already paused, leaving
+## the game stuck; so handle them on the next idle frame instead.
 func _notification(what: int) -> void:
 	match what:
 		NOTIFICATION_APPLICATION_PAUSED, NOTIFICATION_APPLICATION_FOCUS_OUT:
-			open_pause()
+			open_pause.call_deferred()
 		NOTIFICATION_WM_GO_BACK_REQUEST:
-			if _pause_modal != null:
-				_resume()
-			else:
-				open_pause()
+			_on_back.call_deferred()
+
+
+func _on_back() -> void:
+	if _pause_modal != null:
+		_resume()
+	else:
+		open_pause()
 
 
 func _process(delta: float) -> void:

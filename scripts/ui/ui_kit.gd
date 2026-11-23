@@ -23,8 +23,13 @@ const FONT_SMALL: int = 30
 const FONT_BIG: int = 56
 const FONT_HUGE: int = 84
 const ICON_DIR: String = "res://assets/sprites/icons/"
+const FONT_FILE: String = "res://assets/fonts/Fredoka.ttf"
+## Variable-font weights: body text and big headings.
+const WEIGHT_BODY: int = 500
+const WEIGHT_HEADING: int = 600
 
 static var _theme: Theme
+static var _fonts: Dictionary = {}
 
 
 static func box(color: Color, radius: int = 22, border: Color = Color.TRANSPARENT, pad: int = 22) -> StyleBoxFlat:
@@ -42,6 +47,7 @@ static func theme() -> Theme:
 	if _theme != null:
 		return _theme
 	_theme = Theme.new()
+	_theme.default_font = font()
 	_theme.default_font_size = FONT
 	_theme.set_color("font_color", "Label", TEXT)
 	_theme.set_stylebox("normal", "Button", box(AMBER))
@@ -63,10 +69,23 @@ static func theme() -> Theme:
 	return _theme
 
 
+## The game font at a weight (Fredoka, a variable font; OFL, see CREDITS.md).
+static func font(weight: int = WEIGHT_BODY) -> Font:
+	if not _fonts.has(weight):
+		var variation: FontVariation = FontVariation.new()
+		variation.base_font = load(FONT_FILE) as Font
+		variation.variation_opentype = {"weight": weight}
+		_fonts[weight] = variation
+	var out: Font = _fonts[weight]
+	return out
+
+
 static func label(text: String, size: int = FONT, color: Color = TEXT, wrap: bool = false) -> Label:
 	var node: Label = Label.new()
 	node.text = text
 	node.add_theme_font_size_override("font_size", size)
+	if size >= FONT_BIG:
+		node.add_theme_font_override("font", font(WEIGHT_HEADING))
 	node.add_theme_color_override("font_color", color)
 	if wrap:
 		node.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART

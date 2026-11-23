@@ -21,30 +21,8 @@ func build() -> void:
 
 func _calendar() -> void:
 	section("Daily login")
-	var days: HBoxContainer = UiKit.hbox(8)
-	content.add_child(days)
-	var next_index: int = DailyLogic.login_day_index()
+	content.add_child(DailyPopup.calendar_strip())
 	var available: bool = DailyLogic.login_available()
-	var calendar: Array = DailyLogic.calendar()
-	for i: int in calendar.size():
-		var entry: Dictionary = calendar[i]
-		var claimed: bool = i < next_index or (not available and next_index == 0)
-		var is_next: bool = i == next_index and available
-		var cell: PanelContainer = UiKit.panel(UiKit.PANEL_LIGHT if claimed else UiKit.PANEL, UiKit.GOLD if is_next else Color.TRANSPARENT)
-		cell.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		var column: VBoxContainer = UiKit.vbox(4)
-		cell.add_child(column)
-		var day: Label = UiKit.label("Day %d" % int(entry["day"]), 24, UiKit.MUTED)
-		day.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		column.add_child(day)
-		var rewards: Dictionary = entry["rewards"]
-		var kind: String = str(rewards.keys()[0])
-		var icon_name: String = {"coins": "coin", "timber": "timber", "gems": "gem"}[kind]
-		column.add_child(UiKit.icon(UiKit.ICON_DIR + icon_name + ".svg", 56.0))
-		var value: Label = UiKit.label("✓" if claimed else str(int(rewards[kind])), 26, UiKit.GOOD if claimed else UiKit.TEXT)
-		value.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		column.add_child(value)
-		days.add_child(cell)
 	var claim: Button = UiKit.button("Claim today's reward" if available else "Come back tomorrow", func() -> void:
 		var rewards: Dictionary = DailyLogic.claim_login()
 		if not rewards.is_empty():

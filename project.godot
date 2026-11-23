@@ -48,6 +48,10 @@ window/handheld/orientation=1
 
 enabled=PackedStringArray("res://addons/GodotGooglePlayBilling/plugin.cfg", "res://addons/admob/plugin.cfg", "res://addons/gut/plugin.cfg")
 
+[gui]
+
+theme/custom_font="res://assets/fonts/Fredoka.ttf"
+
 [input_devices]
 
 pointing/emulate_touch_from_mouse=true

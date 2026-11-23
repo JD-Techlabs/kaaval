@@ -8,7 +8,7 @@ Phases 0–7 are implemented in code. The owner asked for the whole game in one 
 
 | Phase | State | Verified how |
 |---|---|---|
-| 0 Project setup | Done | Headless import, 198 GUT tests pass |
+| 0 Project setup | Done | Headless import, 208 GUT tests pass |
 | 1 Core loop | Done | Simulated 15-minute run in tests; played on desktop and Android emulator |
 | 2 Content | Done | Tests: every weapon damages, every evolution obtainable, 3 bosses spawn, wave timeline |
 | 3 Meta-progression | Done | Tests: save round-trip/migration/corruption, wall-clock timers across restart, economy |
@@ -270,18 +270,41 @@ Follow-ups after stage 4:
 
 **Rename (2026-11-21).** Another app on Play is already called Kaaval, so the owner renamed the game to **Kavaryn: Guardians of Dawn**. The package changed from `com.jdtechlabs.kaaval` to `com.jdtechlabs.kavaryn` (nothing had been uploaded yet, so this was still possible). Updated: project name, both export presets (app name "Kavaryn", output files `kavaryn-*`), splash, home and settings titles, feature graphic, store listing, privacy policy, credits, docs and build-script examples. The save-file checksum salt keeps its old value on purpose: it is never shown and changing it would invalidate saves. Phones with the old debug build keep it as a separate app (different package); uninstall it to free the space. On desktop the save folder follows the project name, so desktop testing starts with a fresh profile.
 
+**Owner's UI round (2026-11-21): usability, icons, font, layout**
+
+Owner feedback: the top-left back button is hard to reach, the home screen looks cluttered, and the buildings are too big and fill the screen.
+- *Navigation.* A bottom navigation bar with icons (Village, Heroes, Shop, Missions, Settings; `scripts/ui/nav_bar.gd`) is on the home screen and every menu screen; the current screen is highlighted and dots mark something waiting. The top-left back button is gone; "Village" or the phone's back gesture returns home. Nav icons are original (`tools/gen_art.py`, `icons/nav_*`).
+- *Home screen.* Currencies, age bar with Collect, the village map (now most of the screen), one "tonight" card (hero portrait in the age look, age weapon and resource bonus, Change, and the night picker inside the same card), START NIGHT, nav bar. The title line is gone (the splash and store carry the name) and the how-to tip shows only while the village total level is under 3.
+- *Village map.* Buildings are drawn at their authored size (×1.0, was ×1.5); name plates and badges at ×1.2 so they stay readable; land bands 380 px (was 460).
+- *Font.* Fredoka (SIL OFL 1.1, from Google Fonts; `assets/fonts/`, credited in `CREDITS.md`) replaces Godot's default font everywhere, including the village map; big headings use a heavier weight. Also set as the project's custom font.
+
+**Tester feedback round (2026-11-22): hook players early, bring them back**
+
+A tester said the first minutes should be easier to get into and asked for daily hooks. Checked first: a brand-new player's first night (bot, 5 seeds) lasted 2:10–3:20 and paid about 63 coins and 23 food, but the cheapest building costs 120 coins + 15 food, so the first trip home bought nothing; six How to play pages came before the first night; and the home screen showed ages, land and Collect before any night was played. Daily login, missions, free chests and achievements already existed but sat behind the Missions tab. Four pre-launch changes, agreed with the owner (`scripts/meta/onboarding.gd`, numbers in `balance.json` "onboarding"):
+- *First-night bonus:* +150 coins and +20 food when the first night is committed, shown as its own line on the results screen (not doubled by the ad). Even a 30-second first night now pays for the first building.
+- *Shorter How to play:* pages now have groups. Before night 1 only the 2 "intro" pages (the goal; move and level up). On the first return home the 2 "village" pages open as "Your village". Bosses are covered live by the in-run boss warnings. Settings → How to play still shows all 5 pages.
+- *Systems appear in steps:* until the first night is played, the home screen shows only the village green: no age bar, no Collect, no land bands. The tip shows while the village total level is under 3.
+- *Daily reward popup* (`scripts/ui/daily_popup.gd`): "Welcome back!" with the 7-day calendar, Claim, and today's missions with progress. Shown once per calendar day while today's login reward is unclaimed ("Later" closes it for the day). The calendar strip is shared with the Missions screen.
+- *One popup per visit,* in this order: village guide, daily reward, starter pack.
+
+Decisions:
+- The starter pack offer (spec §9.2: "once after the first night") now waits until a home visit with no other popup, usually the second or third visit after the first night. Its 72-hour countdown still starts only when it is actually shown.
+- Not done yet, by agreement: local notifications (farm full, build done, free chest ready) for the first update; Google Play Games Services (achievements, leaderboards, cloud save) after launch. "Play Games Rewards" in the feedback is unclear; Google Play Points offers are arranged in Play Console, not in the game.
+- Screenshot tool: `--new-player` (throwaway fresh profile) and `--runs=<n>` for capturing first-launch screens; the demo profile skips the one-time popups.
+
+**Bug fix (2026-11-22): night stuck after "Parent node is busy setting up children"**
+
+Reported by the owner while playing; it had also been seen once during a screenshot capture. Cause: `RunUi._notification` opened the pause menu directly when the app lost focus, went to the background, or got the back gesture. Godot delivers those events while passing them down the tree, and a node cannot gain children then, so adding the menu failed. The night was already set to paused and `_pause_modal` pointed at the menu that never appeared, so the Pause button did nothing: stuck. On desktop it happens whenever the window loses focus. Fix: those events are now handled on the next idle frame (`call_deferred`). `tests/integration/test_run_ui_events.gd` delivers the events the way Godot does; it reproduced the error and failed on the old code, and passes now.
+
 ## Known issues
 
-- Later ages are harder (creature HP up to ×1.8) but nothing makes the hero stronger per age until stage 3 (weapon ladder). Until then, the building cap rising is the only counterweight.
 - With bots surviving 3–4 minutes, a run in Founders' Age pays about 30 food; Age of Keeps needs 250 food and 30 timber. Expect several nights per age early on.
-
 - `scripts/run/run_manager.gd` is about 455 lines, over the 300-line preference.
-- Package name is `com.jdtechlabs.kavaryn` (renamed 2026-11-21), developer JD Techlabs, support email set. `data/app_config.json` still has a placeholder privacy policy URL: the policy must be hosted first.
+- Package name is `com.jdtechlabs.kavaryn` (renamed 2026-11-21), developer JD Techlabs, support email set. Privacy policy hosted at https://jd-techlabs.github.io/kaaval/store/privacy_policy.html (GitHub Pages) and set in `data/app_config.json`.
 - The first frame after launch on Android compiles shaders (a one-time "Failed to load cached shader, recompiling" warning in logcat).
 - Thrown-weapon and hit sounds are throttled to one per 45 ms; no separate volume buses.
 - Target API level is Godot's default. Play may require a newer one at upload time.
 - GUT reports leaked instances at exit from static data caches; harmless.
-- Once, during a scripted screenshot capture of Old Fort skipped to 5:10, Godot printed "Parent node is busy setting up children, add_child() failed". It did not happen again in four repeats, never in tests, and the screenshot was correct. Watch for it.
 
 ## Changes made outside the project folder
 

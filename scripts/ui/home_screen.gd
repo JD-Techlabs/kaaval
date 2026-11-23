@@ -1,20 +1,23 @@
 class_name HomeScreen
 extends Control
-## Home / Village (spec §10): village view, currencies, night picker, Start
-## Night, hero portrait and the bottom navigation.
+## Home / Village (spec §10): currencies, age bar, the village map (most of
+## the screen), a "tonight" card (hero + night picker), Start Night and the
+## bottom navigation bar.
 
-const NAV: Array[Array] = [["Village", "home"], ["Heroes", "heroes"], ["Shop", "shop"], ["Missions", "missions"], ["Settings", "settings"]]
 
 var _village: VillageView
 var _currency_holder: Control
 var _hero_row: HBoxContainer
+var _tip: Label
+var _age_row: HBoxContainer
+var _scroll: ScrollContainer
+var _nav_holder: MarginContainer
 var _age_button: Button
 var _collect_button: Button
 var _nights: NightPicker
 var _start: Button
 var _panel: VBoxContainer
 var _panel_id: String = ""
-var _nav_buttons: Dictionary = {}
 
 
 func _ready() -> void:
@@ -24,27 +27,28 @@ func _ready() -> void:
 	background.color = UiKit.BG
 	background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(background)
-	var column: VBoxContainer = UiKit.vbox(18)
-	UiKit.safe_area(self).add_child(column)
+	var column: VBoxContainer = UiKit.vbox(14)
+	UiKit.safe_area(self, 22).add_child(column)
 	_currency_holder = Control.new()
-	_currency_holder.custom_minimum_size = Vector2(0.0, 100.0)
+	_currency_holder.custom_minimum_size = Vector2(0.0, 96.0)
 	column.add_child(_currency_holder)
-	var title: Label = UiKit.label("Kavaryn · Guardians of Dawn", UiKit.FONT, UiKit.GOLD)
-	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	column.add_child(title)
-	var tip: Label = UiKit.label("Tap a building to build or upgrade it. Scroll down for more land.", UiKit.FONT_SMALL, UiKit.MUTED, true)
-	tip.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	column.add_child(tip)
 	var age_row: HBoxContainer = UiKit.hbox(12)
+	_age_row = age_row
 	column.add_child(age_row)
 	_age_button = UiKit.button("", func() -> void: AgePanel.open(self, Callable()), "secondary")
 	_age_button.add_theme_font_size_override("font_size", UiKit.FONT_SMALL)
 	_age_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_age_button.custom_minimum_size = Vector2(0.0, 104.0)
 	age_row.add_child(_age_button)
 	_collect_button = UiKit.button("Collect", _collect_all, "good")
 	_collect_button.add_theme_font_size_override("font_size", UiKit.FONT_SMALL)
+	_collect_button.custom_minimum_size = Vector2(0.0, 104.0)
 	age_row.add_child(_collect_button)
+	_tip = UiKit.label("", 28, UiKit.MUTED, true)
+	_tip.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	column.add_child(_tip)
 	var scroll: ScrollContainer = ScrollContainer.new()
+	_scroll = scroll
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	scroll.clip_contents = true
@@ -54,25 +58,28 @@ func _ready() -> void:
 	_village.land_selected.connect(func(id: String) -> void: LandPanel.open(self, id))
 	scroll.add_child(_village)
 	scroll.resized.connect(func() -> void: _village.set_visible_height(scroll.size.y))
-	_hero_row = UiKit.hbox()
-	column.add_child(_hero_row)
+	# Tonight: who you play and which night, in one card.
+	var tonight: PanelContainer = UiKit.panel(UiKit.PANEL, UiKit.AMBER.darkened(0.45))
+	column.add_child(tonight)
+	var tonight_column: VBoxContainer = UiKit.vbox(10)
+	tonight.add_child(tonight_column)
+	_hero_row = UiKit.hbox(16)
+	tonight_column.add_child(_hero_row)
+	var divider: ColorRect = ColorRect.new()
+	divider.color = UiKit.PANEL_LIGHT
+	divider.custom_minimum_size = Vector2(0.0, 3.0)
+	tonight_column.add_child(divider)
 	_nights = NightPicker.new()
+	_nights.embedded = true
 	_nights.changed.connect(_update_start)
-	column.add_child(_nights)
+	tonight_column.add_child(_nights)
 	_start = UiKit.button("START NIGHT", _start_night)
-	_start.custom_minimum_size = Vector2(0.0, 170.0)
+	_start.custom_minimum_size = Vector2(0.0, 140.0)
 	_start.add_theme_font_size_override("font_size", UiKit.FONT_BIG)
+	_start.add_theme_font_override("font", UiKit.font(UiKit.WEIGHT_HEADING))
 	column.add_child(_start)
-	var nav: HBoxContainer = UiKit.hbox(8)
-	column.add_child(nav)
-	for entry: Array in NAV:
-		var screen: String = entry[1]
-		var kind: String = "primary" if screen == "home" else "secondary"
-		var button: Button = UiKit.button(str(entry[0]), _goto.bind(screen), kind)
-		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		button.add_theme_font_size_override("font_size", 30)
-		nav.add_child(button)
-		_nav_buttons[screen] = button
+	_nav_holder = MarginContainer.new()
+	column.add_child(_nav_holder)
 
 	var ticker: Timer = Timer.new()
 	ticker.wait_time = 1.0
@@ -85,7 +92,7 @@ func _ready() -> void:
 	ProductionLogic.sync_clocks()
 	DailyLogic.ensure_today()
 	_refresh()
-	_maybe_offer_starter_pack()
+	_show_home_popup.call_deferred()
 
 
 ## First press shows How to play (with Skip); after that, straight into the night.
@@ -95,7 +102,7 @@ func _start_night() -> void:
 	if HowToPlay.seen():
 		SceneRouter.goto("run")
 	else:
-		HowToPlay.open(self, func() -> void: SceneRouter.goto("run"))
+		HowToPlay.open(self, func() -> void: SceneRouter.goto("run"), "intro")
 
 
 func _update_start() -> void:
@@ -117,11 +124,6 @@ func _update_collect() -> void:
 	_collect_button.text = "Collect +%s" % UiKit.number(ready)
 
 
-func _goto(screen: String) -> void:
-	if screen != "home":
-		SceneRouter.goto(screen)
-
-
 func _tick() -> void:
 	if not VillageLogic.complete_due().is_empty():
 		AudioManager.play("levelup")
@@ -140,20 +142,33 @@ func _refresh() -> void:
 	for child: Node in _hero_row.get_children():
 		child.queue_free()
 	var hero: HeroData = GameData.hero(str(GameState.p["selected_hero"]))
-	var portrait: TextureRect = UiKit.icon(hero.texture_for(AgeLogic.current()), 130.0)
+	var portrait: TextureRect = UiKit.icon(hero.texture_for(AgeLogic.current()), 112.0)
 	portrait.modulate = Color(str(GameState.selected_skin(hero.id).get("tint", "#ffffff")))
 	_hero_row.add_child(portrait)
-	var text: VBoxContainer = UiKit.vbox(4)
+	var text: VBoxContainer = UiKit.vbox(2)
 	text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	text.add_child(UiKit.label("%s, %s" % [hero.display_name, hero.title], UiKit.FONT))
-	text.add_child(UiKit.label("Village level %d · build to grow stronger" % VillageLogic.total_level(), UiKit.FONT_SMALL, UiKit.MUTED, true))
+	text.alignment = BoxContainer.ALIGNMENT_CENTER
+	text.add_child(UiKit.label(hero.display_name, UiKit.FONT, UiKit.TEXT))
+	var weapon: String = WeaponLine.weapon_for(hero.starting_weapon, hero.id).display_name
+	text.add_child(UiKit.label("%s · %s" % [weapon, hero.bonus_text().trim_suffix(" from nights")], 28, UiKit.MUTED, true))
 	_hero_row.add_child(text)
-	_hero_row.add_child(UiKit.button("Change", func() -> void: SceneRouter.goto("heroes"), "secondary"))
+	var change: Button = UiKit.button("Change", func() -> void: SceneRouter.goto("heroes"), "secondary")
+	change.add_theme_font_size_override("font_size", UiKit.FONT_SMALL)
+	change.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	_hero_row.add_child(change)
+	# New players see the village green only; ages, Collect and land arrive after the first night.
+	var unlocked: bool = Onboarding.village_unlocked()
+	_age_row.visible = unlocked
+	if _village.show_lands != unlocked:
+		_village.show_lands = unlocked
+		_village.set_visible_height(_scroll.size.y)
+	_tip.visible = Onboarding.show_tip()
+	_tip.text = "Tap a building to build or upgrade it." + (" Scroll down for more land." if unlocked else "")
 	_age_button.text = AgePanel.summary_text()
 	_update_collect()
-	(_nav_buttons["missions"] as Button).text = "Missions •" if DailyLogic.anything_claimable() else "Missions"
-	(_nav_buttons["heroes"] as Button).text = "Heroes •" if GiftLogic.count() > 0 else "Heroes"
-	(_nav_buttons["shop"] as Button).text = "Shop •" if ChestLogic.free_remaining() <= 0.0 else "Shop"
+	for child: Node in _nav_holder.get_children():
+		child.queue_free()
+	_nav_holder.add_child(NavBar.build("home", NavBar.badges()))
 	_nights.refresh()
 	_update_start()
 	_village.queue_redraw()
@@ -167,13 +182,22 @@ func _open_panel(id: String) -> void:
 	_panel = BuildingPanel.open(self, id, func() -> void: _panel = null)
 
 
-## Shown once, right after the player's first run (spec §9.2). No fake urgency:
-## the 72 h countdown starts here and never resets.
-func _maybe_offer_starter_pack() -> void:
-	if int(GameState.p["runs_played"]) < 1 or float(GameState.p["starter_pack_shown_at"]) > 0.0:
-		return
-	if BillingService.is_owned("starter_pack") or not RemoteConfig.flag("starter_pack_enabled"):
-		return
+## At most one popup per visit (Onboarding.next_home_popup): the village guide
+## after the first night, then the daily reward, then the starter pack.
+func _show_home_popup() -> void:
+	match Onboarding.next_home_popup():
+		"village_intro":
+			Onboarding.mark_village_intro_seen()
+			HowToPlay.open(self, Callable(), "village")
+		"daily":
+			DailyPopup.open(self)
+		"starter_pack":
+			_offer_starter_pack()
+
+
+## Offered once after the first night (spec §9.2). No fake urgency: the 72 h
+## countdown starts here and never resets.
+func _offer_starter_pack() -> void:
 	GameState.p["starter_pack_shown_at"] = GameState.now()
 	GameState.save()
 	var product: Dictionary = GameData.product("starter_pack")

@@ -1,7 +1,7 @@
 {
   "remote_config_url": "",
   "remote_config_timeout": 3.0,
-  "privacy_policy_url": "https://example.github.io/kavaryn/privacy.html",
+  "privacy_policy_url": "https://jd-techlabs.github.io/kaaval/store/privacy_policy.html",
   "support_email": "jdtechlabs.support@gmail.com",
   "ads": {
     "comment": "Google's official TEST ids. Real ids live in res://release_config/ads_release.json (git-ignored) and are only read by release builds.",

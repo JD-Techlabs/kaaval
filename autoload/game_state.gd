@@ -51,6 +51,8 @@ static func default_profile() -> Dictionary:
 		"runs_played": 0,
 		"hints_done": false,
 		"how_to_play_seen": false,
+		"village_intro_seen": false,
+		"daily_popup_date": "",
 		"selected_night": "",
 		"nights": {},
 		"starter_pack_shown_at": 0,

@@ -167,14 +167,14 @@ func test_boss_schedule_and_intro_text() -> void:
 
 func test_how_to_play_pages_use_game_data() -> void:
 	var pages: Array[Dictionary] = HowToPlay.pages()
-	assert_eq(pages.size(), 6)
+	assert_eq(pages.size(), 5)
 	for page: Dictionary in pages:
 		assert_true(ResourceLoader.exists(str(page["icon"])), "icon %s" % page["icon"])
 		assert_false(str(page["text"]).is_empty())
 	assert_string_contains(str(pages[0]["text"]), "15:00")
-	assert_string_contains(str(pages[3]["text"]), "Thorn Queen 5:00")
-	assert_string_contains(str(pages[4]["text"]), "3 nights")
-	assert_string_contains(str(pages[5]["text"]), "Age of Circuits")
+	assert_string_contains(str(pages[2]["text"]), "Thorn Queen 5:00")
+	assert_string_contains(str(pages[3]["text"]), "3 nights")
+	assert_string_contains(str(pages[4]["text"]), "Age of Circuits")
 
 
 func test_how_to_play_is_remembered() -> void:

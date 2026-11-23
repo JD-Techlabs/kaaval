@@ -1,7 +1,9 @@
 class_name HowToPlay
 extends RefCounted
-## "How to play": a few short pages with Next and Skip. Opens by itself the
-## first time Start Night is pressed, and any time from Settings.
+## "How to play": short pages with Next and Skip. Pages belong to a group:
+## "intro" (2 pages) opens by itself the first time Start Night is pressed;
+## "village" opens on the first return home (see Onboarding); "night" (bosses)
+## is covered live by the in-run boss warnings. Settings shows every page.
 
 const PAGE_WIDTH: float = 820.0
 const ICON_SIZE: float = 220.0
@@ -16,30 +18,35 @@ static func mark_seen() -> void:
 	GameState.save()
 
 
-## [{"icon", "title", "text"}], filled from game data so times and counts stay true.
-static func pages() -> Array[Dictionary]:
+## [{"icon", "title", "text", "group"}], filled from game data so times and counts
+## stay true. `group` "" = every page (the full guide in Settings).
+static func pages(group: String = "") -> Array[Dictionary]:
 	var first: WaveData = NightLogic.nights()[0]
 	var first_boss: Dictionary = NightLogic.bosses(first)[0]
-	return [
-		{"icon": "res://assets/sprites/hero_muthu.svg", "title": "Guard the village",
+	var all: Array[Dictionary] = [
+		{"group": "intro", "icon": "res://assets/sprites/hero_muthu.svg", "title": "Guard the village",
 			"text": "Every night, creatures come out of the dark. Survive until dawn (%s on the timer) to win the night." % NightLogic.clock(first.duration)},
-		{"icon": "res://assets/sprites/joy_knob.svg", "title": "Move",
-			"text": "Touch and drag anywhere on the lower part of the screen to move. Your weapons attack on their own."},
-		{"icon": "res://assets/sprites/ember.svg", "title": "Collect embers",
-			"text": "Defeated creatures drop glowing embers. Walk over them to fill the XP bar. Every level up, pick 1 of 3 upgrades."},
-		{"icon": GameData.boss(str(first_boss["id"])).texture, "title": "Beat the bosses",
+		{"group": "intro", "icon": "res://assets/sprites/joy_knob.svg", "title": "Move and level up",
+			"text": "Drag anywhere on the lower screen to move; your weapons attack on their own. Walk over glowing embers to level up, then pick 1 of 3 upgrades."},
+		{"group": "night", "icon": GameData.boss(str(first_boss["id"])).texture, "title": "Beat the bosses",
 			"text": "Three bosses come each night. In %s: %s. Each one drops a chest with a big upgrade." % [first.display_name, NightLogic.boss_schedule(first)]},
-		{"icon": UiKit.ICON_DIR + "coin.svg", "title": "Grow stronger",
-			"text": "Spend coins and timber on village buildings to make your hero stronger. Reach dawn to unlock the next night. There are %d nights, each with new bosses." % NightLogic.nights().size()},
-		{"icon": UiKit.ICON_DIR + "food.svg", "title": "Grow through the ages",
-			"text": "Nights also bring food, stone and more. Upgrade buildings and gather resources to lead the village from the %s to the %s, %d ages in all. Buy land below the village for farms, quarries and more: they make resources even while you are away. Each age also upgrades your hero's weapon, up to tanks, jets and missiles. Tap the age bar to see what the next age needs." % [AgeLogic.ages()[0].display_name, AgeLogic.ages()[-1].display_name, AgeLogic.ages().size()]},
+		{"group": "village", "icon": UiKit.ICON_DIR + "coin.svg", "title": "Grow stronger",
+			"text": "Every night pays coins and more, win or lose. Tap a building to build or upgrade it: each one makes your hero stronger. Reach dawn to unlock the next night; there are %d nights, each with new bosses." % NightLogic.nights().size()},
+		{"group": "village", "icon": UiKit.ICON_DIR + "food.svg", "title": "Grow through the ages",
+			"text": "Gather food, stone and more to lead the village from the %s to the %s, %d ages in all. Buy land below the village for farms and quarries that work while you are away. Each age also upgrades your hero's weapon. Tap the age bar to see what the next age needs." % [AgeLogic.ages()[0].display_name, AgeLogic.ages()[-1].display_name, AgeLogic.ages().size()]},
 	]
+	if group.is_empty():
+		return all
+	var out: Array[Dictionary] = []
+	out.assign(all.filter(func(page: Dictionary) -> bool: return str(page["group"]) == group))
+	return out
 
 
-## `on_done` runs after the last page or Skip.
-static func open(parent: Node, on_done: Callable = Callable()) -> void:
-	var content: VBoxContainer = UiKit.modal(parent, "How to play")
-	var list: Array[Dictionary] = pages()
+## Opens the pages of `group` ("" = all). `on_done` runs after the last page or Skip.
+## Finishing the intro (or the full guide) marks How to play as seen.
+static func open(parent: Node, on_done: Callable = Callable(), group: String = "") -> void:
+	var content: VBoxContainer = UiKit.modal(parent, "Your village" if group == "village" else "How to play")
+	var list: Array[Dictionary] = pages(group)
 	var page: Array[int] = [0]
 	var art: TextureRect = UiKit.icon(str(list[0]["icon"]), ICON_SIZE)
 	art.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
@@ -57,7 +64,8 @@ static func open(parent: Node, on_done: Callable = Callable()) -> void:
 	var buttons: HBoxContainer = UiKit.hbox()
 	content.add_child(buttons)
 	var finish: Callable = func() -> void:
-		mark_seen()
+		if group != "village" and group != "night":
+			mark_seen()
 		UiKit.close_modal(content)
 		if on_done.is_valid():
 			on_done.call()

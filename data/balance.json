@@ -128,6 +128,12 @@
     "oil": { "per_minute": 2, "per_boss": 4, "dawn": 20 },
     "rare_metals": { "per_minute": 0, "per_boss": 1, "dawn": 3 }
   },
+  "onboarding": {
+    "first_night_bonus_coins": 150,
+    "first_night_bonus_food": 20,
+    "unlock_after_runs": 1,
+    "tip_until_village_level": 3
+  },
   "objective": {
     "hold_on_seconds": 45,
     "intro_seconds": 4.5
