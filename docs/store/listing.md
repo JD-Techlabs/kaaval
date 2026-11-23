@@ -2,6 +2,8 @@
 
 Developer name: **JD Techlabs**. Package: `com.jdtechlabs.kavaryn`. Support email: jdtechlabs.support@gmail.com.
 
+Privacy policy: https://jd-techlabs.github.io/kaaval/store/privacy_policy.html · Terms of Service: https://jd-techlabs.github.io/kaaval/store/terms.html (source in `docs/store/`).
+
 Check the game name and the hero names for trademark and Play availability before publishing (spec §19).
 
 ## App name (max 30 characters)

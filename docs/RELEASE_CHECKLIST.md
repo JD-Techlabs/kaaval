@@ -10,6 +10,7 @@ Everything the code can do is done. This list is what **you** must do by hand, i
 - [ ] Check your employment contract for moonlighting / IP clauses before publishing (spec §19).
 - [x] Support email `jdtechlabs.support@gmail.com` and developer name **JD Techlabs** are set (`data/app_config.json`, privacy policy, store listing, credits).
 - [x] Privacy policy hosted with GitHub Pages (repo `JD-Techlabs/kaaval`, `/docs`) at https://jd-techlabs.github.io/kaaval/store/privacy_policy.html and set in `data/app_config.json` → `privacy_policy_url` (2026-11-21). Use the same address in Play Console. Keep `docs/store/privacy_policy.html` on the Pages branch, or the link breaks.
+- [ ] Terms of Service page `docs/store/terms.html` (2026-11-23). Once it is on `main` it is live at https://jd-techlabs.github.io/kaaval/store/terms.html; enter that in Play Console → App-level trader status and Terms of Service. It says gems and progress live on the device only, and one-time items are restored from Google Play; keep it true if that changes (for example, cloud saves).
 
 ## 1. Tools on your PC
 
