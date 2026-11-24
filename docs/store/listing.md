@@ -104,3 +104,31 @@ All in `docs/store/graphics/`, produced by `tools/store_graphics.ps1`:
 - `screenshot_1_village.png` … `screenshot_6_ages.png` — phone screenshots, 9:16.
 
 Re-run the script after any visual change so the store matches the game.
+
+## Preview video
+
+`tools\make_trailer.ps1` records a 44-second portrait trailer (1080×1920, 30 fps, game music and sound) to `build\trailer\kavaryn_trailer.avi` with Godot's Movie Maker. Scenes, captions and timing are in `tools/trailer_director.gd`: title card → a night (survive, level-up cards, swarm, Thorn Queen) → village and the ages panel → Age of Circuits jets and missiles → end card. Play accepts portrait preview videos as long as there are no black side bars.
+
+Upload it to YouTube as **Public or Unlisted**, audience "No, it's not made for kids", no ads (no monetisation), no age restriction. Paste the link into Play Console → Main store listing → Video as `https://www.youtube.com/watch?v=<id>`. If YouTube files it as a Short (`youtube.com/shorts/<id>`), use the same id in the `watch?v=` form.
+
+### YouTube details
+
+- **Thumbnail:** YouTube files this vertical, under-3-minute video as a **Short**, so upload the portrait `docs/store/graphics/youtube_thumbnail_vertical.jpg` (1080×1920); a 16:9 image gets cropped to its middle strip. `youtube_thumbnail.jpg` (1280×720) is for a regular landscape video. Rebuild it from the latest trailer with `python tools/make_thumbnail.py` (needs Pillow). Custom thumbnails need a phone-verified YouTube channel.
+- **Title (max 100):** Kavaryn: Guardians of Dawn – Official Trailer | Roguelite Survivor for Android
+- **Description:**
+
+  > Night is falling on the village. Hold out against swarms of forest creatures with one thumb — your weapons fire on their own — and rebuild your village between nights. Lead it through seven ages, from slings to jets and missiles.
+  >
+  > • One-thumb roguelite action, 15-minute nights
+  > • Six guardians, evolving weapons, three bosses
+  > • Village building and seven ages
+  > • Plays offline · optional rewarded ads · odds shown in game
+  >
+  > Get it on Google Play: https://play.google.com/store/apps/details?id=com.jdtechlabs.kavaryn
+  >
+  > #Kavaryn #roguelite #androidgames
+
+  (The Play link works once the app is published.)
+- **Tags (386 of 500 characters):** Kavaryn, Kavaryn Guardians of Dawn, Guardians of Dawn, JD Techlabs, roguelite, roguelike, survivor game, horde survival, bullet heaven, auto shooter, one thumb game, action roguelite, village builder, base building, hero collection, boss fight, mobile game, android game, offline game, free mobile game, portrait game, indie game, casual action game, new android game 2026, game trailer
+- Do not tag other games' names: YouTube treats that as misleading metadata, and the project rules forbid borrowing other games' names.
+- Settings: audience "No, it's not made for kids", category Gaming, monetisation off (Play needs an ad-free video), and under "Altered or synthetic content" answer **No** (that question is about realistic footage of real people, places or events; the trailer is real gameplay of a cartoon game).

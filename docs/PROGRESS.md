@@ -315,3 +315,5 @@ Reported by the owner while playing; it had also been seen once during a screens
 ## Not done (post-launch list in the spec)
 
 Season pass, more skins, second map, cloud save, server-side receipt validation, Tamil/Hindi text, iOS.
+
+**Store preview video (2026-11-24).** `tools\make_trailer.ps1` records a 44 s portrait trailer with Godot's Movie Maker into `build\trailer\kavaryn_trailer.avi` (MJPEG + game audio; YouTube accepts AVI). Scripted by `tools/trailer_director.gd` on the demo profile, so the real save is untouched, and `tools/*` is not exported. Decisions: portrait 1080×1920 to match the game (Play allows portrait preview videos without side bars). Movie Maker records at window size and Windows shrinks a 1080×1920 window to fit the screen, so the script writes a temporary `override.cfg` (viewport stretch from startup, MJPEG quality 0.9), which renders at the full design size, then deletes it (`override.cfg` is git-ignored). The late-age shot spawns creature rings and times the strikes so jets and missiles land on camera; the level-up shot tops up XP so cards appear while their caption is shown.
