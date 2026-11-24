@@ -29,3 +29,6 @@ Thumbs.db
 # AdMob plugin re-downloads these on demand
 addons/admob/ios/
 addons/admob/downloads/
+
+# Temporary engine overrides (tools/make_trailer.ps1)
+override.cfg

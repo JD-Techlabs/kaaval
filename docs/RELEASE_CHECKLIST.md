@@ -68,7 +68,7 @@ Play has no consumable/non-consumable switch: all are "in-app products". The gam
 
 - [ ] **Settings → Licence testing**: add your testers' Google accounts, so purchases are free test purchases.
 - [ ] Test every product with a licence tester: buy, cancel, a "slow test card" (pending), and **reinstall then Shop → Restore purchases**.
-- [ ] Store listing: paste from `docs/store/listing.md`. Upload the graphics from `docs/store/graphics/`: `icon_512.png`, `feature_graphic.png` and the six screenshots (regenerate with `tools\store_graphics.ps1`).
+- [ ] Store listing: paste from `docs/store/listing.md`. Upload the graphics from `docs/store/graphics/`: `icon_512.png`, `feature_graphic.png` and the six screenshots (regenerate with `tools\store_graphics.ps1`). Optional preview video: record with `tools\make_trailer.ps1`, upload to YouTube (Unlisted, no ads), paste the `watch?v=` link (steps in `docs/store/listing.md` → Preview video).
 - [ ] Privacy policy URL (step 6), Data safety form and content rating (guidance in `docs/store/listing.md`), target audience 13+, ads declaration: yes.
 
 ## 5. AdMob
